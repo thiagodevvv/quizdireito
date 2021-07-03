@@ -1,0 +1,182 @@
+#title {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900;
+    font-size: 25px;
+    margin-right: 10px;
+}
+.header {
+    border-bottom: 2px outset #D3D3D3;
+    display: flex;
+    justify-content: space-between;
+}
+
+.filtername {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 900;
+}
+
+
+
+.TitlePergunta {
+    font-family: 'Roboto', sans-serif;
+    color: black;
+    font-weight: bold;
+    
+}
+.descPergunta {
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 12px;
+    color:#696969;
+    margin-right: 2px;
+    margin-left: 5px;
+}
+.dataPerguntaInfo {
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 12px;
+    color:#006400;
+    margin-left: 1px;
+    margin-right: 1px;
+}
+.dataPerguntaMateria {
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 12px;
+    color:#00008B;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+.dataPerguntaInst {
+    font-family: 'Roboto', sans-serif;
+    font-weight: bold;
+    font-size: 12px;
+    color:#FF0000;
+    margin-left: 2px;
+    margin-right: 2px;
+}
+
+.alternativa {
+    font-family: 'Roboto' sans-serif;
+    font-weight: bold;
+    font-size: 15px;
+    color: black;
+}
+
+.ContainerAlternativa {
+    width: 35px;
+    height: 35px;
+    border: 2px solid #696969;
+    border-radius: 50%;
+    text-align: center;
+    margin-right: 5px;
+    padding: 0px;
+}
+.ContainerAlternativa:focus {
+    border-color: orange;
+    outline: none;
+}
+
+
+.questao {
+    height: 35px;
+    border: 1px solid 	#A9A9A9;
+    display: flex;
+    justify-content: center;
+    border-radius: 10px;
+    background-color: #DCDCDC;
+}
+
+.questaoTitle {
+    font-family: 'Roboto' sans-serif;
+    font-size: 15px;
+    color: black;
+    font-weight: bold;
+    margin-top: 3px;
+}
+
+.ContainerDescPergunta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.paginacao {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.paginaAtual {
+    font-family: 'Roboto'  sans-serif;
+    font-size: 25px;
+    font-weight: bold;
+    color: black;
+    border-bottom: 1px solid black;
+    
+}
+
+.btnpages:focus {
+   outline: none;
+}
+
+.totalPaginas {
+    font-family: 'Roboto' sans-serif;
+    font-size: 12px;
+    color: #808080;
+    margin-right: 0px;
+}
+.option-filter {
+    font-size: 20px;
+    color: black;
+}
+
+.input-informativo {
+    width: 280px;
+    margin-left: 10px;
+    margin-top: 10px;
+}
+
+.btnAlter {
+    width: 45px;
+    height: 45px;
+    border: none;
+    outline: none;
+    border-radius: 50%;
+    background-color: transparent;
+
+}
+
+.ContainerFiltros {
+    border: 1px solid #808080;
+    background-color: #FFFAFA;
+    width: 100%;
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+    margin-left: 13px;
+    border-radius: 5px;
+}
+
+.filter-label {
+    margin-top: 10px;
+}
+
+
+.caixaFiltro {
+    background-color: #DCDCDC;
+    margin-top: 8px;
+    padding: 5px;
+    border-radius: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: auto;
+    width: auto;
+}
+
+ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
