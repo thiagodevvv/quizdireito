@@ -51,6 +51,15 @@ export default function ListaPerguntas ({perguntas}) {
     const [colorx9, setColorx9] = useState("")
     const [colorx10, setColorx10] = useState("")
 
+    const [selectedAlter, setSelectedAlter] = useState("")
+    const [selectedAlter2, setSelectedAlter2] = useState("")
+    const [selectedAlter3, setSelectedAlter3] = useState("")
+    const [selectedAlter4, setSelectedAlter4] = useState("")
+    const [selectedAlter5, setSelectedAlter5] = useState("")
+
+    const [verificando, setVerificando] = useState(0)
+    const [selectedCerto, setSelectedCerto] = useState("")
+    const [selectedErrado, setSelectedErrado] = useState("")
 
     const [retornoResp1, setRetornoResp1] = useState("")
     const [retornoResp2, setRetornoResp2] = useState("")
@@ -62,6 +71,17 @@ export default function ListaPerguntas ({perguntas}) {
     const [retornoResp8, setRetornoResp8] = useState("")
     const [retornoResp9, setRetornoResp9] = useState("")
     const [retornoResp10, setRetornoResp10] = useState("")
+
+    const [isVisibleJust, setIsVisibleJust] = useState("none")
+    const [isVisibleJust2, setIsVisibleJust2] = useState("none")
+    const [isVisibleJust3, setIsVisibleJust3] = useState("none")
+    const [isVisibleJust4, setIsVisibleJust4] = useState("none")
+    const [isVisibleJust5, setIsVisibleJust5] = useState("none")
+    const [isVisibleJust6, setIsVisibleJust6] = useState("none")
+    const [isVisibleJust7, setIsVisibleJust7] = useState("none")
+    const [isVisibleJust8, setIsVisibleJust8] = useState("none")
+    const [isVisibleJust9, setIsVisibleJust9] = useState("none")
+    const [isVisibleJust10, setIsVisibleJust10] = useState("none")
 
    
     useEffect(() => {
@@ -114,34 +134,165 @@ export default function ListaPerguntas ({perguntas}) {
                             }
                        
                         }
-                        function letraD () {
+                        function letraA () {
+                            if(item.a) {
+                                return (
+                                    <Container style={{display: "flex", flexDirection: "row"}} >
+                                    <div><button style={{backgroundColor: verificando === i ? selectedAlter : ""}} className="ContainerAlternativa" 
+                                         onClick={() => {
+                                            handleResp("a")
+                                            setVerificando(i)
+                                            setSelectedAlter2("")
+                                            setSelectedAlter3("")
+                                            setSelectedAlter4("")
+                                            setSelectedAlter5("")
+                                            setSelectedAlter("#cb605d")}}>A
+                                        </button></div>
+                                        <p align="justify" onClick={() => {
+                                            handleResp("a")
+                                            setVerificando(i)
+                                            setSelectedAlter2("")
+                                            setSelectedAlter3("")
+                                            setSelectedAlter4("")
+                                            setSelectedAlter5("")
+                                            setSelectedAlter("#cb605d")
+                                        }} className="alternativa">{item.a}</p></Container>
+                                )
+                            }else {
+                                return (
+                                    <Container style={{display: "flex", flexDirection: "column"}}>
+                                        <Container style={{display: "flex", flexDirection: "row", alignItems: "center", justifyItems: "center"}}>
+                                            <button style={{backgroundColor: `${selectedCerto.length > 0 ? selectedCerto : ""}`}} onClick={() => {
+                                                setSelectedErrado("")
+                                                setSelectedCerto("#cb605d")
+                                                handleResp('certo')
+                                            }} className="ContainerAlternativa"></button> <p onClick={() => {
+                                                setSelectedErrado("")
+                                                setSelectedCerto("#cb605d")
+                                                handleResp('certo')
+                                            }}
+                                            className="certo-errado" style={{marginTop: 15, marginLeft: 5}}>Certo</p>
+                                        </Container>
+                                        <Container style={{display: "flex", flexDirection: "row", alignItems: "center", justifyItems: "center"}}>
+                                            <button style={{backgroundColor: `${selectedErrado.length > 0 ? selectedErrado : ""}`}}onClick={() => {
+                                                setSelectedCerto("")
+                                                setSelectedErrado("#cb605d")
+                                                handleResp('errado')
+                                            }} className="ContainerAlternativa"></button><p onClick={() => {
+                                                setSelectedCerto("")
+                                                setSelectedErrado("#cb605d")
+                                                handleResp('errado')
+                                            }}className="certo-errado" style={{marginTop: 15, marginLeft: 5}}>Errado</p>
+                                        </Container>
+                                    </Container>
+                                )
+                            }
+                        }
+                        function letraB () {
+                            if(item.b) {
+                                return (
+                                    <Container style={{display: "flex", flexDirection: "row"}} >
+                                    <div><button style={{backgroundColor: verificando === i ? selectedAlter2 : ""}} className="ContainerAlternativa" 
+                                    onClick={() => {
+                                        handleResp("b")
+                                        setVerificando(i)
+                                        setSelectedAlter3("")
+                                        setSelectedAlter4("")
+                                        setSelectedAlter5("")
+                                        setSelectedAlter("")
+                                        setSelectedAlter2("#cb605d")
+                                    }}>B</button></div>
+                                <p onClick={() => {
+                                            handleResp("b")
+                                            setVerificando(i)
+                                            setSelectedAlter("")
+                                            setSelectedAlter3("")
+                                            setSelectedAlter4("")
+                                            setSelectedAlter5("")
+                                            setSelectedAlter2("#cb605d")
+                                        }} align="justify" className="alternativa">{item.b}</p></Container>
+                                )
+                            }
+                            else {
+                                return ""
+                            }
+                        }
+                        function letraD (i) {
                             if(item.d) {
                                 return (
                                     <Container style={{display: "flex", flexDirection: "row"}} >
-                                        <div><button  className="ContainerAlternativa" onClick={() => handleResp("d")}>D</button></div>
-                            <p align="justify" className="alternativa">{item.d}</p> </Container>
+                                        <div><button style={{backgroundColor: verificando === i ? selectedAlter4 : ""}} className="ContainerAlternativa" onClick={() => {
+                                    setVerificando(i)
+                                    handleResp("d")
+                                    setSelectedAlter2("")
+                                    setSelectedAlter3("")
+                                    setSelectedAlter5("")
+                                    setSelectedAlter("")
+                                    setSelectedAlter4("#cb605d")
+                                }}>D</button></div>
+                            <p onClick={() => {
+                                            handleResp("d")
+                                            setVerificando(i)
+                                            setSelectedAlter("")
+                                            setSelectedAlter2("")
+                                            setSelectedAlter3("")
+                                            setSelectedAlter5("")
+                                            setSelectedAlter4("#cb605d")
+                                        }} align="justify" className="alternativa">{item.d}</p> </Container>
                                 )
                             }else {
                                 return ""
                             }
                         }
-                        function letraC () {
+                        function letraC (i) {
                             if(item.c) {
                                 return (
                                     <Container style={{display: "flex", flexDirection: "row"}} >
-                                        <div><button  className="ContainerAlternativa" onClick={() => handleResp("c")}>C</button></div>
-                            <p align="justify" className="alternativa">{item.c}</p> </Container>
+                                        <div><button style={{backgroundColor: verificando === i ? selectedAlter3 : ""}} className="ContainerAlternativa" onClick={() => {
+                                    setVerificando(i)
+                                    handleResp("c")
+                                    setSelectedAlter2("")
+                                    setSelectedAlter4("")
+                                    setSelectedAlter5("")
+                                    setSelectedAlter("")
+                                    setSelectedAlter3("#cb605d")
+                                }}>C</button></div>
+                            <p onClick={() => {
+                                            handleResp("c")
+                                            setVerificando(i)
+                                            setSelectedAlter("")
+                                            setSelectedAlter2("")
+                                            setSelectedAlter4("")
+                                            setSelectedAlter5("")
+                                            setSelectedAlter3("#cb605d")
+                                        }} align="justify" className="alternativa">{item.c}</p> </Container>
                                 )
                             }else {
                                 return ""
                             }
                         }
-                        function letraE () {
+                        function letraE (i) {
                             if(item.e) {
                                 return (
                                     <Container style={{display: "flex", flexDirection: "row"}} >
-                                        <div><button className="ContainerAlternativa" onClick={() => handleResp("e")}>E</button></div>
-                           <p align="justify" className="alternativa">{item.e}</p> </Container>
+                                        <div><button style={{backgroundColor: verificando === i ? selectedAlter5 : ""}} className="ContainerAlternativa" onClick={() => {
+                                    setVerificando(i)
+                                    handleResp("e")
+                                    setSelectedAlter2("")
+                                    setSelectedAlter3("")
+                                    setSelectedAlter4("")
+                                    setSelectedAlter("")
+                                    setSelectedAlter5("#cb605d")
+                                }}>E</button></div>
+                           <p onClick={() => {
+                                            handleResp("e")
+                                            setVerificando(i)
+                                            setSelectedAlter("")
+                                            setSelectedAlter2("")
+                                            setSelectedAlter3("")
+                                            setSelectedAlter4("")
+                                            setSelectedAlter5("#cb605d")
+                                        }} align="justify" className="alternativa">{item.e}</p> </Container>
                                 )
                             }else {
                                 return ""
@@ -151,103 +302,130 @@ export default function ListaPerguntas ({perguntas}) {
                     <Container key={i}>
                         <Container className="questao"> <p className="questaoTitle">Questão {zero()}</p></Container>
                             <Row className="ContainerDescPergunta">
-                                <p className="descPergunta">Informativo:</p> <p className="dataPerguntaInfo">{item.informativo}</p>
-                                <p className="descPergunta">Instituição:</p> <p className="dataPerguntaInst">{item.instituição}</p>
-                                <p className="descPergunta">Matéria:</p> <p className="dataPerguntaMateria">{item.materia}</p>
+                                <p className="descPergunta">Id:</p> <p className="dataPerguntaAll">{item.idQuestion}</p>
+                                <p className="descPergunta">Instituição:</p> <p className="dataPerguntaAll">{item.instituição}</p>
+                                <p className="descPergunta">Informativo:</p> <p className="dataPerguntaAll">{item.informativo}</p>
+                                <p className="descPergunta">Matéria:</p> <p className="dataPerguntaAll">{item.materia.map((element) => {
+                                    return ` ${element}`
+                                })}</p>
+                                <p className="descPergunta">Tema:</p> <p className="dataPerguntaAll">{item.tema.map((element) => {
+                                    return ` ${element}`
+                                })}</p>
                             </Row>
                             <p align="justify" className="TitlePergunta">{item.pergunta}</p>
                         <Container>
                             <ul>
-                            <Container style={{display: "flex", flexDirection: "row"}} >
-                             <div><button  className="ContainerAlternativa" onClick={() => handleResp("a")}>A</button></div>
-                            <p align="justify" className="alternativa">{item.a}</p></Container>
-                            
-                            <Container style={{display: "flex", flexDirection: "row"}} >
-                                <div><button  className="ContainerAlternativa" onClick={() => handleResp("b")}>B</button></div>
-                            <p align="justify" className="alternativa">{item.b}</p></Container>
-                            {letraC()}
-                            {letraD()}
-                            {letraE()}
+                            {letraA()}
+                            {letraB()}
+                            {letraC(i)}
+                            {letraD(i)}
+                            {letraE(i)}
                             </ul>
                         </Container>
                         {CondicaoResp(i)}
                         <Container style={{display: "flex", flexDirection: "column"}} >
-                            <Button style={{marginTop: 10, marginBottom: 5}} variant="outline-success" 
-                            onClick={() => verificarQuestao(item.resp, resposta, i)} type="submit">Enviar resposta</Button>
+                            <Button className="btnResponder"  
+                            onClick={() => verificarQuestao(item.resp, resposta, i)} type="submit">
+                                <p style={{color: "white", fontFamily: "Roboto", fontWeight: "bold", marginTop:10}}>RESPONDER</p>
+                            </Button>
                             <Button onClick={() => {
+                                
                                if(i === 0) {
                                    if(justi1.length > 0) {
                                        setJusti1("")
+                                       setIsVisibleJust("none")
                                    }else {
                                        setJusti1(item.justificativa)
+                                       setIsVisibleJust("flex")
                                    }
                                }
                                if(i === 1) {
                                 if(justi2.length > 0) {
                                     setJusti2("")
+                                    setIsVisibleJust2("none")
                                 }else {
                                     setJusti2(item.justificativa)
+                                    setIsVisibleJust2("flex")
                                 }
                             }
                             if(i === 2) {
                                 if(justi3.length > 0) {
+                                    setIsVisibleJust3("none")
                                     setJusti3("")
                                 }else {
                                     setJusti3(item.justificativa)
+                                    setIsVisibleJust3("flex")
                                 }
                             }
                             if(i === 3) {
                                 if(justi4.length > 0) {
                                     setJusti4("")
+                                    setIsVisibleJust4("none")
                                 }else {
                                     setJusti4(item.justificativa)
+                                    setIsVisibleJust4("flex")
                                 }
                             }
                             if(i === 4) {
                                 if(justi5.length > 0) {
                                     setJusti5("")
+                                    setIsVisibleJust5("none")
                                 }else {
                                     setJusti5(item.justificativa)
+                                    setIsVisibleJust5("flex")
                                 }
                             }
                             if(i === 5) {
                                 if(justi6.length > 0) {
                                     setJusti6("")
+                                    setIsVisibleJust6("none")
                                 }else {
                                     setJusti6(item.justificativa)
-                                }
+                                    setIsVisibleJust6("flex")                                }
                             }
                             if(i === 6) {
                                 if(justi7.length > 0) {
                                     setJusti7("")
+                                    setIsVisibleJust7("none")
                                 }else {
                                     setJusti7(item.justificativa)
+                                    setIsVisibleJust7("flex")
                                 }
                             }
                             if(i === 7) {
                                 if(justi8.length > 0) {
                                     setJusti8("")
+                                    setIsVisibleJust8("none")
+
                                 }else {
                                     setJusti8(item.justificativa)
+                                    setIsVisibleJust8("flex")
                                 }
                             }
                             if(i === 8) {
                                 if(justi9.length > 0) {
                                     setJusti9("")
+                                    setIsVisibleJust9("none")
                                 }else {
                                     setJusti9(item.justificativa)
+                                    setIsVisibleJust9("flex")
                                 }
                             }
                             if(i === 9) {
                                 if(justi10.length > 0) {
                                     setJusti10("")
+                                    setIsVisibleJust10("none")
                                 }else {
                                     setJusti10(item.justificativa)
+                                    setIsVisibleJust10("flex")
                                 }
                             }
                                 
-                            }} style={{marginTop: 1, marginBottom: 10}} variant="outline-primary">Mostrar justificativa</Button>
+                            }} className="btnVisuJust" > 
+                            <p style={{color: "#bd3330", fontFamily: "Roboto", fontWeight: "bold", marginTop:10}}>VISUALIZAR JUSTIFICATIVA</p>
+                            </Button>
                             {CondicaoJust(i)}
+                            <div className="separadorQuestão"></div>
                             </Container>
                             
                     </Container>
@@ -304,7 +482,7 @@ export default function ListaPerguntas ({perguntas}) {
             }
             if(i === 7) {
                 setResultadoResp8("Resposta Correta!")
-                setColor8("green")
+                setColor8("green") 
             }
             if(i === 8) {
                 setResultadoResp9("Resposta Correta!")
@@ -319,52 +497,52 @@ export default function ListaPerguntas ({perguntas}) {
         }else {
             
             if(i === 0) {
-                setResultadoResp1("Resposta Errada!")
+                setResultadoResp1(`Resposta Errada!`)
                 setRetornoResp1(`Resposta correta: ${resp.toUpperCase()}`)
                 setColorx1("red")
             }
             if(i === 1) {
-                setResultadoResp2("Resposta Errada!")
+                setResultadoResp2(`Resposta Errada!`)
                 setRetornoResp2(`Resposta correta: ${resp.toUpperCase()}`)
                 setColorx2("red")
             }
             if(i === 2) {
-                setResultadoResp3("Resposta Errada!")
+                setResultadoResp3(`Resposta Errada!`)
                 setRetornoResp3(`Resposta correta: ${resp.toUpperCase()}`)
                 setColorx3("red")
             }
             if(i === 3) {
-                setResultadoResp4("Resposta Errada!")
+                setResultadoResp4(`Resposta Errada!`)
                 setRetornoResp4(`Resposta correta: ${resp.toUpperCase()}`)
                 setColorx4("red")
             }
             if(i === 4) {
-                setResultadoResp5("Resposta Errada!")
+                setResultadoResp5(`Resposta Errada!`)
                 setRetornoResp5(`Resposta correta: ${resp.toUpperCase()}`)
                 setColorx5("red")
             }
             if(i === 5) {
-                setResultadoResp6("Resposta Errada!")
+                setResultadoResp6(`Resposta Errada!`)
                 setRetornoResp6(`Resposta correta: ${resp.toUpperCase()}`)
                 setColorx6("red")
             }
             if(i === 6) {
-                setResultadoResp7("Resposta Errada!")
+                setResultadoResp7(`Resposta Errada!`)
                 setRetornoResp7(`Resposta correta: ${resp.toUpperCase()}`)
                 setColorx7("red")
             }
             if(i === 7) {
-                setResultadoResp8("Resposta Errada!")
+                setResultadoResp8(`Resposta Errada!`)
                 setRetornoResp8(`Resposta correta: ${resp.toUpperCase()}`)
                 setColorx8("red")
             }
             if(i === 8) {
-                setResultadoResp9("Resposta Errada!")
+                setResultadoResp9(`Resposta Errada!`)
                 setRetornoResp9(`Resposta correta: ${resp.toUpperCase()}`)
                 setColorx9("red")
             }
             if(i === 9) {
-                setResultadoResp10("Resposta Errada!")
+                setResultadoResp10(`Resposta Errada!`)
                 setRetornoResp10(`Resposta correta: ${resp.toUpperCase()}`)
                 setColorx10("red")
             }
@@ -454,53 +632,53 @@ export default function ListaPerguntas ({perguntas}) {
     }
     const CondicaoJust = (i) => {
         if(i === 0) {
-            return (
-                <div style={{width: "100%", height: "auto"}}><p align="justify" style={{fontWeight: "bold"}}>{justi1}</p></div>
+            return ( 
+                <div style={{display: `${isVisibleJust}`}} className="containerJust"><p align="justify" className="textJust">{justi1}</p></div>
             )
         }
         if(i === 1) {
             return (
-                <div style={{width: "100%", height: "auto"}}><p align="justify" style={{fontWeight: "bold"}}>{justi2}</p></div>
+                <div style={{display: `${isVisibleJust2}`}} className="containerJust"><p align="justify" className="textJust">{justi2}</p></div>
             )
         }
         if(i === 2) {
             return (
-                <div style={{width: "100%", height: "auto"}}><p align="justify" style={{fontWeight: "bold"}}>{justi3}</p></div>
+                <div style={{display: `${isVisibleJust3}`}}  className="containerJust"><p align="justify" className="textJust">{justi3}</p></div>
             )
         }
         if(i === 3) {
             return (
-                <div style={{width: "100%", height: "auto"}}><p align="justify" style={{fontWeight: "bold"}}>{justi4}</p></div>
+                <div style={{display: `${isVisibleJust4}`}}  className="containerJust"><p align="justify" className="textJust">{justi4}</p></div>
             )
         }
         if(i === 4) {
             return (
-                <div style={{width: "100%", height: "auto"}}><p align="justify" style={{fontWeight: "bold"}}>{justi5}</p></div>
+                <div style={{display: `${isVisibleJust5}`}} className="containerJust"><p align="justify" className="textJust">{justi5}</p></div>
             )
         }
         if(i === 5) {
             return (
-                <div style={{width: "100%", height: "auto"}}><p align="justify" style={{fontWeight: "bold"}}>{justi6}</p></div>
+                <div style={{display: `${isVisibleJust6}`}} className="containerJust"><p align="justify" className="textJust">{justi6}</p></div>
             )
         }
         if(i === 6) {
             return (
-                <div style={{width: "100%", height: "auto"}}><p align="justify" style={{fontWeight: "bold"}}>{justi7}</p></div>
+                <div style={{display: `${isVisibleJust7}`}} className="containerJust"><p align="justify" className="textJust">{justi7}</p></div>
             )
         }
         if(i === 7) {
             return (
-                <div style={{width: "100%", height: "auto"}}><p align="justify" style={{fontWeight: "bold"}}>{justi8}</p></div>
+                <div style={{display: `${isVisibleJust8}`}} className="containerJust"><p align="justify" className="textJust">{justi8}</p></div>
             )
         }
         if(i === 8) {
             return (
-                <div style={{width: "100%", height: "auto"}}><p align="justify" style={{fontWeight: "bold"}}>{justi9}</p></div>
+                <div style={{display: `${isVisibleJust9}`}} className="containerJust"><p align="justify" className="textJust">{justi9}</p></div>
             )
         }
         if(i === 9) {
             return (
-                <div style={{width: "100%", height: "auto"}}><p align="justify" style={{fontWeight: "bold"}}>{justi10}</p></div>
+                <div style={{display: `${isVisibleJust10}`}} className="containerJust"><p align="justify" className="textJust">{justi10}</p></div>
             )
         }
         

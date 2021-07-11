@@ -1,10 +1,10 @@
 import Head from 'next/head'
 import {Container,Navbar, Form, Button} from 'react-bootstrap'
 import axios from 'axios'
-import ListaPerguntas from '../components/ListaPerguntas'
 import { useState, useEffect, useRef } from 'react'
 import Select from 'react-select'
 import Condicao from '../components/Condicao'
+import CheckBox from '../components/CheckBox'
 
 
 
@@ -16,15 +16,21 @@ export default function Home() {
     const [mat, setMat] = useState([])
     const [inst, setInst] = useState([])
     const [info, setInfo] = useState([])
+    const [tema, setTema] = useState([])
     const [buscaFiltroTamanho, setBuscaFiltroTamanho] = useState(null)
     const [informativos, setInformativos] = useState([])
     const [materias, setMaterias] = useState([])
-    const [controlInfo, setControlInfo] = useState(false)
+    const [temas, setTemas] = useState([])
     const [filters, setFilters] = useState([])
     const [verific, setVerific] = useState(0)
     const initialFormState = { mySelectKey: null }
     const [myForm, setMyForm] = useState(initialFormState)
     const [isLoadingFilter, setIsLoadingFilter] = useState(false)
+    const [isCheckedCe, setIsCheckedCe] = useState(false)
+    const [isCheckedMe, setIsCheckedMe] = useState(false)
+    const [infoFinal, setInfoFinal] = useState(true)
+    const [infoFinalArray, setInfoFinalArray] = useState([])
+    const [arrayFilter, setArrayFilter] = useState([])
 
     async function FiltroPerguntas (mat,inst,info) {
       setPerguntas([])
@@ -90,9 +96,23 @@ export default function Home() {
           setMaterias((prevState) => [...prevState, opts])
       })
 
+    
+
+    }
+
+    const getTemas = async () => {
+      const resultado = await axios.get('/api/temas')
+      resultado.data.map((item) => {
+        const opts = {
+          label: `${item.tema}`,
+          value: `${item.tema}`
+          }
+          setTemas((prevState) => [...prevState, opts])
+      })
     }
     getInfo()
     getMaterias()
+    getTemas()
     }, [])
   
 
@@ -105,7 +125,7 @@ export default function Home() {
     }, [])
 
     const verificandoCaixaFiltro = () => {
-      if(verific === 0) {
+      if(arrayFilter.length === 0) {
         return 100
       }else {
         return "auto"
@@ -113,24 +133,13 @@ export default function Home() {
        
     }
     const deleteElementArray = (arr,value) => {
+      console.log(value)
       return arr.filter((element) => {
         return element != value
       })
     }
     
-    const removeFilterMateria = (item) => {
-      
-      const newArr = deleteElementArray(mat,item)
-      setMat(newArr)
-    }
-    const removeFilterInformativo = (item) => {
-      const newArr = deleteElementArray(info,item)
-      setInfo(newArr)
-    }
-    const removeFilterInstituicao = (item) => {
-      const newArr = deleteElementArray(inst,item)
-      setInst(newArr)
-    }
+    
     const resetForm = () => {
       setMyForm(initialFormState);
     }
@@ -143,94 +152,242 @@ export default function Home() {
       window.location.reload()
     }
 
-  return (
-    <Container style={{padding:0}}>
-    <Head>
-      <title>Quiz</title>
-      <link rel="icon" href="/favicon.ico" />
-      <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
-        integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
-        crossorigin="anonymous"/>
-         <link rel="preconnect" href="https://fonts.gstatic.com" />
-        <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
-    </Head>
+
+    function customTheme (theme) {
+      return  {
+        ...theme,
+        colors: {
+          ...theme.colors,
+          primary25: '#cb605d',
+          primary: '#cb605d',
+          neutral50: "#cb605d"
+          
+        }
+      }
+    }
+
+    const dropdownIndicatorStyles = (base, state) => {
+      let changes = {
+        // all your override styles
+        color: '#cb605d'
+      };
+      return Object.assign(base, changes);
+    }
+   
+
     
-    <Navbar className="header" bg="light">
-      <div style={{display: "flex", flexDirection: "row"}}><p id="title">Questão de Informativo</p> 
-      <img  width="50" height="50" src="/notebook.png"/> </div>
-      <a target="_blank" href="https://www.instagram.com/_questaodeinformativo_/"><img  width="50" height="50" src="/insta.svg"/></a>
-    </Navbar>
-    <Container>
-            <p className="filtername">Filtrar questões <img src="/search.png" width="25" height="25" /> </p> 
-            <Form.Group>
-                <Form.Row>
-                <Select value={materias.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Selecionar materia"  onChange={(value) => {
-                    setVerific(1)
-                    if(mat.indexOf(value.value) === -1) {
-                      setMat((prevState) => [...prevState, value.value])
-                    }
-                   
-                }} className="input-informativo" options={materias} />
-        
-                <Select  value={info.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Selecionar informativo" isOptionDisabled={() => controlInfo } 
-                    onChange={(value) => {
-                    setVerific(1)
-                    let _info = parseInt(value.value)
-                    if(info.indexOf(_info) === -1) {
-                      setInfo((prevState) => [...prevState, _info])
-                    }
-                }} className="input-informativo" options={informativos} />
 
-                <Select value={inst.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Selecionar instituicação" onChange={(value, actionMeta) => {
-                  setVerific(1)
-                  if(inst.indexOf(value.value) === -1) {
-                    setInst((prevState) => [...prevState, value.value])
-                  }
-                  
-                }} className="input-informativo" options={optsInst} />
+  return (
+    <Container style={{padding: 0, margin: 0, display: "flex", flexDirection: "column"}} fluid="true">
+      <Head>
+        <title>Quiz</title>
+        <link rel="icon" href="/favicon.ico" />
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"
+          integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
+          crossorigin="anonymous"/>
+          <link rel="preconnect" href="https://fonts.gstatic.com" />
+          <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
+      </Head>
+      <Navbar className="header">
+        <img width="80" height="80" src="/direito.svg"/>  
+        <h1 id="title">QUESTÕES DE INFORMATIVO</h1> 
+        <a target="_blank" href="https://www.instagram.com/_questaodeinformativo_/">
+          <img  width="50" height="50" src="/instagram.svg"/>
+        </a>
+      </Navbar>
+      {/* FILTRO COMEÇA AQUI */}
+      <p className="filtername">FILTRO </p>
+      <Container className="content-filters">
+   
+                <Container  >
+                  <Container  className="content-selects-filters" style={{display: "flex", flexDirection: "row"}}>
+                    <Form.Group >
+                        <Form.Row>
+                          <Select value={inst.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Instituição" onChange={(value) => {
+                            setVerific(1)
+                            if(inst.indexOf(value.value) === -1) {
+                              setInst((prevState) => [...prevState, value.value])
+                              if(arrayFilter.indexOf(value.value) === -1) {
+                                setArrayFilter((prevState) => [...prevState, value.value])
+                              }
+                            }
+                            
+                          }} styles={{dropdownIndicator: dropdownIndicatorStyles}} className="input-informativo" theme={customTheme} options={optsInst} />
 
-                
+                          <Select value={materias.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Matéria"  onChange={(value) => {
+                              setVerific(1)
+                              if(mat.indexOf(value.value) === -1) {
+                                setMat((prevState) => [...prevState, value.value])
+                                if(arrayFilter.indexOf(value.value) === -1) {
+                                  setArrayFilter((prevState) => [...prevState, value.value])
+                                }
+                              }
+                            
+                          }} styles={{dropdownIndicator: dropdownIndicatorStyles}} className="input-informativo"  theme={customTheme} options={materias} />
+                          <Select  value={info.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Tema" 
+                              onChange={(value) => {
+                              setVerific(1)
+                              if(tema.indexOf(value.value) === -1) {
+                                setTema((prevState) => [...prevState, value.value])
+                                if(arrayFilter.indexOf(value.value) === -1) {
+                                  setArrayFilter((prevState) => [...prevState, value.value])
+                                }
+                              }
+                          }} styles={{dropdownIndicator: dropdownIndicatorStyles}} className="input-informativo"  theme={customTheme} options={temas} />
+                        </Form.Row>
+                      </Form.Group>
+
+                  </Container>
+                {/* HACKZINHO PROVISORIO */}
+
+                <Container className="content-info-hack">
+                  <Form.Group>
+                        <Form>
+                          <Select value={info.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Informativo inicial" onChange={(value) => {
+                            setInfoFinal(false)
+                            if(info.indexOf(value.value) === -1) {
+                              setInfo((prevState) => [...prevState, value.value])
+                              const posicao = informativos.findIndex(element => element.value === value.value)
+                              const infoCut = informativos.slice(posicao + 1)
+                              infoCut.map((element) => setInfoFinalArray((prevState) => [...prevState, element]))
+                              if(arrayFilter.indexOf(value.value) === -1) {
+                                setArrayFilter((prevState) => [...prevState, value.value])
+                              }
+                            }
+                            
+                          }} styles={{dropdownIndicator: dropdownIndicatorStyles}} className="input-infos"  theme={customTheme} options={informativos} />
+
+                          <Select isDisabled={infoFinal} value={info.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Informativo final" onChange={(value) => {
+                              setVerific(1)
+                              if(info.indexOf(value.value) === -1) {
+                                setInfo((prevState) => [...prevState, value.value])
+                                if(arrayFilter.indexOf(value.value) === -1) {
+                                  setArrayFilter((prevState) => [...prevState, value.value])
+                                }
+                              }
+                            
+                          }} styles={{dropdownIndicator: dropdownIndicatorStyles}} className="input-infos" theme={customTheme} options={infoFinalArray} />
+
+                        <div className="content-checkboxs" onClick={() => isCheckedCe ? setIsCheckedCe(false) : setIsCheckedCe(true)}
+                            style={{display: "flex", flexDirection: "row"}}> 
+                           <CheckBox isChecked={isCheckedCe}/> <Form.Label style={{marginTop: 10}}> C/E</Form.Label>
+                        </div>
+
+                        <div style={{display: "flex", flexDirection: "row"}} onClick={() => isCheckedMe ? setIsCheckedMe(false) : setIsCheckedMe(true)}>
+                            <CheckBox isChecked={isCheckedMe} /> <Form.Label style={{marginTop: 10}}>Múltipla escolha</Form.Label>
+                        </div>
+
+                        </Form>
+                  </Form.Group>
+            </Container>
+                {/* FIM DO HACKZINHO PROVISORIO */}
+                    
                 <Container style={{height: verificandoCaixaFiltro()}} className="ContainerFiltros">
-                  <Container>
-                  {mat.map((item, i) => {
-                    return <div  className="caixaFiltro" onClick={() => removeFilterMateria(item)} key={i}>
-                      <p style={{fontWeight: "bold", marginRight: 5, marginTop: 10}}>x</p>
-                      <p style={{marginTop: 10}}>{item} </p></div>
-                  })}
-                  </Container>
+                    {arrayFilter.map((item,i) => {
+                      return (
+                        <div className="caixaFiltro" onClick={() => {
 
-                  <Container>
-                  {info.map((item, i) => {
-                    return <div className="caixaFiltro" onClick={() => removeFilterInformativo(item)} key={i}>
-                        <p style={{fontWeight: "bold", marginRight: 5, marginTop: 10}}>x</p>
-                        <p style={{marginTop: 10}}>{item} </p></div>
-                  })}
-                  </Container>
+                          mat.map((element, i) => {
+                            if(element === item ){
+                               setArrayFilter(deleteElementArray(arrayFilter, item))
+                               setMat(deleteElementArray(mat, item))
+                            }
+                          })
 
-                  <Container>
-                  {inst.map((item, i) => {
-                    return <div  className="caixaFiltro" onClick={() => removeFilterInstituicao(item)} key={i}>
-                      
-                      <p style={{fontWeight: "bold", marginRight: 5, marginTop: 10}}>x</p>  
-                      <p style={{marginTop: 10}}>{item} </p></div>
-                  })}
-                  </Container>
+                          inst.map((element, i) => {
+                            if(element === item ){
+                               setArrayFilter(deleteElementArray(arrayFilter, item))
+                               setInst(deleteElementArray(inst, item))
+                            }
+                          })
 
+                          info.map((element, i) => {
+                            if(element === item ){
+                               setArrayFilter(deleteElementArray(arrayFilter, item))
+                               setInfo(deleteElementArray(info, item))
+                            }
+                          })
+
+                          tema.map((element, i) => {
+                            if(element === item ){
+                               setArrayFilter(deleteElementArray(arrayFilter, item))
+                               setTema(deleteElementArray(tema, item))
+                            }
+                          })
+                         
+
+                        }}>
+                          <p style={{margin:10, fontSize: 11, color:"#cb605d"}}> {item}</p>
+                          <p className="xis">x</p>
+                        </div>
+                      )
+                    })}
                 </Container>
                 <Container style={{display:"flex", flexDirection: "row"}}>
-                <Button style={{marginTop: 6, width: 80}} variant="info" onClick={(event) => {
+                <Button className="btnFilter"  onClick={(event) => {
                   event.preventDefault()
                   FiltroPerguntas(mat,inst,info)
-                }}>Filtrar</Button>
-                <Button style={{marginTop: 6, marginLeft: 6, width: 80}} variant="danger" onClick={() => cleanFilters()}>Limpar</Button>
+                }}> <p style={{fontSize: 20,fontWeight: "bold"}}>BUSCAR</p></Button>
+                <Button className="btnLimpar"  variant="danger" onClick={() => cleanFilters()}> <p style={{fontSize: 20,fontWeight: "bold"}}>
+                  LIMPAR
+                  </p>
+                </Button>
                 </Container>
                 <p style={{marginLeft:13, fontWeight: "bold", marginTop: 5}}>{buscaFiltroTamanho ? `${buscaFiltroTamanho} questões foram encontradas.` : "" }</p>
-            </Form.Row>
-            </Form.Group>
+          
+           
+            </Container>
+            {/* CONTAINER DOS INFORMATIVOS C/E E MULTIPLA ESCOLHA */}
+            <Container className="content-info">
+                  <Form.Group>
+                        <Form>
+                          <Select value={info.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Informativo inicial" onChange={(value) => {
+                            setInfoFinal(false)
+                            setVerific(1)
+                            if(info.indexOf(value.value) === -1) {
+                              setInfo((prevState) => [...prevState, value.value])
+                              const posicao = informativos.findIndex(element => element.value === value.value)
+                              const infoCut = informativos.slice(posicao + 1)
+                              infoCut.map((element) => setInfoFinalArray((prevState) => [...prevState, element]))
+                              if(arrayFilter.indexOf(value.value) === -1) {
+                                setArrayFilter((prevState) => [...prevState, value.value])
+                              }
+                            }
+                            
+                          }} styles={{dropdownIndicator: dropdownIndicatorStyles}} theme={customTheme} className="input-infos" options={informativos} />
+
+                          <Select isDisabled={infoFinal} value={info.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Informativo final"  onChange={(value) => {
+                              setVerific(1)
+                              if(info.indexOf(value.value) === -1) {
+                                setInfo((prevState) => [...prevState, value.value])
+                                if(arrayFilter.indexOf(value.value) === -1) {
+                                  setArrayFilter((prevState) => [...prevState, value.value])
+                                }
+                              }
+                            
+                          }} styles={{dropdownIndicator: dropdownIndicatorStyles}} theme={customTheme} className="input-infos" options={infoFinalArray} />
+
+                        <div className="content-checkboxs" onClick={() => isCheckedCe ? setIsCheckedCe(false) : setIsCheckedCe(true)}
+                              style={{display: "flex", flexDirection: "row"}}> 
+                          <CheckBox isChecked={isCheckedCe}/> <Form.Label style={{marginTop: 10}}> C/E</Form.Label>
+                        </div>
+
+                        <div style={{display: "flex", flexDirection: "row"}} onClick={() => isCheckedMe ? setIsCheckedMe(false) : setIsCheckedMe(true)}>
+                          <CheckBox isChecked={isCheckedMe} /> <Form.Label style={{marginTop: 10}}>Múltipla escolha</Form.Label>
+                        </div>
+
+                        </Form>
+                  </Form.Group>
+            </Container>
+            {/* FINALIZA CONTAINER INFO C/E ..... */}
+          
         </Container>
-    <Condicao isLoading={isLoadingFilter}  perguntas={perguntas} />
+{/* FILTRO ACABA AQUI */}
+      <Container style={{marginTop: 10}}>
+          <Condicao isLoading={isLoadingFilter}  perguntas={perguntas} />
+      </Container>
   </Container>
   )
 }
