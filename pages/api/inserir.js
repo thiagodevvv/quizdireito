@@ -1,9 +1,10 @@
-import { connect } from 'mongodb'
 import db from '../../database'
 
 export default async (req, res) => {
     let idQuestion = 0
     const {pergunta, alterA, alterB, alterC, alterD, alterE, resp, materia, informativo, instituição, justificativa, temas} = req.body
+        materia.sort((a,b) => a.localeCompare(b))
+        temas.sort((a,b) => a.localeCompare(b))
 
         const respLower = resp.toLowerCase()
         const infoInt = parseInt(informativo)

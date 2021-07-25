@@ -29,17 +29,24 @@ export default function Home() {
     const [isCheckedCe, setIsCheckedCe] = useState(false)
     const [isCheckedMe, setIsCheckedMe] = useState(false)
     const [infoFinal, setInfoFinal] = useState(true)
+    const [infoInicial, setInfoInicial] = useState(false)
     const [infoFinalArray, setInfoFinalArray] = useState([])
     const [arrayFilter, setArrayFilter] = useState([])
+    const [tipoCE, setTipoCE] = useState(null)
+    const [tipoME, setTipoME] = useState(null)
+    const [anyFilter, setAnyFilter] = useState(false)
 
-    async function FiltroPerguntas (mat,inst,info) {
+    async function FiltroPerguntas (mat,inst,info, temas, tipoCE, tipoME) {
       setPerguntas([])
         setBuscaFiltroTamanho(null)
         setIsLoadingFilter(true)
         const data = await axios.post('/api/filtro', {
             "mat": mat,
             "inst": inst,
-            "info": info
+            "info": info,
+            "temas": temas,
+            "tipoCE": tipoCE,
+            "tipoME": tipoME
         })
         if(data.data.length === 0) {
           alert('Nenhuma pergunta encontrado com esse tipo de filtro')
@@ -51,7 +58,6 @@ export default function Home() {
             setBuscaFiltroTamanho((prevState) => prevState + item.length)
           })
         }
-        console.log(data.data)
         data.data.map((item) => {
     
             item.map((pg) => {
@@ -120,9 +126,25 @@ export default function Home() {
         const chamando = async () => {
         const resultado = await axios.get('/api/busca')
         setPerguntas(resultado.data)
+
       }
       chamando()
     }, [])
+
+    useEffect(() => {
+
+      if(info.length === 0) {
+        setInfoInicial(false)
+        setInfoFinal(true)
+      }
+      if(info.length === 1) {
+        setInfoInicial(true)
+      }
+      if(info.length === 2) {
+        setInfoInicial(true)
+        setInfoFinal(true)
+      }
+    },[info])
 
     const verificandoCaixaFiltro = () => {
       if(arrayFilter.length === 0) {
@@ -133,7 +155,6 @@ export default function Home() {
        
     }
     const deleteElementArray = (arr,value) => {
-      console.log(value)
       return arr.filter((element) => {
         return element != value
       })
@@ -245,7 +266,7 @@ export default function Home() {
                 <Container className="content-info-hack">
                   <Form.Group>
                         <Form>
-                          <Select value={info.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Informativo inicial" onChange={(value) => {
+                          <Select isDisabled={infoInicial} value={info.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Informativo inicial" onChange={(value) => {
                             setInfoFinal(false)
                             if(info.indexOf(value.value) === -1) {
                               setInfo((prevState) => [...prevState, value.value])
@@ -270,12 +291,27 @@ export default function Home() {
                             
                           }} styles={{dropdownIndicator: dropdownIndicatorStyles}} className="input-infos" theme={customTheme} options={infoFinalArray} />
 
-                        <div className="content-checkboxs" onClick={() => isCheckedCe ? setIsCheckedCe(false) : setIsCheckedCe(true)}
+                        <div className="content-checkboxs" onClick={() => {
+                          isCheckedCe ? setIsCheckedCe(false) : setIsCheckedCe(true)
+                          if(tipoCE == null)  {
+                            setTipoCE(1)
+                            console.log(tipoCE)
+                          }else {
+                             setTipoCE(null)
+                          }
+                        }}
                             style={{display: "flex", flexDirection: "row"}}> 
                            <CheckBox isChecked={isCheckedCe}/> <Form.Label style={{marginTop: 10}}> C/E</Form.Label>
                         </div>
 
-                        <div style={{display: "flex", flexDirection: "row"}} onClick={() => isCheckedMe ? setIsCheckedMe(false) : setIsCheckedMe(true)}>
+                        <div style={{display: "flex", flexDirection: "row"}} onClick={() => {
+                          isCheckedMe ? setIsCheckedMe(false) : setIsCheckedMe(true)
+                          if(tipoME == null)  {
+                            setTipoME(1)
+                          }else {
+                             setTipoME(null)
+                          }
+                        }}>
                             <CheckBox isChecked={isCheckedMe} /> <Form.Label style={{marginTop: 10}}>Múltipla escolha</Form.Label>
                         </div>
 
@@ -287,7 +323,7 @@ export default function Home() {
                 <Container style={{height: verificandoCaixaFiltro()}} className="ContainerFiltros">
                     {arrayFilter.map((item,i) => {
                       return (
-                        <div className="caixaFiltro" onClick={() => {
+                        <div key={i} className="caixaFiltro" onClick={() => {
 
                           mat.map((element, i) => {
                             if(element === item ){
@@ -303,10 +339,21 @@ export default function Home() {
                             }
                           })
 
-                          info.map((element, i) => {
+                          info.map(async(element, index) => {
                             if(element === item ){
-                               setArrayFilter(deleteElementArray(arrayFilter, item))
-                               setInfo(deleteElementArray(info, item))
+                              if(index === 0) {
+                                const infofinal = info[1]
+                                const infoinicial = item
+                                const newArray = deleteElementArray(arrayFilter, infoinicial)
+                                const newArrayFinaly = deleteElementArray(newArray, infofinal)
+                                setArrayFilter(newArrayFinaly)
+                                setInfo([])
+                              }else {
+                                setArrayFilter(deleteElementArray(arrayFilter, item))
+                                setInfo(deleteElementArray(info, item))
+                                setInfoFinal(false)
+                              }
+                              
                             }
                           })
 
@@ -328,13 +375,20 @@ export default function Home() {
                 <Container style={{display:"flex", flexDirection: "row"}}>
                 <Button className="btnFilter"  onClick={(event) => {
                   event.preventDefault()
-                  FiltroPerguntas(mat,inst,info)
-                }}> <p style={{fontSize: 20,fontWeight: "bold"}}>BUSCAR</p></Button>
+                  if(mat.length > 0 ||  inst.length > 0  || info.length > 0  || tema.length > 0 || tipoCE !== null || tipoME !== null)
+                  {
+                    FiltroPerguntas(mat,inst,info, tema, tipoCE, tipoME)
+                  }else 
+                  {
+                    setAnyFilter(true)
+                  }
+                }}> <p style={{fontSize: 20,fontWeight: "bold", margintTop: 10}}>BUSCAR</p></Button>
                 <Button className="btnLimpar"  variant="danger" onClick={() => cleanFilters()}> <p style={{fontSize: 20,fontWeight: "bold"}}>
                   LIMPAR
                   </p>
                 </Button>
                 </Container>
+                <p style={{marginLeft:13,fontWeight: "bold", color: "red", marginTop: 6}}>{anyFilter ? "Selecione algum filtro." : ""}</p>
                 <p style={{marginLeft:13, fontWeight: "bold", marginTop: 5}}>{buscaFiltroTamanho ? `${buscaFiltroTamanho} questões foram encontradas.` : "" }</p>
           
            
@@ -343,7 +397,7 @@ export default function Home() {
             <Container className="content-info">
                   <Form.Group>
                         <Form>
-                          <Select value={info.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Informativo inicial" onChange={(value) => {
+                          <Select isDisabled={infoInicial} value={info.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Informativo inicial" onChange={(value) => {
                             setInfoFinal(false)
                             setVerific(1)
                             if(info.indexOf(value.value) === -1) {
@@ -369,12 +423,28 @@ export default function Home() {
                             
                           }} styles={{dropdownIndicator: dropdownIndicatorStyles}} theme={customTheme} className="input-infos" options={infoFinalArray} />
 
-                        <div className="content-checkboxs" onClick={() => isCheckedCe ? setIsCheckedCe(false) : setIsCheckedCe(true)}
+                        <div className="content-checkboxs" onClick={() => {
+                          isCheckedCe ? setIsCheckedCe(false) : setIsCheckedCe(true)
+                          if(tipoCE == null)  {
+                            setTipoCE(1)
+                            console.log(tipoCE)
+                          }else {
+                             console.log(tipoCE)
+                             setTipoCE(null)
+                          }
+                        }}
                               style={{display: "flex", flexDirection: "row"}}> 
                           <CheckBox isChecked={isCheckedCe}/> <Form.Label style={{marginTop: 10}}> C/E</Form.Label>
                         </div>
 
-                        <div style={{display: "flex", flexDirection: "row"}} onClick={() => isCheckedMe ? setIsCheckedMe(false) : setIsCheckedMe(true)}>
+                        <div style={{display: "flex", flexDirection: "row"}} onClick={() => {
+                          isCheckedMe ? setIsCheckedMe(false) : setIsCheckedMe(true)
+                          if(tipoME == null)  {
+                            setTipoME(1)
+                          }else {
+                             setTipoME(null)
+                          }
+                          }}>
                           <CheckBox isChecked={isCheckedMe} /> <Form.Label style={{marginTop: 10}}>Múltipla escolha</Form.Label>
                         </div>
 

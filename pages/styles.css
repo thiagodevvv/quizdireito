@@ -15,12 +15,10 @@
 .header {
     display: flex;
     justify-content: space-between;
-    background: rgb(186,51,49);
-    background: linear-gradient(90deg, rgba(186,51,49,1) 20%, rgba(112,62,84,1) 53%, rgba(22,75,126,1) 100%);
+    background: transparent linear-gradient(276deg, #0F4C81 0%, #224978 0%, #274876 1%, #2C4774 10%, #2F4772 15%, #334770 21%, #514362 38%, #BD3330 100%) 0% 0% no-repeat padding-box;
+    border: 1px solid #707070;
     width: 100%;
     height:auto;
-    border: none;
-   
 }
 
 .content-filters {
@@ -50,19 +48,24 @@
 
 .btnFilter {
     background-color: #2b4874;
-    width: 150px;
-
+    width: 204px;
     margin-top: 10px;
     margin-right: 10px;
     display: flex;
     justify-content: center;
     align-items: center;
+    border-radius: 4px;
+    height: 60px;
 }
 
 .btnFilter:hover {
     background-color: #2b4874;
     opacity: 0.9;
     
+}
+
+.btnFilter:focus {
+    background-color: #2b4874;
 }
 
 .btnLimpar {
@@ -191,7 +194,7 @@
 .btnResponder {
     margin-top: 10px;
     margin-bottom: 5px;
-    background-color: #bd3330;
+    background-color: #BD3330;
     border: none;
 }
 
@@ -410,4 +413,30 @@ ul {
     list-style-type: none;
     margin: 0;
     padding: 0;
+}
+
+
+.container-login {
+    border: 1px solid 	#696969;
+    padding: 50px;
+    border-radius: 20px;
+    background-color: #D3D3D3;
+}   
+
+.content-materias-addpergunta {
+    background-color: pink;
+    margin-left: 15px;
+    border-radius: 10px;
+    padding: 1px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: auto;
+    height: 45px;
+    margin-bottom: 10px;
+}
+
+.content-materias-addpergunta:hover {
+    cursor: pointer;
+    border: 1px solid red;
 }
