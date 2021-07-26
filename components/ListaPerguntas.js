@@ -50,6 +50,16 @@ export default function ListaPerguntas ({perguntas}) {
     const [colorx8, setColorx8] = useState("")
     const [colorx9, setColorx9] = useState("")
     const [colorx10, setColorx10] = useState("")
+    const [colorBtnJust, setColorBtnJust] = useState("white")
+    const [colorBtnJust2, setColorBtnJust2] = useState("white")
+    const [colorBtnJust3, setColorBtnJust3] = useState("white")
+    const [colorBtnJust4, setColorBtnJust4] = useState("white")
+    const [colorBtnJust5, setColorBtnJust5] = useState("white")
+    const [colorBtnJust6, setColorBtnJust6] = useState("white")
+    const [colorBtnJust7, setColorBtnJust7] = useState("white")
+    const [colorBtnJust8, setColorBtnJust8] = useState("white")
+    const [colorBtnJust9, setColorBtnJust9] = useState("white")
+    const [colorBtnJust10, setColorBtnJust10] = useState("white")
 
     const [selectedAlter, setSelectedAlter] = useState("")
     const [selectedAlter2, setSelectedAlter2] = useState("")
@@ -110,6 +120,19 @@ export default function ListaPerguntas ({perguntas}) {
     const handleResp = (respUser) => {
 
         setResposta(respUser)
+    }
+
+    const colorButtonJust = (i) => {
+        if(i === 0) {return colorBtnJust}
+        if(i === 1) {return colorBtnJust2}
+        if(i === 2) {return colorBtnJust3}
+        if(i === 3) {return colorBtnJust4}
+        if(i === 4) {return colorBtnJust5}
+        if(i === 5) {return colorBtnJust6}
+        if(i === 6) {return colorBtnJust7}
+        if(i === 7) {return colorBtnJust8}
+        if(i === 8) {return colorBtnJust9}
+        if(i === 9) {return colorBtnJust10}
     }
     const list = {
         update () {
@@ -334,7 +357,9 @@ export default function ListaPerguntas ({perguntas}) {
                                    if(justi1.length > 0) {
                                        setJusti1("")
                                        setIsVisibleJust("none")
+                                       setColorBtnJust("white")
                                    }else {
+                                       setColorBtnJust("#93acc4")
                                        setJusti1(item.justificativa)
                                        setIsVisibleJust("flex")
                                    }
@@ -343,86 +368,104 @@ export default function ListaPerguntas ({perguntas}) {
                                 if(justi2.length > 0) {
                                     setJusti2("")
                                     setIsVisibleJust2("none")
+                                    setColorBtnJust2("white")
                                 }else {
                                     setJusti2(item.justificativa)
                                     setIsVisibleJust2("flex")
+                                    setColorBtnJust2("#93acc4")
                                 }
                             }
                             if(i === 2) {
                                 if(justi3.length > 0) {
                                     setIsVisibleJust3("none")
                                     setJusti3("")
+                                    setColorBtnJust3("white")
                                 }else {
                                     setJusti3(item.justificativa)
                                     setIsVisibleJust3("flex")
+                                    setColorBtnJust3("#93acc4")
                                 }
                             }
                             if(i === 3) {
                                 if(justi4.length > 0) {
                                     setJusti4("")
                                     setIsVisibleJust4("none")
+                                    setColorBtnJust4("white")
                                 }else {
                                     setJusti4(item.justificativa)
                                     setIsVisibleJust4("flex")
+                                    setColorBtnJust4("#93acc4")
                                 }
                             }
                             if(i === 4) {
                                 if(justi5.length > 0) {
                                     setJusti5("")
                                     setIsVisibleJust5("none")
+                                    setColorBtnJust5("white")
                                 }else {
                                     setJusti5(item.justificativa)
                                     setIsVisibleJust5("flex")
+                                    setColorBtnJust5("#93acc4")
                                 }
                             }
                             if(i === 5) {
                                 if(justi6.length > 0) {
                                     setJusti6("")
                                     setIsVisibleJust6("none")
+                                    setColorBtnJust5("white")
                                 }else {
                                     setJusti6(item.justificativa)
-                                    setIsVisibleJust6("flex")                                }
+                                    setIsVisibleJust6("flex") 
+                                    setColorBtnJust6("#93acc4")                               }
                             }
                             if(i === 6) {
                                 if(justi7.length > 0) {
                                     setJusti7("")
                                     setIsVisibleJust7("none")
+                                    setColorBtnJust7("white")
                                 }else {
                                     setJusti7(item.justificativa)
                                     setIsVisibleJust7("flex")
+                                    setColorBtnJust7("#93acc4")
                                 }
                             }
                             if(i === 7) {
                                 if(justi8.length > 0) {
                                     setJusti8("")
                                     setIsVisibleJust8("none")
+                                    setColorBtnJust8("white")
 
                                 }else {
                                     setJusti8(item.justificativa)
                                     setIsVisibleJust8("flex")
+                                    setColorBtnJust8("#93acc4")
                                 }
                             }
                             if(i === 8) {
                                 if(justi9.length > 0) {
                                     setJusti9("")
                                     setIsVisibleJust9("none")
+                                    setColorBtnJust9("white")
                                 }else {
                                     setJusti9(item.justificativa)
                                     setIsVisibleJust9("flex")
+                                    setColorBtnJust9("#93acc4")
                                 }
                             }
                             if(i === 9) {
                                 if(justi10.length > 0) {
                                     setJusti10("")
                                     setIsVisibleJust10("none")
+                                    setColorBtnJust10("white")
                                 }else {
                                     setJusti10(item.justificativa)
                                     setIsVisibleJust10("flex")
+                                    setColorBtnJust10("#93acc4")
                                 }
                             }
                                 
-                            }} className="btnVisuJust" > 
-                            <p style={{color: "#bd3330", fontFamily: "Roboto", fontWeight: "bold", marginTop:10}}>VISUALIZAR JUSTIFICATIVA</p>
+                            }} style={{backgroundColor: `${colorButtonJust(i)}`}} className="btnVisuJust" > 
+                            <p style={{color: "#bd3330", fontFamily: "Roboto", fontWeight: "bold", marginTop:10, fontSize: 13}}>VISUALIZAR JUSTIFICATIVA</p>
                             </Button>
                             {CondicaoJust(i)}
                             <div className="separadorQuestão"></div>

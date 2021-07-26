@@ -4,7 +4,7 @@ import axios from 'axios'
 import { useState, useEffect, useRef } from 'react'
 import Select from 'react-select'
 import Condicao from '../components/Condicao'
-import CheckBox from '../components/CheckBox'
+import CheckBox from '../components/CheckBox'   
 
 
 
@@ -16,6 +16,8 @@ export default function Home() {
     const [mat, setMat] = useState([])
     const [inst, setInst] = useState([])
     const [info, setInfo] = useState([])
+    const [infoInit, setInfoInit] = useState(0)
+    const [infoEnd, setInfoEnd] = useState(0)
     const [tema, setTema] = useState([])
     const [buscaFiltroTamanho, setBuscaFiltroTamanho] = useState(null)
     const [informativos, setInformativos] = useState([])
@@ -28,22 +30,26 @@ export default function Home() {
     const [isLoadingFilter, setIsLoadingFilter] = useState(false)
     const [isCheckedCe, setIsCheckedCe] = useState(false)
     const [isCheckedMe, setIsCheckedMe] = useState(false)
-    const [infoFinal, setInfoFinal] = useState(true)
-    const [infoInicial, setInfoInicial] = useState(false)
+    const [infoFinalDisable, setInfoFinalDisable] = useState(true)
     const [infoFinalArray, setInfoFinalArray] = useState([])
     const [arrayFilter, setArrayFilter] = useState([])
     const [tipoCE, setTipoCE] = useState(null)
     const [tipoME, setTipoME] = useState(null)
     const [anyFilter, setAnyFilter] = useState(false)
 
-    async function FiltroPerguntas (mat,inst,info, temas, tipoCE, tipoME) {
-      setPerguntas([])
+    async function FiltroPerguntas (mat,inst,info, temas, tipoCE, tipoME, infoInit, infoEnd) {
+      
+      let arr = []
+      arr.push(infoInit)
+      arr.push(infoEnd)
+      console.log(arr)
+        setPerguntas([])
         setBuscaFiltroTamanho(null)
         setIsLoadingFilter(true)
         const data = await axios.post('/api/filtro', {
             "mat": mat,
             "inst": inst,
-            "info": info,
+            "info": arr,
             "temas": temas,
             "tipoCE": tipoCE,
             "tipoME": tipoME
@@ -131,21 +137,6 @@ export default function Home() {
       chamando()
     }, [])
 
-    useEffect(() => {
-
-      if(info.length === 0) {
-        setInfoInicial(false)
-        setInfoFinal(true)
-      }
-      if(info.length === 1) {
-        setInfoInicial(true)
-      }
-      if(info.length === 2) {
-        setInfoInicial(true)
-        setInfoFinal(true)
-      }
-    },[info])
-
     const verificandoCaixaFiltro = () => {
       if(arrayFilter.length === 0) {
         return 100
@@ -179,7 +170,7 @@ export default function Home() {
         ...theme,
         colors: {
           ...theme.colors,
-          primary25: '#cb605d',
+          primary25: '#B0C4DE',
           primary: '#cb605d',
           neutral50: "#cb605d"
           
@@ -212,19 +203,72 @@ export default function Home() {
           <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
       </Head>
       <Navbar className="header">
-        <img width="80" height="80" src="/direito.svg"/>  
+        <div style={{display: "flex", flexDirection: "row",marginLeft: 0}}>
+        <img  style={{marginLeft: -60}}width="80" height="80" src="/direito.svg"/>  
         <h1 id="title">QUESTÕES DE INFORMATIVO</h1> 
+        </div>
+       
         <a target="_blank" href="https://www.instagram.com/_questaodeinformativo_/">
           <img  width="50" height="50" src="/instagram.svg"/>
         </a>
       </Navbar>
       {/* FILTRO COMEÇA AQUI */}
-      <p className="filtername">FILTRO </p>
       <Container className="content-filters">
-   
-                <Container  >
-                  <Container  className="content-selects-filters" style={{display: "flex", flexDirection: "row"}}>
-                    <Form.Group >
+      <p className="filtername">FILTRO </p>
+                <Container >
+                 {/* CONTAINER INFO INICIAL E FINAL ///////////// C.E E M.E */}
+                  <Container className="content-info">
+                    <Form.Group>
+                          <Form.Row>
+                            <Select value={infoInit} placeholder={infoInit ? `Informativo inicial: ${infoInit}` : "Informativo inicial"} onChange={(value) => {
+                                setVerific(1)
+                                setInfoFinalDisable(false)
+                                setInfoInit(value.value)
+                                setInfoEnd(null)
+                                setInfoFinalArray([])
+                                const posicao = informativos.findIndex(element => element.value === value.value)
+                                const infoCut = informativos.slice(posicao + 1)
+                                infoCut.map((element) => setInfoFinalArray((prevState) => [...prevState, element]))
+                            }} styles={{dropdownIndicator: dropdownIndicatorStyles}} theme={customTheme} className="input-infos" options={informativos} />
+
+                            <Select  isDisabled={infoFinalDisable} value={infoEnd} placeholder={infoEnd ? `Informativo final: ${infoEnd}` : "Informativo final"}  onChange={(value) => {
+                                setVerific(1)
+                                setInfoEnd(value.value)
+                            }} styles={{dropdownIndicator: dropdownIndicatorStyles}} theme={customTheme} className="input-infos" options={infoFinalArray} />
+                          <div style={{display: "flex", flexDirection: "row", marginLeft: 10, marginTop: 5}}>
+                            <div className="content-checkboxs" onClick={() => {
+                              isCheckedCe ? setIsCheckedCe(false) : setIsCheckedCe(true)
+                              if(tipoCE == null)  {
+                                setTipoCE(1)
+                                console.log(tipoCE)
+                              }else {
+                                console.log(tipoCE)
+                                setTipoCE(null)
+                              }
+                            }}
+                                  style={{display: "flex", flexDirection: "row"}}> 
+                              <CheckBox isChecked={isCheckedCe}/> <Form.Label style={{marginTop: 10}}> C/E</Form.Label>
+                            </div>
+
+                            <div style={{display: "flex", flexDirection: "row", marginLeft: 15}} onClick={() => {
+                              isCheckedMe ? setIsCheckedMe(false) : setIsCheckedMe(true)
+                              if(tipoME == null)  {
+                                setTipoME(1)
+                              }else {
+                                setTipoME(null)
+                              }
+                              }}>
+                              <CheckBox isChecked={isCheckedMe} /> <Form.Label style={{marginTop: 10}}>Múltipla escolha</Form.Label>
+                            </div>
+                          </div>
+                          
+
+                          </Form.Row>
+                    </Form.Group>
+              </Container>
+            {/* FIMMMMMMMMMMMMMMMMMMMMM INFO INICIAL FINAL C.E M.E */}
+                  <Container  className="content-selects-filters" >
+                    {/* <Form.Group > */}
                         <Form.Row>
                           <Select value={inst.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Instituição" onChange={(value) => {
                             setVerific(1)
@@ -235,7 +279,7 @@ export default function Home() {
                               }
                             }
                             
-                          }} styles={{dropdownIndicator: dropdownIndicatorStyles}} className="input-informativo" theme={customTheme} options={optsInst} />
+                          }} styles={{dropdownIndicator: dropdownIndicatorStyles}} className="input-infos" theme={customTheme} options={optsInst} />
 
                           <Select value={materias.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Matéria"  onChange={(value) => {
                               setVerific(1)
@@ -246,7 +290,7 @@ export default function Home() {
                                 }
                               }
                             
-                          }} styles={{dropdownIndicator: dropdownIndicatorStyles}} className="input-informativo"  theme={customTheme} options={materias} />
+                          }} styles={{dropdownIndicator: dropdownIndicatorStyles}} className="input-infos"  theme={customTheme} options={materias} />
                           <Select  value={info.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Tema" 
                               onChange={(value) => {
                               setVerific(1)
@@ -256,70 +300,11 @@ export default function Home() {
                                   setArrayFilter((prevState) => [...prevState, value.value])
                                 }
                               }
-                          }} styles={{dropdownIndicator: dropdownIndicatorStyles}} className="input-informativo"  theme={customTheme} options={temas} />
+                          }} styles={{dropdownIndicator: dropdownIndicatorStyles}} className="input-infos"  theme={customTheme} options={temas} />
                         </Form.Row>
-                      </Form.Group>
+                      {/* </Form.Group> */}
 
-                  </Container>
-                {/* HACKZINHO PROVISORIO */}
-
-                <Container className="content-info-hack">
-                  <Form.Group>
-                        <Form>
-                          <Select isDisabled={infoInicial} value={info.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Informativo inicial" onChange={(value) => {
-                            setInfoFinal(false)
-                            if(info.indexOf(value.value) === -1) {
-                              setInfo((prevState) => [...prevState, value.value])
-                              const posicao = informativos.findIndex(element => element.value === value.value)
-                              const infoCut = informativos.slice(posicao + 1)
-                              infoCut.map((element) => setInfoFinalArray((prevState) => [...prevState, element]))
-                              if(arrayFilter.indexOf(value.value) === -1) {
-                                setArrayFilter((prevState) => [...prevState, value.value])
-                              }
-                            }
-                            
-                          }} styles={{dropdownIndicator: dropdownIndicatorStyles}} className="input-infos"  theme={customTheme} options={informativos} />
-
-                          <Select isDisabled={infoFinal} value={info.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Informativo final" onChange={(value) => {
-                              setVerific(1)
-                              if(info.indexOf(value.value) === -1) {
-                                setInfo((prevState) => [...prevState, value.value])
-                                if(arrayFilter.indexOf(value.value) === -1) {
-                                  setArrayFilter((prevState) => [...prevState, value.value])
-                                }
-                              }
-                            
-                          }} styles={{dropdownIndicator: dropdownIndicatorStyles}} className="input-infos" theme={customTheme} options={infoFinalArray} />
-
-                        <div className="content-checkboxs" onClick={() => {
-                          isCheckedCe ? setIsCheckedCe(false) : setIsCheckedCe(true)
-                          if(tipoCE == null)  {
-                            setTipoCE(1)
-                            console.log(tipoCE)
-                          }else {
-                             setTipoCE(null)
-                          }
-                        }}
-                            style={{display: "flex", flexDirection: "row"}}> 
-                           <CheckBox isChecked={isCheckedCe}/> <Form.Label style={{marginTop: 10}}> C/E</Form.Label>
-                        </div>
-
-                        <div style={{display: "flex", flexDirection: "row"}} onClick={() => {
-                          isCheckedMe ? setIsCheckedMe(false) : setIsCheckedMe(true)
-                          if(tipoME == null)  {
-                            setTipoME(1)
-                          }else {
-                             setTipoME(null)
-                          }
-                        }}>
-                            <CheckBox isChecked={isCheckedMe} /> <Form.Label style={{marginTop: 10}}>Múltipla escolha</Form.Label>
-                        </div>
-
-                        </Form>
-                  </Form.Group>
-            </Container>
-                {/* FIM DO HACKZINHO PROVISORIO */}
-                    
+                  </Container>            
                 <Container style={{height: verificandoCaixaFiltro()}} className="ContainerFiltros">
                     {arrayFilter.map((item,i) => {
                       return (
@@ -372,87 +357,25 @@ export default function Home() {
                       )
                     })}
                 </Container>
-                <Container style={{display:"flex", flexDirection: "row"}}>
+                <Container style={{display:"flex", flexDirection: "row", marginLeft: -5}}>
                 <Button className="btnFilter"  onClick={(event) => {
                   event.preventDefault()
-                  if(mat.length > 0 ||  inst.length > 0  || info.length > 0  || tema.length > 0 || tipoCE !== null || tipoME !== null)
+                  if(mat.length > 0 ||  inst.length > 0  || infoInit.length > 0  ||  infoEnd.length > 0  || tema.length > 0 || tipoCE !== null || tipoME !== null)
                   {
-                    FiltroPerguntas(mat,inst,info, tema, tipoCE, tipoME)
+                    FiltroPerguntas(mat,inst,info, tema, tipoCE, tipoME, infoInit, infoEnd)
                   }else 
                   {
                     setAnyFilter(true)
                   }
-                }}> <p style={{fontSize: 20,fontWeight: "bold", margintTop: 10}}>BUSCAR</p></Button>
-                <Button className="btnLimpar"  variant="danger" onClick={() => cleanFilters()}> <p style={{fontSize: 20,fontWeight: "bold"}}>
+                }}> <p style={{fontSize: 15,fontWeight: "bold", margintTop: 50}}>BUSCAR</p></Button>
+                <Button className="btnLimpar"  variant="danger" onClick={() => cleanFilters()}> <p style={{fontSize: 15,fontWeight: "bold"}}>
                   LIMPAR
                   </p>
                 </Button>
                 </Container>
                 <p style={{marginLeft:13,fontWeight: "bold", color: "red", marginTop: 6}}>{anyFilter ? "Selecione algum filtro." : ""}</p>
                 <p style={{marginLeft:13, fontWeight: "bold", marginTop: 5}}>{buscaFiltroTamanho ? `${buscaFiltroTamanho} questões foram encontradas.` : "" }</p>
-          
-           
-            </Container>
-            {/* CONTAINER DOS INFORMATIVOS C/E E MULTIPLA ESCOLHA */}
-            <Container className="content-info">
-                  <Form.Group>
-                        <Form>
-                          <Select isDisabled={infoInicial} value={info.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Informativo inicial" onChange={(value) => {
-                            setInfoFinal(false)
-                            setVerific(1)
-                            if(info.indexOf(value.value) === -1) {
-                              setInfo((prevState) => [...prevState, value.value])
-                              const posicao = informativos.findIndex(element => element.value === value.value)
-                              const infoCut = informativos.slice(posicao + 1)
-                              infoCut.map((element) => setInfoFinalArray((prevState) => [...prevState, element]))
-                              if(arrayFilter.indexOf(value.value) === -1) {
-                                setArrayFilter((prevState) => [...prevState, value.value])
-                              }
-                            }
-                            
-                          }} styles={{dropdownIndicator: dropdownIndicatorStyles}} theme={customTheme} className="input-infos" options={informativos} />
-
-                          <Select isDisabled={infoFinal} value={info.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Informativo final"  onChange={(value) => {
-                              setVerific(1)
-                              if(info.indexOf(value.value) === -1) {
-                                setInfo((prevState) => [...prevState, value.value])
-                                if(arrayFilter.indexOf(value.value) === -1) {
-                                  setArrayFilter((prevState) => [...prevState, value.value])
-                                }
-                              }
-                            
-                          }} styles={{dropdownIndicator: dropdownIndicatorStyles}} theme={customTheme} className="input-infos" options={infoFinalArray} />
-
-                        <div className="content-checkboxs" onClick={() => {
-                          isCheckedCe ? setIsCheckedCe(false) : setIsCheckedCe(true)
-                          if(tipoCE == null)  {
-                            setTipoCE(1)
-                            console.log(tipoCE)
-                          }else {
-                             console.log(tipoCE)
-                             setTipoCE(null)
-                          }
-                        }}
-                              style={{display: "flex", flexDirection: "row"}}> 
-                          <CheckBox isChecked={isCheckedCe}/> <Form.Label style={{marginTop: 10}}> C/E</Form.Label>
-                        </div>
-
-                        <div style={{display: "flex", flexDirection: "row"}} onClick={() => {
-                          isCheckedMe ? setIsCheckedMe(false) : setIsCheckedMe(true)
-                          if(tipoME == null)  {
-                            setTipoME(1)
-                          }else {
-                             setTipoME(null)
-                          }
-                          }}>
-                          <CheckBox isChecked={isCheckedMe} /> <Form.Label style={{marginTop: 10}}>Múltipla escolha</Form.Label>
-                        </div>
-
-                        </Form>
-                  </Form.Group>
-            </Container>
-            {/* FINALIZA CONTAINER INFO C/E ..... */}
-          
+            </Container>     
         </Container>
 {/* FILTRO ACABA AQUI */}
       <Container style={{marginTop: 10}}>

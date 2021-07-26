@@ -8,7 +8,9 @@ import Router from 'next/router'
 
 
 
-export default function Home() {
+export default function Home({isVisibleAddPergunta, isVisibleCE}) {
+  console.log(isVisibleAddPergunta)
+  const [temasApi,setTemasApi] = useState([])
   useEffect(() => {
     const getMat = async () => {
       const resultado = await axios.get('/api/materias')
@@ -21,6 +23,18 @@ export default function Home() {
       })
     }
     getMat()
+
+    const getTemas = async () => {
+      const resultado = await axios.get('/api/temas')
+      resultado.data.map((item) => {
+        const opts = {
+          label: `${item.tema}`,
+          value: `${item.tema}`
+        }
+        setTemasApi((prevState) => [...prevState, opts])
+      })
+    }
+    getTemas()
   },[])
   const instOpts = [{label: "STF", value: "STF"}, {label: "STJ", value:"STJ"}]
 
@@ -88,7 +102,7 @@ export default function Home() {
     setJustificativa("")
   }
   async function enviarPergunta (pergunta,alterA,alterB,alterC,alterD,alterE,resp,materia,informativo,instituicao,justificativa,temas) {
-    const result = await axios.post('https://quizdireito.vercel.app/api/inserir', {
+    const result = await axios.post('/api/inserir', {
       "pergunta": pergunta,
       "alterA": alterA,
       "alterB": alterB,
@@ -103,7 +117,6 @@ export default function Home() {
       "temas": temas
 
     })
-    console.log(result)
     if(result.status === 200) {
       handleShow()
       resetarEstado()
@@ -112,7 +125,7 @@ export default function Home() {
     
   }
   return (
-    <Container fluid>
+    <Container style={{display: "flex", alignItems: "center", justifyContent: "left"}} fluid>
       <Head>
         <title>Adicionar Perguntas</title>
         <link rel="icon" href="/favicon.ico" />
@@ -122,29 +135,41 @@ export default function Home() {
           integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
           crossOrigin="anonymous"/>
       </Head>
-    <h1>Adicionar Pergunta</h1>
-    <Form>
+    <Form style={{marginTop:50}}>
         <Form.Group >
-            <Form.Label>Pergunta</Form.Label>
-            <Form.Control value={pergunta} onChange={(event) => setPergunta(event.target.value)} rows={2} as="textarea" type="text" placeholder="Escreva a pergunta" />
-            <Form.Label>Alternativas</Form.Label>
-            <Form.Control value={alterA} onChange={(event) => setAlterA(event.target.value)} style={{marginBottom:10}}type="text" placeholder="Alternativa A" />
-            <Form.Control value={alterB} onChange={(event) => setAlterB(event.target.value)} style={{marginBottom:10}}type="text" placeholder="Alternativa B" />
-            <Form.Control value={alterC} onChange={(event) => setAlterC(event.target.value)} style={{marginBottom:10}}type="text" placeholder="Alternativa C" />
-            <Form.Control value={alterD} onChange={(event) => setAlterD(event.target.value)} style={{marginBottom:10}}type="text" placeholder="Alternativa D" />
-            <Form.Control value={alterE} onChange={(event) => setAlterE(event.target.value)} style={{marginBottom:10}}type="text" placeholder="Alternativa E" />
-            <Form.Label>Resposta correta</Form.Label>
-            <Form.Control value={resp} onChange={(event) => setResp(event.target.value)} type="text" placeholder="Escreva a alternativa correta" />
-            <Form.Text className="text-muted" >Exemplo: a</Form.Text>
-            <Form.Label style={{marginTop: 5}}>Matéria</Form.Label>
-            <Select options={materias}   value={materias.filter(({ value }) => value === myForm.mySelectKey)}
-            onChange={(value) => {
-              if(materia.indexOf(value.value) === -1) {
-                setMateria((prevState) => [...prevState, value.value])
-              } }} placeholder="Selecione Matéria" />
-            <Form.Label>Ou</Form.Label>
-            <Form.Control value={matInput} onKeyDown={handleKeyDown} placeholder="Escreva a materia" onChange={(event) => {
-              setMatInput(event.target.value)}} style={{marginBottom:10}} type="text" />
+            <Form.Label>Texto do enunciado</Form.Label>
+            <Form.Control value={pergunta} style={{marginBottom:10,borderWidth: 3, borderColor: "#C0C0C0"}} onChange={(event) => setPergunta(event.target.value)} rows={2} as="textarea" type="text"  />
+            <Form.Label style={{display: `${isVisibleCE ? "none": ""}`}} >texto da assertiva a</Form.Label>
+            <Form.Control value={alterA} onChange={(event) => setAlterA(event.target.value)} style={{display: `${isVisibleCE ? "none": ""}`,marginBottom:10,borderWidth: 3, borderColor: "#C0C0C0"}}type="text"  />
+            <Form.Label style={{display: `${isVisibleCE ? "none": ""}`}}>texto da assertiva b</Form.Label>
+            <Form.Control value={alterB} onChange={(event) => setAlterB(event.target.value)} style={{display: `${isVisibleCE ? "none": ""}`,marginBottom:10, borderWidth: 3, borderColor: "#C0C0C0"}}type="text"  />
+            <Form.Label style={{display: `${isVisibleCE ? "none": ""}`}}>texto da assertiva c</Form.Label>
+            <Form.Control value={alterC} onChange={(event) => setAlterC(event.target.value)} style={{display: `${isVisibleCE ? "none": ""}`,marginBottom:10, borderWidth: 3, borderColor: "#C0C0C0"}}type="text" />
+            <Form.Label style={{display: `${isVisibleCE ? "none": ""}`}} >texto da assertiva d</Form.Label>
+            <Form.Control value={alterD} onChange={(event) => setAlterD(event.target.value)} style={{display: `${isVisibleCE ? "none": ""}`,marginBottom:10, borderWidth: 3, borderColor: "#C0C0C0"}}type="text"  />
+            <Form.Label style={{display: `${isVisibleCE ? "none": ""}`}}>texto da assertiva e</Form.Label>
+            <Form.Control value={alterE} onChange={(event) => setAlterE(event.target.value)} style={{display: `${isVisibleCE ? "none": ""}`,marginBottom:10, borderWidth: 3, borderColor: "#C0C0C0"}}type="text" />
+            <div className="separador-add-pergunta"></div>
+            <Form.Label style={{display: `${isVisibleCE ? "none": ""}`}}>Digite letra da assertiva correta. P. ex: "a".</Form.Label>
+            <Form.Label style={{display: `${isVisibleCE ? "": "none"}`}} >Digite "certo" ou "errado, conforme a questão seja certa ou errada".</Form.Label>
+            <Form.Control style={{marginBottom:10, borderWidth: 3, borderColor: "#C0C0C0"}} value={resp} onChange={(event) => setResp(event.target.value)} type="text"  />
+            <div className="separador-add-pergunta"></div>
+            <Form.Label>Digite a justificativa da questão</Form.Label>
+            <Form.Control  style={{marginBottom:10, borderWidth: 3, borderColor: "#C0C0C0"}} value={justificativa} onChange={(event) => setJustificativa(event.target.value)} rows={2} as="textarea" type="text" />
+            <div className="separador-add-pergunta"></div>
+            <Form.Label style={{marginTop: 5}}>Seleciona a matéria</Form.Label>
+            <Form.Row>
+              <Select  className="input-add-pergunta" options={materias}   value={materias.filter(({ value }) => value === myForm.mySelectKey)}
+              onChange={(value) => {
+                if(materia.indexOf(value.value) === -1) {
+                  setMateria((prevState) => [...prevState, value.value])
+                } }} placeholder="" />
+              <Form.Label className="ou-add-pergunta">ou</Form.Label>
+              <Form.Control placeholder="Escreva a matéria" className="input-add-materia" value={matInput} onKeyDown={handleKeyDown} onChange={(event) => {
+                setMatInput(event.target.value)}} style={{marginBottom:10}} type="text" />
+            </Form.Row>
+            
+            
             <div style={{display: "flex", flexDirection: "row"}}>
               {materia ? materia.map((element, i) => {
                 return (
@@ -157,8 +182,16 @@ export default function Home() {
                 )
               }) : ""}
             </div>
-            <Form.Label>Tema</Form.Label>
-            <Form.Control value={temaInput} onKeyDown={handleKeyDownTema} placeholder="Escreva o tema" onChange={(event) => {
+            <div className="separador-add-pergunta"></div>
+            <Form.Label>Selecione o tema</Form.Label>
+            <Form.Row>
+            <Select className="input-add-pergunta" options={temasApi}   value={materias.filter(({ value }) => value === myForm.mySelectKey)}
+              onChange={(value) => {
+                if(tema.indexOf(value.value) === -1) {
+                  setTema((prevState) => [...prevState, value.value])
+                } }} placeholder="" />
+            <Form.Label className="ou-add-pergunta">ou</Form.Label>
+            <Form.Control  className="input-add-pergunta" placeholder="Escreva o tema" value={temaInput} onKeyDown={handleKeyDownTema} onChange={(event) => {
               setTemaInput(event.target.value)}} style={{marginBottom:10}} type="text" />
             <div style={{display: "flex", flexDirection: "row"}}>
               {tema ? tema.map((element, i) => {
@@ -172,21 +205,26 @@ export default function Home() {
                   )
                 }) : ""}
             </div>
-            <Form.Label>Informativo</Form.Label>
-            <Form.Control value={informativo} onChange={(event) => setInformativo(event.target.value)} placeholder="Escreva o informativo" />
-            <Form.Label>Instituição</Form.Label>
-            <Select options={instOpts}  onChange={(value) => setInstituicao(value.value)} placeholder="Selecionar Instituição" />
-            <Form.Label>Justificativa</Form.Label>
-            <Form.Control value={justificativa} onChange={(event) => setJustificativa(event.target.value)} rows={2} as="textarea" type="text" placeholder="Escreva a justificativa" />
+            </Form.Row>
+            <div className="separador-add-pergunta"></div>
+            <Form.Row>
+              <div style={{display: "flex", flexDirection: "column", width: "49%"}}>
+              <Form.Label>Digite o número do informativo. P. ex:"900"</Form.Label>
+              <Form.Control  className="input-add-pergunta-info-inst" onChange={(event) => setInformativo(event.target.value)} placeholder="" />
+              </div>
+              <div style={{display: "flex", flexDirection: "column", width: "49%"}}>
+              <Form.Label>Digite o número da instituição. P. ex:"STF"</Form.Label>
+              <Form.Control className="input-add-pergunta-info-inst" onChange={(value) => setInstituicao(value.value)} placeholder="" />
+              </div>
+            </Form.Row>
         </Form.Group>
         <Button onClick={() => enviarPergunta(pergunta,alterA,alterB,alterC,alterD,alterE,resp,materia,informativo,instituicao,justificativa, tema)} 
-        style={{marginBottom: 10}} variant="dark">Enviar</Button>
+        style={{marginBottom: 10, backgroundColor: "#274160"}} >CADASTRAR</Button>
         <Button style={{marginLeft: 10,marginBottom: 10}} variant="danger" 
                 onClick={() => resetarEstado()}>
-            Limpar
+                LIMPAR
         </Button>
     </Form>
-    <Button variant="dark" onClick={() => Router.push('/painel')} style={{marginBottom: 10}}>VOLTAR PAINEL ADM</Button>
       <Modal
           show={show}
           onHide={handleClose}

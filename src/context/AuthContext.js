@@ -9,7 +9,7 @@ export function AuthProvider ({children}) {
     const [isAuthenticated, setIsAuthenticated] = useState(false)
     async function signIn (login, password) {
 
-        const {data} =  await axios.post("https://quizdireito.vercel.app/api/signin", {
+        const {data} =  await axios.post("/api/signin", {
             "login": login,
             "password": password
         })
