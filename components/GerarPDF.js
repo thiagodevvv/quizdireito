@@ -1,12 +1,14 @@
+
+
 import Head from 'next/head'
-import {Container,Navbar, Form, Button} from 'react-bootstrap'
+import {Container, Form, Button} from 'react-bootstrap'
 import axios from 'axios'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import Select from 'react-select'
-import Condicao from '../components/Condicao'
 import CheckBox from '../components/CheckBox'   
-
-
+import pdfMake from "pdfmake/build/pdfmake"
+import pdfFonts from "pdfmake/build/vfs_fonts"
+pdfMake.vfs = pdfFonts.pdfMake.vfs
 
 export default function Home() {
   const optsInst = [{label: "STF", value:"STF"}, {label: "STJ", value:"STJ"}]
@@ -36,10 +38,20 @@ export default function Home() {
     const [tipoCE, setTipoCE] = useState(null)
     const [tipoME, setTipoME] = useState(null)
     const [anyFilter, setAnyFilter] = useState(false)
+    
+
+    const testerfunc = () => {
+        perguntas.map((element) => {
+            console.log(element)
+            return {body: element.pergunta}
+        })
+    }
 
     async function FiltroPerguntas (mat,inst,info, temas, tipoCE, tipoME, infoInit, infoEnd) {
       
       let arr = []
+      arr.push(infoInit)
+      arr.push(infoEnd)
         setPerguntas([])
         setBuscaFiltroTamanho(null)
         setIsLoadingFilter(true)
@@ -51,6 +63,7 @@ export default function Home() {
             "tipoCE": tipoCE,
             "tipoME": tipoME
         })
+        console.log(data)
         if(data.data.length === 0) {
           alert('Nenhuma pergunta encontrado com esse tipo de filtro')
           setBuscaFiltroTamanho(0)
@@ -125,15 +138,6 @@ export default function Home() {
     }, [])
   
 
-    useEffect(() => {
-        const chamando = async () => {
-        const resultado = await axios.get('/api/busca')
-        setPerguntas(resultado.data)
-
-      }
-      chamando()
-    }, [])
-
     const verificandoCaixaFiltro = () => {
       if(arrayFilter.length === 0) {
         return 100
@@ -189,7 +193,7 @@ export default function Home() {
   return (
     <Container style={{padding: 0, margin: 0, display: "flex", flexDirection: "column"}} fluid="true">
       <Head>
-        <title>Quiz</title>
+        <title>GERAR PDF</title>
         <link rel="icon" href="/favicon.ico" />
         <link
           rel="stylesheet"
@@ -199,16 +203,6 @@ export default function Home() {
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
       </Head>
-      <Navbar className="header">
-        <div style={{display: "flex", flexDirection: "row",marginLeft: 0}}>
-        <img  style={{marginLeft: -60}}width="80" height="80" src="/direito.svg"/>  
-        <h1 id="title">QUESTÕES DE INFORMATIVO</h1> 
-        </div>
-       
-        <a target="_blank" href="https://www.instagram.com/_questaodeinformativo_/">
-          <img  width="50" height="50" src="/instagram.svg"/>
-        </a>
-      </Navbar>
       {/* FILTRO COMEÇA AQUI */}
       <Container className="content-filters">
       <p className="filtername">FILTRO </p>
@@ -370,14 +364,114 @@ export default function Home() {
                   </p>
                 </Button>
                 </Container>
+                <Button className="btnGerarPDF"  variant="success" onClick={() => {
+                    const docDefinition = {
+                        // header: [
+                        //     {columns: [
+                        //     {text: 'www.questaodeinformativo.com.br', alignment: 'left', margin: [45,10,0,0]}, 
+                        //     {text: `Nº de questões: ${buscaFiltroTamanho}`, alignment: 'right', margin: [0,10,50,0]},
+                        //     ]},
+                        //     {text:'______________________________________________________________________________________________', 
+                        //     style: 'barraHeader',margin: [45,0,10,0]}],
+                        pageSize: 'A4',
+                        content:[{columns: [
+                            {text: 'www.questaodeinformativo.com.br', alignment: 'left', margin: [15,10,0,0]}, 
+                            {text: `Nº de questões: ${buscaFiltroTamanho}`, alignment: 'right', margin: [0,10,50,0]},
+                            ]},
+                            {text:'_______________________________________________________________________________________________', 
+                            style: 'barraHeader',margin: [1,0,1,5]},
+                            {columns: [
+                                {image: 'direito',width: 100, heigth: 120, margin: [0,15,0,0]},
+                                {text:'QUESTÕES DE INFORMATIVO', style: 'titlePDF',margin:[0,30,0,0]}
+                            ]},
+                            {text:'_______________________________________________________________________________________________', style: 'barraHeader',margin: [1,0,1,15]},
+                            perguntas.map((element, i) =>  {
+                                if(element.a) {
+                                    return [
+                                        { text: `${i+1}) ${element.pergunta}`, alignment: 'justify', margin:[0,0,0,20]}, 
+                                        {text: `A) ${element.a}`,alignment: 'justify', margin:[0,0,0,10] },
+                                        {text: `B) ${element.b}`,alignment: 'justify', margin:[0,0,0,10] },
+                                        {text: `C) ${element.c}`,alignment: 'justify', margin:[0,0,0,10] },
+                                        {text: `D) ${element.d}`,alignment: 'justify', margin:[0,0,0,10] },
+                                        {text: `E) ${element.e ? element.e : ""}`,alignment: 'justify', margin:[0,0,0,5] },
+                                        {text:'______________________________________________________________________________________________', style: 'barraPergunta',margin: [0,0,0,25]}
+
+                                    ]
+                                }else {
+                                    return [
+                                    { text: `${i+1}) ${element.pergunta}`, alignment: 'justify', margin:[0,0,0,10]}, 
+                                    {text: 'A) Certo', margin:[0,0,0,20] }, {text: 'B) Errado', margin:[0,0,0,5]},
+                                    {text:'______________________________________________________________________________________________', style: 'barraPergunta', margin: [0,0,0,25]}]
+                                }
+                            }),
+                            //gabarito
+                            [{columns: [
+                                {text: 'www.questaodeinformativo.com.br', alignment: 'left', margin: [15,10,0,0], pageBreak: 'before'}, 
+                                {text: `Nº de questões: ${buscaFiltroTamanho}`, alignment: 'right', margin: [0,10,50,0], pageBreak: 'before'},
+                                ]},
+                                {text:'_______________________________________________________________________________________________', 
+                                style: 'barraHeader',margin: [1,0,1,5]},
+                                {columns: [
+                                    {image: 'direito',width: 100, heigth: 120, margin: [0,15,0,0]},
+                                    {text:'QUESTÕES DE INFORMATIVO', style: 'titlePDF',margin:[0,30,0,0]}
+                                ]},
+                                {text:'_______________________________________________________________________________________________', style: 'barraHeader',margin: [1,0,1,15]},
+                                perguntas.map((element, i) => {
+                                    if(element.a) {
+                                        return [
+                                            {text: `${i+1})  []A  []B  []C  []D  E[] ` }
+                                        ]
+                                    }else {
+                                        return {text: `${i+1}) []Certo  []Errado`}
+                                    }
+                                })
+                            ], 
+                            ///footer
+                            // {
+                            //     columns: [
+                            //         {image:'snow', width: 10, heigth: 10, margin:[10,0,0,0], link: 'https://www.instagram.com/_questaodeinformativo_/'}, {
+                            //          text: '@nomeInstagram', style: 'nomeinsta', margin:[15,5,0,0], link: 'https://www.instagram.com/_questaodeinformativo_/'}
+                            //     ]}
+                                ],
+                        footer: {
+                            columns: [
+                                {image:'snow', width: 15, heigth: 15, margin:[5,23,5,0]}, {
+                                 text: '@nomeInstagram', style: 'nomeinsta', margin:[10,25,0,0]}
+                            ]},
+                        images: {
+                            snow: 'https://image.flaticon.com/icons/png/512/1384/1384031.png',
+                            direito: 'https://i.imgur.com/x49W1o4.png'
+                        },
+                        styles: {
+                             barraHeader: {
+                                 bold: true
+                            },
+                            titlePDF: {
+                                fontSize: 30,
+                                bold: true
+                            },
+                            barraPergunta: {
+                                color: "#A9A9A9"
+                            },
+                            nomeinsta: {
+                                fontSize: 10,
+                                bold: true,
+                                color: "#A9A9A9"
+                            }
+                        }
+                    }
+                    pdfMake.createPdf(docDefinition).open()
+                }}> 
+                    <p style={{fontSize: 15,fontWeight: "bold"}}>
+                        GERAR PDF
+                     </p>
+                </Button>
                 <p style={{marginLeft:13,fontWeight: "bold", color: "red", marginTop: 6}}>{anyFilter ? "Selecione algum filtro." : ""}</p>
                 <p style={{marginLeft:13, fontWeight: "bold", marginTop: 5}}>{buscaFiltroTamanho ? `${buscaFiltroTamanho} questões foram encontradas.` : "" }</p>
             </Container>     
         </Container>
 {/* FILTRO ACABA AQUI */}
-      <Container style={{marginTop: 10}}>
-          <Condicao isLoading={isLoadingFilter}  perguntas={perguntas} />
-      </Container>
+      
   </Container>
   )
 }

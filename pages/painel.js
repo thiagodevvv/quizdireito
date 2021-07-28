@@ -3,6 +3,7 @@ import {Container, Button} from 'react-bootstrap'
 import Router from 'next/router'
 import { AuthContext } from '../src/context/AuthContext'
 import AddPergunta from './addPergunta'
+import GerarPDF from '../components/GerarPDF'
 export default function Painel () {
     const [show, setShow] = useState(0)
     const [showCE, setShowCE] = useState(false)
@@ -39,14 +40,9 @@ export default function Painel () {
                 <div onClick={() => console.log('ir para pagina gerar pdf')} className="opts-header-painel">GERAR PDF</div>
             </Container>
             <Container className="body-painel">
-            <AddPergunta isVisibleCE={isVisibleCE}  />
+            {/* <AddPergunta isVisibleCE={isVisibleCE}  /> */}
+            <GerarPDF />
             </Container>
-
-            {/* <Container style={{marginTop: 100, display: "flex", flexDirection: "column",alignItems: "center", justifyContent: "center" }}>
-                <Button  variant="dark" onClick={() => Router.push('/addPergunta') }>Adicionar Pergunta</Button>
-                <Button variant="dark" style={{marginTop: 20}}>Gerar PDF</Button>
-                <Button  onClick={() => logout()} variant="danger" style={{marginTop: 30}}>Sair/Logout</Button>
-            </Container> */}
         </Container>
       </body>
     )

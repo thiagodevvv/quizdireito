@@ -1,6 +1,5 @@
 import db from '../../database'
 export default async (req,res) => {
-
     function removeDuplicates(originalArray, prop) {
         var newArray = [];
         var lookupObject  = {};
@@ -32,13 +31,11 @@ export default async (req,res) => {
     let arrayStjGlobal = []
     let arrayOrderedMatStf 
     let arrayOrderedMatStj 
-
         if(mat.length > 0 && inst.length === 0 && info.length === 0 && temas.length === 0) {
             ////////Matéria OK
             for(let i = 0; i < mat.length; i++) {
                 dataPerguntas.push(await connectDB.collection('perguntas').find({materia: `${mat[i]}`}).sort(sortInfo).toArray())
             }
-
             dataPerguntas.map((element) => {
                 element.map((item) => {
                     if(item.instituição === "STF") {
