@@ -462,7 +462,54 @@ export default function Home() {
                                 //     }
                                 // })
                                 gabarito(perguntas)
-                            ], 
+                            ],
+                            /////////  justificativa + gabarito 
+                            {text:'_______________________________________________________________________________________________', 
+                            style: 'barraHeader',margin: [1,0,1,5], pageBreak: 'before'},
+                            {columns: [
+                                {image: 'direito',width: 100, heigth: 120, margin: [0,15,0,0]},
+                                {text:'QUESTÕES DE INFORMATIVO', style: 'titlePDF',margin:[0,30,0,0]}
+                            ]},
+                            {text:'_______________________________________________________________________________________________', style: 'barraHeader',margin: [1,0,1,15]},
+                            perguntas.map((element, i) =>  {
+                                if(element.a) {
+                                    return [
+                                        { text: `${i+1}) ${element.pergunta}`, alignment: 'justify', margin:[0,0,0,20]}, 
+                                        {text: `A) ${element.a}`,alignment: 'justify', margin:[0,0,0,10] },
+                                        {text: `B) ${element.b}`,alignment: 'justify', margin:[0,0,0,10] },
+                                        {text: `C) ${element.c}`,alignment: 'justify', margin:[0,0,0,10] },
+                                        {text: `D) ${element.d}`,alignment: 'justify', margin:[0,0,0,10] },
+                                        {text: `${element.e ? "E)" + element.e : ""}`,alignment: 'justify', margin:[0,0,0,5] },
+                                        {table: {
+                                          body: [[` Gabarito: ${element.resp.toUpperCase()}`]]
+                                        }, margin:[0,10,0,10]},
+                                        {table: {
+                                          body: [['Justificativa'],[{text: `${element.justificativa}`,alignment: 'justify', margin: [5,5,5,5]}]]
+                                        }},
+                                        {text:'______________________________________________________________________________________________', style: 'barraPergunta',margin: [0,0,0,25]}
+
+                                    ]
+                                }else {
+                                    return [
+                                    { text: `${i+1}) ${element.pergunta}`, alignment: 'justify', margin:[0,0,0,10]}, 
+                                    {text: 'A) Certo', margin:[0,0,0,20] }, {text: 'B) Errado', margin:[0,0,0,5]},
+                                    {table: {
+                                      body: [[` Gabarito: ${element.resp.toUpperCase()}`]]
+                                    }, margin:[0,10,0,10]},
+                                    {table: {
+                                      body: [['Justificativa'],[{text: `${element.justificativa}`, alignment: 'justify', margin: [5,5,5,5]}]]
+                                    }},
+                                    {text:'______________________________________________________________________________________________', style: 'barraPergunta', margin: [0,0,0,25]},
+                                  ]
+                                }
+                            }),
+                            
+
+
+
+
+
+
                             ///footer
                             // {
                             //     columns: [
