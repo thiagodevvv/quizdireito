@@ -40,13 +40,6 @@ export default function Home() {
     const [anyFilter, setAnyFilter] = useState(false)
     
 
-    const testerfunc = () => {
-        perguntas.map((element) => {
-            console.log(element)
-            return {body: element.pergunta}
-        })
-    }
-
     async function FiltroPerguntas (mat,inst,info, temas, tipoCE, tipoME, infoInit, infoEnd) {
       
       let arr = []
@@ -186,10 +179,47 @@ export default function Home() {
       };
       return Object.assign(base, changes);
     }
-   
+    const gabarito = (data) => {
+        let arraygabarito = []
+        let arrResp = []
+        let start = 0
+        let end  = 10
+        let contador = 1
+        let somador = 0
+        const perColunm = 10
+        const totalColunms = Math.ceil(buscaFiltroTamanho / perColunm)
+        for(let i = 0; i < totalColunms; i++) {
 
-    
+            const arrColunm = data.slice(start,end)
+          
+            if(contador === 1) {
+                arrColunm.map((element, index) => {
+                    arrResp.push(`${index < 9 ? "0"+ `${index + 1}` : `${index + 1}` }` + ")" + " - " + element.resp.toUpperCase())
+                })
+                
+            }
+            if(contador > 1) {
+                arrColunm.map((element, index) => {
+                   
+                    arrResp.push(`${index+1 + somador}` + ")" + " - " + element.resp.toUpperCase())
+                })
+            } 
+            contador = contador + 1
+            somador = somador + 10
+            arraygabarito.push(arrResp)
+            arrResp = []
+            start = start + 10
+            end = end + 10
+        }
+        
+        function returnGabarito () {
+            let arr = []
+            arraygabarito.map((element) => arr.push(element))
+            return [arr]
+        }
 
+        return {style: 'tableStyle',table: {body: returnGabarito() } }
+    }
   return (
     <Container style={{padding: 0, margin: 0, display: "flex", flexDirection: "column"}} fluid="true">
       <Head>
@@ -349,20 +379,20 @@ export default function Home() {
                     })}
                 </Container>
                 <Container style={{display:"flex", flexDirection: "row", marginLeft: -5}}>
-                <Button className="btnFilter"  onClick={(event) => {
-                  event.preventDefault()
-                  if(mat.length > 0 ||  inst.length > 0  || infoInit.length > 0  ||  infoEnd.length > 0  || tema.length > 0 || tipoCE !== null || tipoME !== null)
-                  {
-                    FiltroPerguntas(mat,inst,info, tema, tipoCE, tipoME, infoInit, infoEnd)
-                  }else 
-                  {
-                    setAnyFilter(true)
-                  }
-                }}> <p style={{fontSize: 15,fontWeight: "bold", margintTop: 50}}>BUSCAR</p></Button>
-                <Button className="btnLimpar"  variant="danger" onClick={() => cleanFilters()}> <p style={{fontSize: 15,fontWeight: "bold"}}>
-                  LIMPAR
-                  </p>
-                </Button>
+                    <Button className="btnFilter"  onClick={(event) => {
+                    event.preventDefault()
+                    if(mat.length > 0 ||  inst.length > 0  || infoInit.length > 0  ||  infoEnd.length > 0  || tema.length > 0 || tipoCE !== null || tipoME !== null)
+                    {
+                        FiltroPerguntas(mat,inst,info, tema, tipoCE, tipoME, infoInit, infoEnd)
+                    }else 
+                    {
+                        setAnyFilter(true)
+                    }
+                    }}> <p style={{fontSize: 15,fontWeight: "bold", margintTop: 50}}>BUSCAR</p></Button>
+                    <Button className="btnLimpar"  variant="danger" onClick={() => cleanFilters()}> <p style={{fontSize: 15,fontWeight: "bold"}}>
+                    LIMPAR
+                    </p>
+                    </Button>
                 </Container>
                 <Button className="btnGerarPDF"  variant="success" onClick={() => {
                     const docDefinition = {
@@ -393,7 +423,7 @@ export default function Home() {
                                         {text: `B) ${element.b}`,alignment: 'justify', margin:[0,0,0,10] },
                                         {text: `C) ${element.c}`,alignment: 'justify', margin:[0,0,0,10] },
                                         {text: `D) ${element.d}`,alignment: 'justify', margin:[0,0,0,10] },
-                                        {text: `E) ${element.e ? element.e : ""}`,alignment: 'justify', margin:[0,0,0,5] },
+                                        {text: `${element.e ? "E)" + element.e : ""}`,alignment: 'justify', margin:[0,0,0,5] },
                                         {text:'______________________________________________________________________________________________', style: 'barraPergunta',margin: [0,0,0,25]}
 
                                     ]
@@ -405,6 +435,7 @@ export default function Home() {
                                 }
                             }),
                             //gabarito
+
                             [{columns: [
                                 {text: 'www.questaodeinformativo.com.br', alignment: 'left', margin: [15,10,0,0], pageBreak: 'before'}, 
                                 {text: `Nº de questões: ${buscaFiltroTamanho}`, alignment: 'right', margin: [0,10,50,0], pageBreak: 'before'},
@@ -416,15 +447,21 @@ export default function Home() {
                                     {text:'QUESTÕES DE INFORMATIVO', style: 'titlePDF',margin:[0,30,0,0]}
                                 ]},
                                 {text:'_______________________________________________________________________________________________', style: 'barraHeader',margin: [1,0,1,15]},
-                                perguntas.map((element, i) => {
-                                    if(element.a) {
-                                        return [
-                                            {text: `${i+1})  []A  []B  []C  []D  E[] ` }
-                                        ]
-                                    }else {
-                                        return {text: `${i+1}) []Certo  []Errado`}
-                                    }
-                                })
+                                {text: 'Gabarito', style: 'titleGabarito'},
+                                // perguntas.map((element, i) => {
+                                    
+                                //     if(i < 9) {
+                                //         return [
+                                //             {text: `0${i+1} -  ${element.resp}`}
+                                //         ]
+                                //     }
+                                //     if(i >= 9 ) {
+                                //         return [
+                                //             {text: `${i+1} - ${element.resp}`}
+                                //         ]
+                                //     }
+                                // })
+                                gabarito(perguntas)
                             ], 
                             ///footer
                             // {
@@ -457,6 +494,13 @@ export default function Home() {
                                 fontSize: 10,
                                 bold: true,
                                 color: "#A9A9A9"
+                            },
+                            titleGabarito: {
+                                fontSize: 20,
+                                margin: [0,0,0,10]
+                            },
+                            tableStyle: {
+                              margin: [10,25,0,0]
                             }
                         }
                     }

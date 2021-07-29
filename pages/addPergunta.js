@@ -214,7 +214,7 @@ export default function Home({isVisibleAddPergunta, isVisibleCE}) {
               </div>
               <div style={{display: "flex", flexDirection: "column", width: "49%"}}>
               <Form.Label>Digite o número da instituição. P. ex:"STF"</Form.Label>
-              <Form.Control className="input-add-pergunta-info-inst" onChange={(value) => setInstituicao(value.value)} placeholder="" />
+              <Form.Control className="input-add-pergunta-info-inst" onChange={(event) => setInstituicao(event.target.value)} placeholder="" />
               </div>
             </Form.Row>
         </Form.Group>
