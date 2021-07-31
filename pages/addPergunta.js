@@ -9,11 +9,10 @@ import Router from 'next/router'
 
 
 export default function Home({isVisibleAddPergunta, isVisibleCE}) {
-  console.log(isVisibleAddPergunta)
   const [temasApi,setTemasApi] = useState([])
   useEffect(() => {
     const getMat = async () => {
-      const resultado = await axios.get('/api/materias')
+      const resultado = await axios.get('https://quizdireito.vercel.app/api/materias')
       resultado.data.map((item) => {
           const opts = {
               label: `${item.materia}`,
@@ -25,7 +24,7 @@ export default function Home({isVisibleAddPergunta, isVisibleCE}) {
     getMat()
 
     const getTemas = async () => {
-      const resultado = await axios.get('/api/temas')
+      const resultado = await axios.get('https://quizdireito.vercel.app/api/temas')
       resultado.data.map((item) => {
         const opts = {
           label: `${item.tema}`,
@@ -102,7 +101,7 @@ export default function Home({isVisibleAddPergunta, isVisibleCE}) {
     setJustificativa("")
   }
   async function enviarPergunta (pergunta,alterA,alterB,alterC,alterD,alterE,resp,materia,informativo,instituicao,justificativa,temas) {
-    const result = await axios.post('/api/inserir', {
+    const result = await axios.post('https://quizdireito.vercel.app/api/inserir', {
       "pergunta": pergunta,
       "alterA": alterA,
       "alterB": alterB,
@@ -125,7 +124,7 @@ export default function Home({isVisibleAddPergunta, isVisibleCE}) {
     
   }
   return (
-    <Container style={{display: "flex", alignItems: "center", justifyContent: "left"}} fluid>
+    <Container style={{display: `${isVisibleAddPergunta ? "flex": "none"}`, alignItems: "center", justifyContent: "center"}} fluid>
       <Head>
         <title>Adicionar Perguntas</title>
         <link rel="icon" href="/favicon.ico" />
@@ -135,38 +134,44 @@ export default function Home({isVisibleAddPergunta, isVisibleCE}) {
           integrity="sha384-B0vP5xmATw1+K9KRQjQERJvTumQW0nPEzvF6L/Z6nronJ3oUOFUFpCjEUQouq2+l"
           crossOrigin="anonymous"/>
       </Head>
-    <Form style={{marginTop:50}}>
+    <Form style={{marginTop:50, width: "80%", padding: 10}}>
         <Form.Group >
-            <Form.Label>Texto do enunciado</Form.Label>
+            <Form.Label style={{fontFamily: 'Segoe', color: "#000000"}}>Texto do enunciado</Form.Label>
             <Form.Control value={pergunta} style={{marginBottom:10,borderWidth: 3, borderColor: "#C0C0C0"}} onChange={(event) => setPergunta(event.target.value)} rows={2} as="textarea" type="text"  />
-            <Form.Label style={{display: `${isVisibleCE ? "none": ""}`}} >texto da assertiva a</Form.Label>
-            <Form.Control value={alterA} onChange={(event) => setAlterA(event.target.value)} style={{display: `${isVisibleCE ? "none": ""}`,marginBottom:10,borderWidth: 3, borderColor: "#C0C0C0"}}type="text"  />
-            <Form.Label style={{display: `${isVisibleCE ? "none": ""}`}}>texto da assertiva b</Form.Label>
-            <Form.Control value={alterB} onChange={(event) => setAlterB(event.target.value)} style={{display: `${isVisibleCE ? "none": ""}`,marginBottom:10, borderWidth: 3, borderColor: "#C0C0C0"}}type="text"  />
-            <Form.Label style={{display: `${isVisibleCE ? "none": ""}`}}>texto da assertiva c</Form.Label>
-            <Form.Control value={alterC} onChange={(event) => setAlterC(event.target.value)} style={{display: `${isVisibleCE ? "none": ""}`,marginBottom:10, borderWidth: 3, borderColor: "#C0C0C0"}}type="text" />
-            <Form.Label style={{display: `${isVisibleCE ? "none": ""}`}} >texto da assertiva d</Form.Label>
-            <Form.Control value={alterD} onChange={(event) => setAlterD(event.target.value)} style={{display: `${isVisibleCE ? "none": ""}`,marginBottom:10, borderWidth: 3, borderColor: "#C0C0C0"}}type="text"  />
-            <Form.Label style={{display: `${isVisibleCE ? "none": ""}`}}>texto da assertiva e</Form.Label>
-            <Form.Control value={alterE} onChange={(event) => setAlterE(event.target.value)} style={{display: `${isVisibleCE ? "none": ""}`,marginBottom:10, borderWidth: 3, borderColor: "#C0C0C0"}}type="text" />
+            <Form.Label style={{display: `${isVisibleCE ? "none": ""}`, fontFamily: 'Segoe', color: "#000000"}} >texto da assertiva a</Form.Label>
+            <Form.Control value={alterA} onChange={(event) => setAlterA(event.target.value)} style={{display: `${isVisibleCE ? "none": ""}`,marginBottom:10,borderWidth: 3, borderColor: "#C0C0C0"}} as="textarea" type="text"  />
+            <Form.Label style={{display: `${isVisibleCE ? "none": ""}`, fontFamily: 'Segoe', color: "#000000"}}>texto da assertiva b</Form.Label>
+            <Form.Control value={alterB} onChange={(event) => setAlterB(event.target.value)} style={{display: `${isVisibleCE ? "none": ""}`,marginBottom:10, borderWidth: 3, borderColor: "#C0C0C0"}} as="textarea" type="text"  />
+            <Form.Label style={{display: `${isVisibleCE ? "none": ""}`, fontFamily: 'Segoe', color: "#000000"}}>texto da assertiva c</Form.Label>
+            <Form.Control value={alterC} onChange={(event) => setAlterC(event.target.value)} style={{display: `${isVisibleCE ? "none": ""}`,marginBottom:10, borderWidth: 3, borderColor: "#C0C0C0"}} as="textarea" type="text" />
+            <Form.Label style={{display: `${isVisibleCE ? "none": ""}`, fontFamily: 'Segoe', color: "#000000"}} >texto da assertiva d</Form.Label>
+            <Form.Control value={alterD} onChange={(event) => setAlterD(event.target.value)} style={{display: `${isVisibleCE ? "none": ""}`,marginBottom:10, borderWidth: 3, borderColor: "#C0C0C0"}}as="textarea" type="text"  />
+            <Form.Label style={{display: `${isVisibleCE ? "none": ""}`, fontFamily: 'Segoe', color: "#000000"}}>texto da assertiva e</Form.Label>
+            <Form.Control value={alterE} onChange={(event) => setAlterE(event.target.value)} style={{display: `${isVisibleCE ? "none": ""}`,marginBottom:10, borderWidth: 3, borderColor: "#C0C0C0"}}as="textarea" type="text" />
             <div className="separador-add-pergunta"></div>
-            <Form.Label style={{display: `${isVisibleCE ? "none": ""}`}}>Digite letra da assertiva correta. P. ex: "a".</Form.Label>
-            <Form.Label style={{display: `${isVisibleCE ? "": "none"}`}} >Digite "certo" ou "errado, conforme a questão seja certa ou errada".</Form.Label>
+            <Form.Label style={{display: `${isVisibleCE ? "none": ""}`, fontFamily: 'Segoe', color: "#000000"}}>Digite letra da assertiva correta. P. ex: "a".</Form.Label>
+            <Form.Label style={{display: `${isVisibleCE ? "": "none"}`, fontFamily: 'Segoe', color: "#000000"}} >Digite "certo" ou "errado, conforme a questão seja certa ou errada".</Form.Label>
             <Form.Control style={{marginBottom:10, borderWidth: 3, borderColor: "#C0C0C0"}} value={resp} onChange={(event) => setResp(event.target.value)} type="text"  />
             <div className="separador-add-pergunta"></div>
-            <Form.Label>Digite a justificativa da questão</Form.Label>
+            <Form.Label style={{fontFamily: 'Segoe', color: "#000000"}}>Digite a justificativa da questão</Form.Label>
             <Form.Control  style={{marginBottom:10, borderWidth: 3, borderColor: "#C0C0C0"}} value={justificativa} onChange={(event) => setJustificativa(event.target.value)} rows={2} as="textarea" type="text" />
             <div className="separador-add-pergunta"></div>
-            <Form.Label style={{marginTop: 5}}>Seleciona a matéria</Form.Label>
-            <Form.Row>
-              <Select  className="input-add-pergunta" options={materias}   value={materias.filter(({ value }) => value === myForm.mySelectKey)}
-              onChange={(value) => {
-                if(materia.indexOf(value.value) === -1) {
-                  setMateria((prevState) => [...prevState, value.value])
-                } }} placeholder="" />
-              <Form.Label className="ou-add-pergunta">ou</Form.Label>
-              <Form.Control placeholder="Escreva a matéria" className="input-add-materia" value={matInput} onKeyDown={handleKeyDown} onChange={(event) => {
-                setMatInput(event.target.value)}} style={{marginBottom:10}} type="text" />
+            
+            <Form.Row style={{width: "100%"}}>
+              <div style={{display: "flex", flexDirection: "column", width: "48%"}}>
+                <Form.Label style={{marginTop: 5, fontFamily: 'Segoe', color: "#000000"}}>Selecione a matéria</Form.Label>
+                <Select  className="input-add-pergunta" options={materias}   value={materias.filter(({ value }) => value === myForm.mySelectKey)}
+                onChange={(value) => {
+                  if(materia.indexOf(value.value) === -1) {
+                    setMateria((prevState) => [...prevState, value.value])
+                  } }} placeholder="" />
+              </div>
+              <div style={{width: "4%"}}><Form.Label className="ou-add-pergunta">ou</Form.Label></div>
+              <div style={{display: "flex", flexDirection: "column", width: "48%", marginTop: 5}}>
+                  <Form.Label style={{fontFamily: 'Segoe', color: "#000000"}} >Escreva a matéria</Form.Label>
+                  <Form.Control placeholder="Digite aqui..." className="input-add-materia" value={matInput} onKeyDown={handleKeyDown} onChange={(event) => {
+                    setMatInput(event.target.value)}} style={{marginBottom:10}} type="text" />
+              </div>
             </Form.Row>
             
             
@@ -183,16 +188,21 @@ export default function Home({isVisibleAddPergunta, isVisibleCE}) {
               }) : ""}
             </div>
             <div className="separador-add-pergunta"></div>
-            <Form.Label>Selecione o tema</Form.Label>
             <Form.Row>
-            <Select className="input-add-pergunta" options={temasApi}   value={materias.filter(({ value }) => value === myForm.mySelectKey)}
-              onChange={(value) => {
-                if(tema.indexOf(value.value) === -1) {
-                  setTema((prevState) => [...prevState, value.value])
-                } }} placeholder="" />
-            <Form.Label className="ou-add-pergunta">ou</Form.Label>
-            <Form.Control  className="input-add-pergunta" placeholder="Escreva o tema" value={temaInput} onKeyDown={handleKeyDownTema} onChange={(event) => {
-              setTemaInput(event.target.value)}} style={{marginBottom:10}} type="text" />
+            <div style={{display: "flex", flexDirection: "column", width: "48%"}}>
+              <Form.Label style={{fontFamily: 'Segoe', color: "#000000"}}>Selecione o tema</Form.Label>
+              <Select className="input-add-pergunta" options={temasApi}   value={materias.filter(({ value }) => value === myForm.mySelectKey)}
+                onChange={(value) => {
+                  if(tema.indexOf(value.value) === -1) {
+                    setTema((prevState) => [...prevState, value.value])
+                  } }} placeholder="" />
+            </div>
+            <div style={{width: "4%"}}><Form.Label className="ou-add-pergunta">ou</Form.Label></div>
+            <div style={{display: "flex", flexDirection: "column", width: "48%", marginTop: 0}}>
+              <Form.Label style={{fontFamily: 'Segoe', color: "#000000"}}>Escreva o tema</Form.Label>
+              <Form.Control  placeholder="Digite aqui..." className="input-add-pergunta"  value={temaInput} onKeyDown={handleKeyDownTema} onChange={(event) => {
+                setTemaInput(event.target.value)}} style={{marginBottom:10}} type="text" />
+            </div>
             <div style={{display: "flex", flexDirection: "row"}}>
               {tema ? tema.map((element, i) => {
                   return (
@@ -209,11 +219,11 @@ export default function Home({isVisibleAddPergunta, isVisibleCE}) {
             <div className="separador-add-pergunta"></div>
             <Form.Row>
               <div style={{display: "flex", flexDirection: "column", width: "49%"}}>
-              <Form.Label>Digite o número do informativo. P. ex:"900"</Form.Label>
+              <Form.Label style={{fontFamily: 'Segoe', color: "#000000"}}>Digite o número do informativo. P. ex:"900"</Form.Label>
               <Form.Control  className="input-add-pergunta-info-inst" onChange={(event) => setInformativo(event.target.value)} placeholder="" />
               </div>
               <div style={{display: "flex", flexDirection: "column", width: "49%"}}>
-              <Form.Label>Digite o número da instituição. P. ex:"STF"</Form.Label>
+              <Form.Label style={{fontFamily: 'Segoe', color: "#000000"}}>Digite o número da instituição. P. ex:"STF"</Form.Label>
               <Form.Control className="input-add-pergunta-info-inst" onChange={(event) => setInstituicao(event.target.value)} placeholder="" />
               </div>
             </Form.Row>

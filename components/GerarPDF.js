@@ -394,6 +394,7 @@ export default function Home() {
                     </p>
                     </Button>
                 </Container>
+                <Container style={{marginLeft: -15}}>
                 <Button className="btnGerarPDF"  variant="success" onClick={() => {
                     const docDefinition = {
                         // header: [
@@ -553,10 +554,11 @@ export default function Home() {
                     }
                     pdfMake.createPdf(docDefinition).open()
                 }}> 
-                    <p style={{fontSize: 15,fontWeight: "bold"}}>
+                    <p style={{fontSize: 15,fontWeight: "bold", fontFamily: 'Segoe'}}>
                         GERAR PDF
                      </p>
                 </Button>
+                </Container>
                 <p style={{marginLeft:13,fontWeight: "bold", color: "red", marginTop: 6}}>{anyFilter ? "Selecione algum filtro." : ""}</p>
                 <p style={{marginLeft:13, fontWeight: "bold", marginTop: 5}}>{buscaFiltroTamanho ? `${buscaFiltroTamanho} questões foram encontradas.` : "" }</p>
             </Container>     

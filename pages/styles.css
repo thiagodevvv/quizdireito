@@ -1,21 +1,178 @@
-
-
-
+:root {
+    --fontprimary: 'Roboto' sans-serif;
+    --fontbuttons: 'Segoe'
+}
 
 #title {
-    font-family: 'Roboto', sans-serif;
+    font-family: var(--fontbuttons);
     font-weight: 900;
-    font-size: 30px;
-    margin-left: 10px;
+    font-size: 25px;
+    margin-left: 5px;
     color: white;
-    margin-top:  25px;
+    margin-top:  35px;
 }
+
+@font-face {
+    font-family: 'Segoe';
+    font-style: normal;
+    src: url(../public/fonts/SEGOEUI.TTF);
+}
+
+@media screen and (max-width: 767px) {
+    #title {
+       font-size: 20px;
+       margin-top: 40px;
+     }
+     /* .img-direito {
+         width: 50px;
+         height: 50px;
+         margin-top: 10px;
+     } */
+     .img-instagram {
+         width: 50px;
+         height: 50px;
+         margin-top: 15px;
+     }
+   }
+
+
+@media screen and (max-width: 600px) {
+   #title {
+      font-size: 22px;
+    }
+    .img-direito {
+        width: 60px;
+        height: 60px;
+        margin-top: 20px;
+    }
+    .img-instagram {
+        width: 50px;
+        height: 50px;
+    }
+
+    .input-info-inicial {
+        margin-top: -15px;
+    }
+  }
+  
+@media screen and (max-width: 519px) {
+    #title {
+       font-size: 17px;
+     }
+}
+
+@media screen and (max-width: 508px) {
+    #title {
+       font-size: 19px;
+     }
+}
+
+@media screen and (max-width: 467px) {
+    #title {
+       font-size: 17px;
+     }
+}
+
+@media screen and (max-width: 460px) {
+    #title {
+       font-size: 17px;
+     }
+}
+
+
+@media screen and (max-width: 432px) {
+    #title {
+       font-size: 14px;
+     }
+}
+
+@media screen and (max-width: 427px) {
+    .img-direito {
+        width: 45px;
+        height: 45px;
+        margin-top: 25px;
+    }
+    .img-instagram {
+        width: 40px;
+        height: 40px;
+    }
+}
+
+@media screen and (max-width: 415px) {
+  
+    #title {
+        font-size: 15px;
+    }
+} 
+
+@media screen and (max-width: 380px) {
+    .img-direito {
+        width: 45px;
+        height: 45px;
+        margin-top: 20px;
+    }
+    .img-instagram {
+        width: 40px;
+        height: 40px;
+    }
+    #title {
+        font-size: 13px;
+    }
+}
+
+@media screen and (max-width: 345px) {
+    .img-direito {
+        width: 45px;
+        height: 45px;
+        margin-top: 20px;
+    }
+    .img-instagram {
+        width: 30px;
+        height: 30px;
+        margin-top: 20px;
+    }
+    #title {
+        font-size: 12px;
+    }
+}
+
+
+@media screen and (max-width: 330px) {
+    #title {
+       font-size: 11px;
+     }
+    
+    .img-instagram {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+@media screen and (max-width: 320px) {
+    .img-direito {
+        width: 35px;
+        height: 35px;
+        margin-top: 25px;
+    }
+    .img-instagram {
+        width: 29px;
+        height: 29px;
+        margin-top: 20px;
+    }
+    #title {
+        font-size: 13px;
+        font-weight: 500;
+    }
+}
+
+
+
 
 
 
 .header {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
     background: transparent linear-gradient(276deg, #0F4C81 0%, #224978 0%, #274876 1%, #2C4774 10%, #2F4772 15%, #334770 21%, #514362 38%, #BD3330 100%) 0% 0% no-repeat padding-box;
     border: 1px solid #707070;
     width: 100%;
@@ -25,6 +182,7 @@
 .content-filters {
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 
 .content-info {
@@ -38,6 +196,20 @@
     margin-top: 10px;
     margin-right: 10px;
 }
+.input-info-inicial {
+    width: 230px;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+
+
+@media screen and (max-width: 600px) {
+     .input-info-inicial {
+         margin-top: -15px;
+         width: 100%;
+     }
+   }
 
 
 .btnFilter {
@@ -50,6 +222,8 @@
     align-items: center; */
     border-radius: 4px;
     height: 40px;
+    border: #2b4874;
+    opacity: 1;
 }
 
 .btnFilter:hover {
@@ -65,11 +239,16 @@
 .btnLimpar {
     width: 204px;
     margin-top: 10px;
-    /* display: flex;
-    align-items: center;
-    justify-content: center; */
+    background-color: #bd3330;
     height: 40px;
+    border: #bd3330;
+    opacity: 1;
     
+}
+
+.btnLimpar:hover {
+    background-color: #bd3330;
+    opacity: 0.9;
 }
 
 .btnGerarPDF {
@@ -81,10 +260,9 @@
 }
 
 
-@media screen and (max-width:358px) {
-    .header {
-        display: flex;
-        flex-direction: column;
+@media screen and (max-width:767px) {
+    .btnGerarPDF {
+        width: 100%;
       
     }
 }
@@ -102,40 +280,68 @@
 
 
 .filtername {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Segoe';
     font-weight: bold;
     color: #bd3330;
     font-size: 20px; 
-    margin-top: 15px;
+    margin-top: 0px;
     margin-left: 25px;
-} 
+}
+.mult-escolha {
+    font-family: 'Segoe';
+    margin-top: 10px;
+    color: #707070;
+}
+
+.ce {
+    font-family: 'Segoe';
+    margin-top: 10px;
+    color: #707070;
+}
+
+@media screen and (max-width:600px) {
+    .filtername {
+        margin-left: 10px;
+    }
+  
+}
 
 
 
 .TitlePergunta {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Segoe';
     color: 	#4F4F4F;
     margin-top: 10px;
 }
 .descPergunta {
-    font-family: 'Roboto', sans-serif;
+    font-family: 'Segoe';
     font-weight: bold;
-    font-size: 19px;
+    font-size: 15px;
     color: #808080;
     margin-right: 2px;
     margin-left: 5px;
 }
 .dataPerguntaAll {
-    font-family: 'Roboto', sans-serif;
-    font-size: 19px;
+    font-family: 'Segoe';
+    font-size: 15px;
     color: 	#808080;
     margin-left: 1px;
     margin-right: 1px;
 }
 
+@media screen and (max-width:422px) {
+    .descPergunta {
+        font-size: 13px;
+    }
+    .dataPerguntaAll {
+        font-size: 13px;
+    }
+  
+}
+
 
 .alternativa {
-    font-family: 'Roboto' sans-serif;
+    font-family: 'Segoe';
     font-size: 15px;
     color:#4F4F4F;
     margin-top: 15px;
@@ -154,7 +360,7 @@
     border-bottom: 3px solid #A9A9A9;
     margin-bottom: 10px;
     margin-top: 10px;
-    margin-left: -10px;
+    margin-left: -5px;
 }
 .ContainerAlternativa {
     width: 35px;
@@ -178,8 +384,9 @@
     margin-bottom: 5px;
     background-color: #BD3330;
     border: none;
-    width: 220px;
+    width: 204px;
     margin-left: -15px;
+    height: 40px;
 }
 
 .btnResponder:hover {
@@ -202,7 +409,8 @@
     margin-top: 1px;
     margin-bottom: 10px;
     border: 1px solid #afc2d3;
-    width: 220px;
+    width: 204px;
+    height: 40px;
     margin-left: -15px;
     
 }
@@ -303,7 +511,7 @@
     height: 25px;
     background-color: rgba(203,96,93,255,0.3);
     margin-top: 10px;
-    opacity: 0.2;
+    opacity: 0.4;
     border: 2px solid red;
     margin-right: 5px;
 }
@@ -313,7 +521,7 @@
     height: 25px;
     background-color: rgba(203,96,93,255);
     margin-top: 10px;
-    border: 2px solid red;
+    border: 1px solid #BD333080;
     margin-right: 5px;
 }
 
@@ -382,6 +590,9 @@
         width: 200px;
     }
     .input-infos {
+        width: 100%;
+    }
+    .input-info-inicial {
         width: 100%;
     }
     .ContainerFiltros{
@@ -489,6 +700,19 @@ ul {
     padding: 0px;
 }
 
+.opts-painel {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: bold;
+    margin-top: 5px;
+    color: #707070;
+}
+
+@media screen and (max-width:772px) {
+    .opts-painel {
+        font-size: 10px;
+    }
+}
+
 .opts-header-painel {
 
     background-color:#E2DDDD;
@@ -508,6 +732,8 @@ ul {
 .body-painel {
     width: 100%;
     background-color:white;
+    margin: 0px;
+    
 }
 
 .separador-add-pergunta {
@@ -518,7 +744,8 @@ ul {
 }
 
 .input-add-pergunta {
-    width: 46%;
+    width: 100%;
+    
 
 }
 .input-add-pergunta-info-inst {
@@ -529,8 +756,15 @@ ul {
 .ou-add-pergunta {
     margin-left: 3px;
     margin-right: 3px;
-    margin-top: 15px;
+    margin-top: 40px;
+    font-family: 'Segoe';
 }
 .input-add-materia {
-    width: 49%;
+    width: 100%;
+}
+
+.content-gerenciarquest {
+    width: 100%;
+    margin: 0px;
+    height: 500px;
 }

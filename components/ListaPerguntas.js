@@ -169,7 +169,7 @@ export default function ListaPerguntas ({perguntas}) {
                                             setSelectedAlter3("")
                                             setSelectedAlter4("")
                                             setSelectedAlter5("")
-                                            setSelectedAlter("#cb605d")}}>A
+                                            setSelectedAlter("#DF9D9C")}}>A
                                         </button></div>
                                         <p align="justify" onClick={() => {
                                             handleResp("a")
@@ -178,7 +178,7 @@ export default function ListaPerguntas ({perguntas}) {
                                             setSelectedAlter3("")
                                             setSelectedAlter4("")
                                             setSelectedAlter5("")
-                                            setSelectedAlter("#cb605d")
+                                            setSelectedAlter("#DF9D9C")
                                         }} className="alternativa">{item.a}</p></Container>
                                 )
                             }else {
@@ -223,7 +223,7 @@ export default function ListaPerguntas ({perguntas}) {
                                         setSelectedAlter4("")
                                         setSelectedAlter5("")
                                         setSelectedAlter("")
-                                        setSelectedAlter2("#cb605d")
+                                        setSelectedAlter2("#DF9D9C")
                                     }}>B</button></div>
                                 <p onClick={() => {
                                             handleResp("b")
@@ -232,7 +232,7 @@ export default function ListaPerguntas ({perguntas}) {
                                             setSelectedAlter3("")
                                             setSelectedAlter4("")
                                             setSelectedAlter5("")
-                                            setSelectedAlter2("#cb605d")
+                                            setSelectedAlter2("#DF9D9C")
                                         }} align="justify" className="alternativa">{item.b}</p></Container>
                                 )
                             }
@@ -251,7 +251,7 @@ export default function ListaPerguntas ({perguntas}) {
                                     setSelectedAlter3("")
                                     setSelectedAlter5("")
                                     setSelectedAlter("")
-                                    setSelectedAlter4("#cb605d")
+                                    setSelectedAlter4("#DF9D9C")
                                 }}>D</button></div>
                             <p onClick={() => {
                                             handleResp("d")
@@ -260,7 +260,7 @@ export default function ListaPerguntas ({perguntas}) {
                                             setSelectedAlter2("")
                                             setSelectedAlter3("")
                                             setSelectedAlter5("")
-                                            setSelectedAlter4("#cb605d")
+                                            setSelectedAlter4("#DF9D9C")
                                         }} align="justify" className="alternativa">{item.d}</p> </Container>
                                 )
                             }else {
@@ -278,7 +278,7 @@ export default function ListaPerguntas ({perguntas}) {
                                     setSelectedAlter4("")
                                     setSelectedAlter5("")
                                     setSelectedAlter("")
-                                    setSelectedAlter3("#cb605d")
+                                    setSelectedAlter3("#DF9D9C")
                                 }}>C</button></div>
                             <p onClick={() => {
                                             handleResp("c")
@@ -287,7 +287,7 @@ export default function ListaPerguntas ({perguntas}) {
                                             setSelectedAlter2("")
                                             setSelectedAlter4("")
                                             setSelectedAlter5("")
-                                            setSelectedAlter3("#cb605d")
+                                            setSelectedAlter3("#DF9D9C")
                                         }} align="justify" className="alternativa">{item.c}</p> </Container>
                                 )
                             }else {
@@ -305,8 +305,8 @@ export default function ListaPerguntas ({perguntas}) {
                                     setSelectedAlter3("")
                                     setSelectedAlter4("")
                                     setSelectedAlter("")
-                                    setSelectedAlter5("#cb605d")
-                                }}>E</button></div>
+                                    setSelectedAlter5("#DF9D9C")
+                                }}> E</button></div>
                            <p onClick={() => {
                                             handleResp("e")
                                             setVerificando(i)
@@ -314,7 +314,7 @@ export default function ListaPerguntas ({perguntas}) {
                                             setSelectedAlter2("")
                                             setSelectedAlter3("")
                                             setSelectedAlter4("")
-                                            setSelectedAlter5("#cb605d")
+                                            setSelectedAlter5("#DF9D9C")
                                         }} align="justify" className="alternativa">{item.e}</p> </Container>
                                 )
                             }else {
@@ -328,11 +328,25 @@ export default function ListaPerguntas ({perguntas}) {
                                 <p className="descPergunta">Id:</p> <p className="dataPerguntaAll">{item.idQuestion}</p>
                                 <p className="descPergunta">Instituição:</p> <p className="dataPerguntaAll">{item.instituição}</p>
                                 <p className="descPergunta">Informativo:</p> <p className="dataPerguntaAll">{item.informativo}</p>
-                                <p className="descPergunta">Matéria:</p> <p className="dataPerguntaAll">{item.materia.map((element) => {
-                                    return ` ${element}`
+                                <p className="descPergunta">Matéria:</p> <p className="dataPerguntaAll">{item.materia.map((element, i) => {
+                                    if(i === 0) {
+                                        if(item.materia.length === 1) {
+                                            return ` ${element}`
+                                        }
+                                        return ` ${element},`
+                                    }else {
+                                        return ` ${element}`
+                                    }
                                 })}</p>
                                 <p className="descPergunta">Tema:</p> <p className="dataPerguntaAll">{item.tema.map((element) => {
-                                    return ` ${element}`
+                                    if(i === 0) {
+                                        if(item.tema.length === 1) {
+                                            return ` ${element}`
+                                        }
+                                        return ` ${element},`
+                                    }else {
+                                        return ` ${element}`
+                                    }
                                 })}</p>
                             </Row>
                             <p align="justify" className="TitlePergunta">{item.pergunta}</p>
@@ -349,7 +363,7 @@ export default function ListaPerguntas ({perguntas}) {
                         <Container style={{display: "flex", flexDirection: "column"}} >
                             <Button className="btnResponder"  
                             onClick={() => verificarQuestao(item.resp, resposta, i)} type="submit">
-                                <p style={{color: "white", fontFamily: "Roboto", fontWeight: "bold", marginTop:10}}>RESPONDER</p>
+                                <p style={{color: "white", fontFamily: "Segoe", fontWeight: "bold", marginTop:5}}>RESPONDER</p>
                             </Button>
                             <Button onClick={() => {
                                 
@@ -465,12 +479,12 @@ export default function ListaPerguntas ({perguntas}) {
                             }
                                 
                             }} style={{backgroundColor: `${colorButtonJust(i)}`}} className="btnVisuJust" > 
-                            <p style={{color: "#bd3330", fontFamily: "Roboto", fontWeight: "bold", marginTop:10, fontSize: 13}}>VISUALIZAR JUSTIFICATIVA</p>
+                            <p style={{color: "#bd3330", fontFamily: "Segoe", fontWeight: "bold", marginTop:5, fontSize: 13}}>VISUALIZAR JUSTIFICATIVA</p>
                             </Button>
                             {CondicaoJust(i)}
-                            <div className="separadorQuestão"></div>
+                          
                             </Container>
-                            
+                            <div className="separadorQuestão"></div>     
                     </Container>
                 )
             })}

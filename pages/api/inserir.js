@@ -56,7 +56,8 @@ export default async (req, res) => {
             justificativa: justificativa,
             dataCadastro: new Date(),
             tema: temas,
-            idQuestion: idQuestion
+            idQuestion: idQuestion,
+            status: "atualizada"
         })
         // Adicionando unico informativo no banco
         const retorno = await connectDB.collection('informativos').findOne({

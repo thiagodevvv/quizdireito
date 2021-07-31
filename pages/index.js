@@ -1,7 +1,7 @@
 import Head from 'next/head'
-import {Container,Navbar, Form, Button} from 'react-bootstrap'
+import {Container, Form, Button} from 'react-bootstrap'
 import axios from 'axios'
-import { useState, useEffect, useRef } from 'react'
+import { useState, useEffect } from 'react'
 import Select from 'react-select'
 import Condicao from '../components/Condicao'
 import CheckBox from '../components/CheckBox'   
@@ -43,7 +43,7 @@ export default function Home() {
         setPerguntas([])
         setBuscaFiltroTamanho(null)
         setIsLoadingFilter(true)
-        const data = await axios.post('/api/filtro', {
+        const data = await axios.post('https://quizdireito.vercel.app/api/filtro', {
             "mat": mat,
             "inst": inst,
             "info": `${infoInit === 0 && infoEnd === 0 ? "" : arr}`,
@@ -86,7 +86,7 @@ export default function Home() {
 
     useEffect(() => {
       const getInfo = async () => {
-      const resultado = await axios.get('/api/informativos')
+      const resultado = await axios.get('https://quizdireito.vercel.app/api/informativos')
       resultado.data.map((item) => {
           const opts = {
               label: `${item.numeroInfo}`,
@@ -96,7 +96,7 @@ export default function Home() {
       })
     }
     const getMaterias = async () => {
-      const resultado = await axios.get('/api/materias')
+      const resultado = await axios.get('https://quizdireito.vercel.app/api/materias')
       resultado.data.map((item) => {
         const opts = {
           label: `${item.materia}`,
@@ -110,7 +110,7 @@ export default function Home() {
     }
 
     const getTemas = async () => {
-      const resultado = await axios.get('/api/temas')
+      const resultado = await axios.get('https://quizdireito.vercel.app/api/temas')
       resultado.data.map((item) => {
         const opts = {
           label: `${item.tema}`,
@@ -127,7 +127,7 @@ export default function Home() {
 
     useEffect(() => {
         const chamando = async () => {
-        const resultado = await axios.get('/api/busca')
+        const resultado = await axios.get('https://quizdireito.vercel.app/api/busca')
         setPerguntas(resultado.data)
 
       }
@@ -167,7 +167,7 @@ export default function Home() {
         ...theme,
         colors: {
           ...theme.colors,
-          primary25: '#B0C4DE',
+          primary25: '#dde4ec',
           primary: '#cb605d',
           neutral50: "#cb605d"
           
@@ -187,7 +187,7 @@ export default function Home() {
     
 
   return (
-    <Container style={{padding: 0, margin: 0, display: "flex", flexDirection: "column"}} fluid="true">
+    <Container style={{padding: 0, margin: 0, display: "flex", flexDirection: "column", width: "100%"}} fluid="true">
       <Head>
         <title>Quiz</title>
         <link rel="icon" href="/favicon.ico" />
@@ -199,19 +199,23 @@ export default function Home() {
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
       </Head>
-      <Navbar className="header">
-        <div style={{display: "flex", flexDirection: "row",marginLeft: 0}}>
-        <img  style={{marginLeft: -60}}width="80" height="80" src="/direito.svg"/>  
-        <h1 id="title">QUESTÕES DE INFORMATIVO</h1> 
-        </div>
-       
-        <a target="_blank" href="https://www.instagram.com/_questaodeinformativo_/">
-          <img  width="50" height="50" src="/instagram.svg"/>
-        </a>
-      </Navbar>
+      <Container className="header" fluid>
+        <Container style={{display: "flex", flexDirection: "row", justifyContent: "flex-start"}}>
+          <div style={{display: "flex", flexDirection: "row", flex:5}}>
+            <img className="img-direito" width="90" height="90"  src='/direito.svg' />
+            <h1 id="title">QUESTÕES DE INFORMATIVO</h1> 
+          </div>
+          <div style={{marginTop: 10, flex: 1}}>
+            <a target="_blank" href="https://www.instagram.com/_questaodeinformativo_/">
+              <img className="img-instagram" width="60" height="60" src="/instagram.svg"/>
+            </a>
+          </div>
+        </Container>
+      </Container>
       {/* FILTRO COMEÇA AQUI */}
       <Container className="content-filters">
-      <p className="filtername">FILTRO </p>
+        <div className="content-filtername"><p className="filtername">FILTRO </p></div>
+      
                 <Container >
                  {/* CONTAINER INFO INICIAL E FINAL ///////////// C.E E M.E */}
                   <Container className="content-info">
@@ -226,7 +230,7 @@ export default function Home() {
                                 const posicao = informativos.findIndex(element => element.value === value.value)
                                 const infoCut = informativos.slice(posicao + 1)
                                 infoCut.map((element) => setInfoFinalArray((prevState) => [...prevState, element]))
-                            }} styles={{dropdownIndicator: dropdownIndicatorStyles}} theme={customTheme} className="input-infos" options={informativos} />
+                            }} styles={{dropdownIndicator: dropdownIndicatorStyles}} theme={customTheme} className="input-info-inicial" options={informativos} />
 
                             <Select  isDisabled={infoFinalDisable} value={infoEnd} placeholder={infoEnd ? `Informativo final: ${infoEnd}` : "Informativo final"}  onChange={(value) => {
                                 setVerific(1)
@@ -244,7 +248,7 @@ export default function Home() {
                               }
                             }}
                                   style={{display: "flex", flexDirection: "row"}}> 
-                              <CheckBox isChecked={isCheckedCe}/> <Form.Label style={{marginTop: 10}}> C/E</Form.Label>
+                              <CheckBox isChecked={isCheckedCe}/> <Form.Label className="ce" > C/E</Form.Label>
                             </div>
 
                             <div style={{display: "flex", flexDirection: "row", marginLeft: 15}} onClick={() => {
@@ -255,7 +259,7 @@ export default function Home() {
                                 setTipoME(null)
                               }
                               }}>
-                              <CheckBox isChecked={isCheckedMe} /> <Form.Label style={{marginTop: 10}}>Múltipla escolha</Form.Label>
+                              <CheckBox isChecked={isCheckedMe} /> <Form.Label className="mult-escolha" >Múltipla escolha</Form.Label>
                             </div>
                           </div>
                           
@@ -364,8 +368,8 @@ export default function Home() {
                   {
                     setAnyFilter(true)
                   }
-                }}> <p style={{fontSize: 15,fontWeight: "bold", margintTop: 50}}>BUSCAR</p></Button>
-                <Button className="btnLimpar"  variant="danger" onClick={() => cleanFilters()}> <p style={{fontSize: 15,fontWeight: "bold"}}>
+                }}> <p style={{fontSize: 15,fontWeight: "bold", margintTop: 50, opacity: 0.9}}>BUSCAR</p></Button>
+                <Button className="btnLimpar"  onClick={() => cleanFilters()}> <p style={{fontSize: 15,fontWeight: "bold", opacity: 0.9}}>
                   LIMPAR
                   </p>
                 </Button>
