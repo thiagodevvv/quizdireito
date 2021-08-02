@@ -169,7 +169,7 @@ export default function Home({isVisibleAddPergunta, isVisibleCE}) {
               <div style={{width: "4%"}}><Form.Label className="ou-add-pergunta">ou</Form.Label></div>
               <div style={{display: "flex", flexDirection: "column", width: "48%", marginTop: 5}}>
                   <Form.Label style={{fontFamily: 'Segoe', color: "#000000"}} >Escreva a matéria</Form.Label>
-                  <Form.Control placeholder="Digite aqui..." className="input-add-materia" value={matInput} onKeyDown={handleKeyDown} onChange={(event) => {
+                  <Form.Control className="input-add-materia" value={matInput} onKeyDown={handleKeyDown} onChange={(event) => {
                     setMatInput(event.target.value)}} style={{marginBottom:10}} type="text" />
               </div>
             </Form.Row>
@@ -200,7 +200,7 @@ export default function Home({isVisibleAddPergunta, isVisibleCE}) {
             <div style={{width: "4%"}}><Form.Label className="ou-add-pergunta">ou</Form.Label></div>
             <div style={{display: "flex", flexDirection: "column", width: "48%", marginTop: 0}}>
               <Form.Label style={{fontFamily: 'Segoe', color: "#000000"}}>Escreva o tema</Form.Label>
-              <Form.Control  placeholder="Digite aqui..." className="input-add-pergunta"  value={temaInput} onKeyDown={handleKeyDownTema} onChange={(event) => {
+              <Form.Control className="input-add-pergunta"  value={temaInput} onKeyDown={handleKeyDownTema} onChange={(event) => {
                 setTemaInput(event.target.value)}} style={{marginBottom:10}} type="text" />
             </div>
             <div style={{display: "flex", flexDirection: "row"}}>

@@ -2,6 +2,7 @@ import Head from 'next/head'
 import {Container, Form, Button} from 'react-bootstrap'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
+import ListaPerguntas from '../components/ListaPerguntas'
 import Select from 'react-select'
 import Condicao from '../components/Condicao'
 import CheckBox from '../components/CheckBox'   
@@ -52,7 +53,7 @@ export default function Home() {
             "tipoME": tipoME
         })
         if(data.data.length === 0) {
-          alert('Nenhuma pergunta encontrado com esse tipo de filtro')
+          setIsLoadingFilter(false)
           setBuscaFiltroTamanho(0)
         }else {
      
@@ -214,13 +215,11 @@ export default function Home() {
       </Container>
       {/* FILTRO COMEÇA AQUI */}
       <Container className="content-filters">
-        <div className="content-filtername"><p className="filtername">FILTRO </p></div>
-      
-                <Container >
+                <Container>
                  {/* CONTAINER INFO INICIAL E FINAL ///////////// C.E E M.E */}
                   <Container className="content-info">
-                    <Form.Group>
-                          <Form.Row>
+                   <div style={{marginLeft: -20, padding:0, width: "100%"}}><p className="filtername">FILTRO </p></div>
+                          <Form.Row style={{ padding: 0, marginLeft:-15}} >
                             <Select value={infoInit} placeholder={infoInit ? `Informativo inicial: ${infoInit}` : "Informativo inicial"} onChange={(value) => {
                                 setVerific(1)
                                 setInfoFinalDisable(false)
@@ -262,15 +261,12 @@ export default function Home() {
                               <CheckBox isChecked={isCheckedMe} /> <Form.Label className="mult-escolha" >Múltipla escolha</Form.Label>
                             </div>
                           </div>
-                          
-
                           </Form.Row>
-                    </Form.Group>
               </Container>
             {/* FIMMMMMMMMMMMMMMMMMMMMM INFO INICIAL FINAL C.E M.E */}
-                  <Container  className="content-selects-filters" >
+                  <Container className="content-info" >
                     {/* <Form.Group > */}
-                        <Form.Row>
+                        <Form.Row style={{marginLeft:-15, padding: 0}} >
                           <Select value={inst.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Instituição" onChange={(value) => {
                             setVerific(1)
                             if(inst.indexOf(value.value) === -1) {
@@ -305,83 +301,92 @@ export default function Home() {
                         </Form.Row>
                       {/* </Form.Group> */}
 
-                  </Container>            
-                <Container style={{height: verificandoCaixaFiltro()}} className="ContainerFiltros">
-                    {arrayFilter.map((item,i) => {
-                      return (
-                        <div key={i} className="caixaFiltro" onClick={() => {
+                  </Container>
+                  <Container className="content-info">
+                    <Form.Row style={{marginLeft:-15, padding: 0}}  >
+                    <Container style={{height: verificandoCaixaFiltro()}} className="ContainerFiltros">
 
-                          mat.map((element, i) => {
-                            if(element === item ){
-                               setArrayFilter(deleteElementArray(arrayFilter, item))
-                               setMat(deleteElementArray(mat, item))
-                            }
-                          })
+                      {arrayFilter.map((item,i) => {
+                        return (
+                          <div key={i} className="caixaFiltro" onClick={() => {
 
-                          inst.map((element, i) => {
-                            if(element === item ){
-                               setArrayFilter(deleteElementArray(arrayFilter, item))
-                               setInst(deleteElementArray(inst, item))
-                            }
-                          })
-
-                          info.map(async(element, index) => {
-                            if(element === item ){
-                              if(index === 0) {
-                                const infofinal = info[1]
-                                const infoinicial = item
-                                const newArray = deleteElementArray(arrayFilter, infoinicial)
-                                const newArrayFinaly = deleteElementArray(newArray, infofinal)
-                                setArrayFilter(newArrayFinaly)
-                                setInfo([])
-                              }else {
+                            mat.map((element, i) => {
+                              if(element === item ){
                                 setArrayFilter(deleteElementArray(arrayFilter, item))
-                                setInfo(deleteElementArray(info, item))
-                                setInfoFinal(false)
+                                setMat(deleteElementArray(mat, item))
                               }
-                              
-                            }
-                          })
+                            })
 
-                          tema.map((element, i) => {
-                            if(element === item ){
-                               setArrayFilter(deleteElementArray(arrayFilter, item))
-                               setTema(deleteElementArray(tema, item))
-                            }
-                          })
-                         
+                            inst.map((element, i) => {
+                              if(element === item ){
+                                setArrayFilter(deleteElementArray(arrayFilter, item))
+                                setInst(deleteElementArray(inst, item))
+                              }
+                            })
 
-                        }}>
-                          <p style={{margin:10, fontSize: 11, color:"#cb605d"}}> {item}</p>
-                          <p className="xis">x</p>
-                        </div>
-                      )
-                    })}
-                </Container>
-                <Container style={{display:"flex", flexDirection: "row", marginLeft: -5}}>
-                <Button className="btnFilter"  onClick={(event) => {
-                  event.preventDefault()
-                  if(mat.length > 0 ||  inst.length > 0  || infoInit.length > 0  ||  infoEnd.length > 0  || tema.length > 0 || tipoCE !== null || tipoME !== null)
-                  {
-                    FiltroPerguntas(mat,inst,info, tema, tipoCE, tipoME, infoInit, infoEnd)
-                  }else 
-                  {
-                    setAnyFilter(true)
-                  }
-                }}> <p style={{fontSize: 15,fontWeight: "bold", margintTop: 50, opacity: 0.9}}>BUSCAR</p></Button>
-                <Button className="btnLimpar"  onClick={() => cleanFilters()}> <p style={{fontSize: 15,fontWeight: "bold", opacity: 0.9}}>
-                  LIMPAR
-                  </p>
-                </Button>
-                </Container>
-                <p style={{marginLeft:13,fontWeight: "bold", color: "red", marginTop: 6}}>{anyFilter ? "Selecione algum filtro." : ""}</p>
-                <p style={{marginLeft:13, fontWeight: "bold", marginTop: 5}}>{buscaFiltroTamanho ? `${buscaFiltroTamanho} questões foram encontradas.` : "" }</p>
+                            info.map(async(element, index) => {
+                              if(element === item ){
+                                if(index === 0) {
+                                  const infofinal = info[1]
+                                  const infoinicial = item
+                                  const newArray = deleteElementArray(arrayFilter, infoinicial)
+                                  const newArrayFinaly = deleteElementArray(newArray, infofinal)
+                                  setArrayFilter(newArrayFinaly)
+                                  setInfo([])
+                                }else {
+                                  setArrayFilter(deleteElementArray(arrayFilter, item))
+                                  setInfo(deleteElementArray(info, item))
+                                  setInfoFinal(false)
+                                }
+                                
+                              }
+                            })
+
+                            tema.map((element, i) => {
+                              if(element === item ){
+                                setArrayFilter(deleteElementArray(arrayFilter, item))
+                                setTema(deleteElementArray(tema, item))
+                              }
+                            })
+                          
+
+                          }}>
+                            <p style={{margin:10, fontSize: 11, color:"#cb605d"}}> {item}</p>
+                            <p className="xis">x</p>
+                          </div>
+                        )
+                      })}
+                  </Container>
+                  <Container style={{marginLeft: -15}}>
+                    <Button className="btnFilter"  onClick={(event) => {
+                      event.preventDefault()
+                      if(mat.length > 0 ||  inst.length > 0  || infoInit.length > 0  ||  infoEnd.length > 0  || tema.length > 0 || tipoCE !== null || tipoME !== null)
+                      {
+                        FiltroPerguntas(mat,inst,info, tema, tipoCE, tipoME, infoInit, infoEnd)
+                      }else 
+                      {
+                        setAnyFilter(true)
+                      }
+                    }}> <p style={{fontSize: 15,fontWeight: "bold", textAlign: 'center', opacity: 0.9, fontFamily: 'Segoe', marginTop: 1}}>BUSCAR</p></Button>
+                    <Button className="btnLimpar"  onClick={() => cleanFilters()}> <p style={{fontSize: 15,fontWeight: "bold", opacity: 0.9, fontFamily: 'Segoe', marginTop: 1}}>
+                      LIMPAR
+                      </p>
+                    </Button>
+                  </Container>
+                  </Form.Row>
+                  
+                  </Container>            
+                <p style={{marginLeft:13,fontWeight: "bold", color: "red", marginTop: 6, fontFamily: 'Segoe'}}>{anyFilter ? "Selecione algum filtro." : ""}</p>
+                {isLoadingFilter ? <p style={{marginLeft:13, fontWeight: "bold", marginTop: 5, fontFamily: 'Segoe'}}>Buscando...</p> : ""}
+                {perguntas.length === 0 ?  <p style={{marginLeft:13, fontWeight: "bold", marginTop: 5, fontFamily: 'Segoe'}}>Nada encontrado!</p> : "" }
+                <p style={{marginLeft:13, fontWeight: "bold", marginTop: 5, fontFamily: 'Segoe'}}>{buscaFiltroTamanho ? `${buscaFiltroTamanho} questões foram encontradas.` : "" }</p>
             </Container>     
         </Container>
 {/* FILTRO ACABA AQUI */}
-      <Container style={{marginTop: 10}}>
-          <Condicao isLoading={isLoadingFilter}  perguntas={perguntas} />
-      </Container>
+      {/* <Container style={{marginTop: 5, backgroundColor: 'red'}} > */}
+          <ListaPerguntas perguntas={perguntas} />
+          {/* <Condicao isLoading={isLoadingFilter}  perguntas={perguntas} /> */}
+      {/* </Container> */}
   </Container>
   )
 }

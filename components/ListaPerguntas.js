@@ -141,7 +141,7 @@ export default function ListaPerguntas ({perguntas}) {
             let end = start + perPage
             const PaginatedItems = perguntas.slice(start,end)
             return (
-                <Container>
+                <Container >
                     {PaginatedItems.map((item, i) => {
                         localStorage.setItem(`just${i}`, item.justificativa)
                         function zero () {
@@ -325,29 +325,59 @@ export default function ListaPerguntas ({perguntas}) {
                     <Container key={i}>
                         <Container className="questao"> <p className="questaoTitle">Questão {zero()}</p></Container>
                             <Row className="ContainerDescPergunta">
-                                <p className="descPergunta">Id:</p> <p className="dataPerguntaAll">{item.idQuestion}</p>
-                                <p className="descPergunta">Instituição:</p> <p className="dataPerguntaAll">{item.instituição}</p>
-                                <p className="descPergunta">Informativo:</p> <p className="dataPerguntaAll">{item.informativo}</p>
-                                <p className="descPergunta">Matéria:</p> <p className="dataPerguntaAll">{item.materia.map((element, i) => {
+                                <p align="justify" style={{fontFamily: 'Segoe   ', fontSize: 15}}>
+                                    <b>Id:</b> {item.idQuestion} <b>Instituição:</b> {item.instituição} <b>Informativo:</b> {item.informativo} 
+                                    <b> Matéria:</b> {item.materia.map((element,i) => {
+                                        if(i === 0) {
+                                            if(item.materia.length === 1) {
+                                                return `${element}`
+                                            }
+                                         return `${element},`
+                                        }else {
+                                            return `${element}`
+                                        }
+                                        
+                                    })}
+                                    <b> Tema: </b> {item.tema.map((element,i) => {
+                                        if(i === 0) {
+                                            if(item.tema.length === 1) {
+                                                return `${element}`
+                                            }
+                                         return `${element},`
+                                        }else {
+                                            return `${element}`
+                                        }
+                                        
+                                    })}
+                                </p>
+                                {/* <div style={{display: "flex", flexDirection: "row", height:20}}><p className="descPergunta">Id:</p> <p className="dataPerguntaAll">{item.idQuestion}</p></div>
+                                <div style={{display: "flex", flexDirection: "row", height:20}}><p className="descPergunta">Instituição:</p> <p className="dataPerguntaAll">{item.instituição}</p></div>
+                                <div style={{display: "flex", flexDirection: "row", height:20}}><p className="descPergunta">Informativo:</p> <p className="dataPerguntaAll">{item.informativo}</p></div>
+                                <div className="mat-info"> 
+                                <p align="justify">
+                                <p className="descMat">Matéria:</p>{item.materia.map((element, i) => {
                                     if(i === 0) {
                                         if(item.materia.length === 1) {
-                                            return ` ${element}`
+                                            return <p className="dataMateria">{element}</p>
                                         }
-                                        return ` ${element},`
+                                        return <p className="dataMateria">{element},</p>
                                     }else {
-                                        return ` ${element}`
+                                        return <p className="dataMateria">{element}</p>
                                     }
                                 })}</p>
-                                <p className="descPergunta">Tema:</p> <p className="dataPerguntaAll">{item.tema.map((element) => {
-                                    if(i === 0) {
-                                        if(item.tema.length === 1) {
+                                </div>
+                                <div style={{display: "flex", flexWrap: 'wrap',height:"auto"}}>
+                                    <p className="descPergunta">Tema:</p> <p className="dataPerguntaAll">{item.tema.map((element) => {
+                                        if(i === 0) {
+                                            if(item.tema.length === 1) {
+                                                return ` ${element}`
+                                            }
+                                            return ` ${element},`
+                                        }else {
                                             return ` ${element}`
                                         }
-                                        return ` ${element},`
-                                    }else {
-                                        return ` ${element}`
-                                    }
-                                })}</p>
+                                    })}</p>
+                                </div> */}
                             </Row>
                             <p align="justify" className="TitlePergunta">{item.pergunta}</p>
                         <Container>
@@ -360,10 +390,10 @@ export default function ListaPerguntas ({perguntas}) {
                             </ul>
                         </Container>
                         {CondicaoResp(i)}
-                        <Container style={{display: "flex", flexDirection: "column"}} >
+                        <Container style={{display: "flex", flexDirection: "column", marginLeft: 5}} >
                             <Button className="btnResponder"  
                             onClick={() => verificarQuestao(item.resp, resposta, i)} type="submit">
-                                <p style={{color: "white", fontFamily: "Segoe", fontWeight: "bold", marginTop:5}}>RESPONDER</p>
+                                <p style={{color: "white", fontFamily: "Segoe", fontWeight: "bold", marginTop:1, fontSize: 15}}>RESPONDER</p>
                             </Button>
                             <Button onClick={() => {
                                 
@@ -479,7 +509,7 @@ export default function ListaPerguntas ({perguntas}) {
                             }
                                 
                             }} style={{backgroundColor: `${colorButtonJust(i)}`}} className="btnVisuJust" > 
-                            <p style={{color: "#bd3330", fontFamily: "Segoe", fontWeight: "bold", marginTop:5, fontSize: 13}}>VISUALIZAR JUSTIFICATIVA</p>
+                            <p style={{color: "#bd3330", fontFamily: "Segoe", fontWeight: "bold", marginTop:5, fontSize: 14}}>VISUALIZAR JUSTIFICATIVA</p>
                             </Button>
                             {CondicaoJust(i)}
                           
@@ -690,7 +720,7 @@ export default function ListaPerguntas ({perguntas}) {
     const CondicaoJust = (i) => {
         if(i === 0) {
             return ( 
-                <div style={{display: `${isVisibleJust}`}} className="containerJust"><p align="justify" className="textJust">{justi1}</p></div>
+                <Container style={{display: `${isVisibleJust}`}} className="containerJust"><p align="justify" className="textJust">{justi1}</p></Container>
             )
         }
         if(i === 1) {
@@ -743,7 +773,7 @@ export default function ListaPerguntas ({perguntas}) {
 
     return (
         <Container>
-            <Row>
+            <Row >
             {list.update()}
             </Row>
             <Container className="paginacao">
