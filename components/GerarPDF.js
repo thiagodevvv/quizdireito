@@ -48,7 +48,7 @@ export default function Home() {
         setPerguntas([])
         setBuscaFiltroTamanho(null)
         setIsLoadingFilter(true)
-        const data = await axios.post('/api/filtro', {
+        const data = await axios.post('https://quizdireito.vercel.app/api/filtro', {
             "mat": mat,
             "inst": inst,
             "info": `${infoInit === 0 && infoEnd === 0 ? "" : arr}`,
@@ -92,7 +92,7 @@ export default function Home() {
 
     useEffect(() => {
       const getInfo = async () => {
-      const resultado = await axios.get('/api/informativos')
+      const resultado = await axios.get('https://quizdireito.vercel.app/api/informativos')
       resultado.data.map((item) => {
           const opts = {
               label: `${item.numeroInfo}`,
@@ -102,7 +102,7 @@ export default function Home() {
       })
     }
     const getMaterias = async () => {
-      const resultado = await axios.get('/api/materias')
+      const resultado = await axios.get('https://quizdireito.vercel.app/api/materias')
       resultado.data.map((item) => {
         const opts = {
           label: `${item.materia}`,
@@ -116,7 +116,7 @@ export default function Home() {
     }
 
     const getTemas = async () => {
-      const resultado = await axios.get('/api/temas')
+      const resultado = await axios.get('https://quizdireito.vercel.app/api/temas')
       resultado.data.map((item) => {
         const opts = {
           label: `${item.tema}`,
@@ -233,14 +233,12 @@ export default function Home() {
           <link rel="preconnect" href="https://fonts.gstatic.com" />
           <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet" />
       </Head>
-      {/* FILTRO COMEÇA AQUI */}
       <Container className="content-filters">
-      <p className="filtername">FILTRO </p>
-                <Container >
+                <Container>
                  {/* CONTAINER INFO INICIAL E FINAL ///////////// C.E E M.E */}
                   <Container className="content-info">
-                    <Form.Group>
-                          <Form.Row>
+                   <div style={{marginLeft: -20, padding:0, width: "100%"}}><p className="filtername">FILTRO </p></div>
+                          <Form.Row style={{ padding: 0, marginLeft:-15}} >
                             <Select value={infoInit} placeholder={infoInit ? `Informativo inicial: ${infoInit}` : "Informativo inicial"} onChange={(value) => {
                                 setVerific(1)
                                 setInfoFinalDisable(false)
@@ -250,7 +248,7 @@ export default function Home() {
                                 const posicao = informativos.findIndex(element => element.value === value.value)
                                 const infoCut = informativos.slice(posicao + 1)
                                 infoCut.map((element) => setInfoFinalArray((prevState) => [...prevState, element]))
-                            }} styles={{dropdownIndicator: dropdownIndicatorStyles}} theme={customTheme} className="input-infos" options={informativos} />
+                            }} styles={{dropdownIndicator: dropdownIndicatorStyles}} theme={customTheme} className="input-info-inicial" options={informativos} />
 
                             <Select  isDisabled={infoFinalDisable} value={infoEnd} placeholder={infoEnd ? `Informativo final: ${infoEnd}` : "Informativo final"}  onChange={(value) => {
                                 setVerific(1)
@@ -268,7 +266,7 @@ export default function Home() {
                               }
                             }}
                                   style={{display: "flex", flexDirection: "row"}}> 
-                              <CheckBox isChecked={isCheckedCe}/> <Form.Label style={{marginTop: 10}}> C/E</Form.Label>
+                              <CheckBox isChecked={isCheckedCe}/> <Form.Label className="ce" > C/E</Form.Label>
                             </div>
 
                             <div style={{display: "flex", flexDirection: "row", marginLeft: 15}} onClick={() => {
@@ -279,18 +277,15 @@ export default function Home() {
                                 setTipoME(null)
                               }
                               }}>
-                              <CheckBox isChecked={isCheckedMe} /> <Form.Label style={{marginTop: 10}}>Múltipla escolha</Form.Label>
+                              <CheckBox isChecked={isCheckedMe} /> <Form.Label className="mult-escolha" >Múltipla escolha</Form.Label>
                             </div>
                           </div>
-                          
-
                           </Form.Row>
-                    </Form.Group>
               </Container>
             {/* FIMMMMMMMMMMMMMMMMMMMMM INFO INICIAL FINAL C.E M.E */}
-                  <Container  className="content-selects-filters" >
+                  <Container className="content-info" >
                     {/* <Form.Group > */}
-                        <Form.Row>
+                        <Form.Row style={{marginLeft:-15, padding: 0}} >
                           <Select value={inst.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Instituição" onChange={(value) => {
                             setVerific(1)
                             if(inst.indexOf(value.value) === -1) {
@@ -325,76 +320,81 @@ export default function Home() {
                         </Form.Row>
                       {/* </Form.Group> */}
 
-                  </Container>            
-                <Container style={{height: verificandoCaixaFiltro()}} className="ContainerFiltros">
-                    {arrayFilter.map((item,i) => {
-                      return (
-                        <div key={i} className="caixaFiltro" onClick={() => {
+                  </Container>
+                  <Container className="content-info">
+                    <Form.Row style={{marginLeft:-15, padding: 0}}  >
+                    <Container style={{height: verificandoCaixaFiltro()}} className="ContainerFiltros">
 
-                          mat.map((element, i) => {
-                            if(element === item ){
-                               setArrayFilter(deleteElementArray(arrayFilter, item))
-                               setMat(deleteElementArray(mat, item))
-                            }
-                          })
+                      {arrayFilter.map((item,i) => {
+                        return (
+                          <div key={i} className="caixaFiltro" onClick={() => {
 
-                          inst.map((element, i) => {
-                            if(element === item ){
-                               setArrayFilter(deleteElementArray(arrayFilter, item))
-                               setInst(deleteElementArray(inst, item))
-                            }
-                          })
-
-                          info.map(async(element, index) => {
-                            if(element === item ){
-                              if(index === 0) {
-                                const infofinal = info[1]
-                                const infoinicial = item
-                                const newArray = deleteElementArray(arrayFilter, infoinicial)
-                                const newArrayFinaly = deleteElementArray(newArray, infofinal)
-                                setArrayFilter(newArrayFinaly)
-                                setInfo([])
-                              }else {
+                            mat.map((element, i) => {
+                              if(element === item ){
                                 setArrayFilter(deleteElementArray(arrayFilter, item))
-                                setInfo(deleteElementArray(info, item))
-                                setInfoFinal(false)
+                                setMat(deleteElementArray(mat, item))
                               }
-                              
-                            }
-                          })
+                            })
 
-                          tema.map((element, i) => {
-                            if(element === item ){
-                               setArrayFilter(deleteElementArray(arrayFilter, item))
-                               setTema(deleteElementArray(tema, item))
-                            }
-                          })
-                         
+                            inst.map((element, i) => {
+                              if(element === item ){
+                                setArrayFilter(deleteElementArray(arrayFilter, item))
+                                setInst(deleteElementArray(inst, item))
+                              }
+                            })
 
-                        }}>
-                          <p style={{margin:10, fontSize: 11, color:"#cb605d"}}> {item}</p>
-                          <p className="xis">x</p>
-                        </div>
-                      )
-                    })}
-                </Container>
-                <Container style={{display:"flex", flexDirection: "row", marginLeft: -5}}>
+                            info.map(async(element, index) => {
+                              if(element === item ){
+                                if(index === 0) {
+                                  const infofinal = info[1]
+                                  const infoinicial = item
+                                  const newArray = deleteElementArray(arrayFilter, infoinicial)
+                                  const newArrayFinaly = deleteElementArray(newArray, infofinal)
+                                  setArrayFilter(newArrayFinaly)
+                                  setInfo([])
+                                }else {
+                                  setArrayFilter(deleteElementArray(arrayFilter, item))
+                                  setInfo(deleteElementArray(info, item))
+                                  setInfoFinal(false)
+                                }
+                                
+                              }
+                            })
+
+                            tema.map((element, i) => {
+                              if(element === item ){
+                                setArrayFilter(deleteElementArray(arrayFilter, item))
+                                setTema(deleteElementArray(tema, item))
+                              }
+                            })
+                          
+
+                          }}>
+                            <p style={{margin:10, fontSize: 11, color:"#cb605d"}}> {item}</p>
+                            <p className="xis">x</p>
+                          </div>
+                        )
+                      })}
+                  </Container>
+                  <Container style={{marginLeft: -15}}>
                     <Button className="btnFilter"  onClick={(event) => {
-                    event.preventDefault()
-                    if(mat.length > 0 ||  inst.length > 0  || infoInit.length > 0  ||  infoEnd.length > 0  || tema.length > 0 || tipoCE !== null || tipoME !== null)
-                    {
+                      event.preventDefault()
+                      if(mat.length > 0 ||  inst.length > 0  || infoInit.length > 0  ||  infoEnd.length > 0  || tema.length > 0 || tipoCE !== null || tipoME !== null)
+                      {
                         FiltroPerguntas(mat,inst,info, tema, tipoCE, tipoME, infoInit, infoEnd)
-                    }else 
-                    {
+                      }else 
+                      {
                         setAnyFilter(true)
-                    }
-                    }}> <p style={{fontSize: 15,fontWeight: "bold", margintTop: 50}}>BUSCAR</p></Button>
-                    <Button className="btnLimpar"  variant="danger" onClick={() => cleanFilters()}> <p style={{fontSize: 15,fontWeight: "bold"}}>
-                    LIMPAR
-                    </p>
+                      }
+                    }}> <p style={{fontSize: 15,fontWeight: "bold", textAlign: 'center', opacity: 0.9, fontFamily: 'Segoe', marginTop: 1}}>BUSCAR</p></Button>
+                    <Button className="btnLimpar"  onClick={() => cleanFilters()}> <p style={{fontSize: 15,fontWeight: "bold", opacity: 0.9, fontFamily: 'Segoe', marginTop: 1}}>
+                      LIMPAR
+                      </p>
                     </Button>
-                </Container>
-                <Container style={{marginLeft: -15}}>
+                  </Container>
+                  </Form.Row>
+                  </Container>
+                  <Container style={{marginLeft: -25}}>
                 <Button className="btnGerarPDF"  variant="success" onClick={() => {
                     const docDefinition = {
                         // header: [
@@ -558,13 +558,13 @@ export default function Home() {
                         GERAR PDF
                      </p>
                 </Button>
-                </Container>
-                <p style={{marginLeft:13,fontWeight: "bold", color: "red", marginTop: 6}}>{anyFilter ? "Selecione algum filtro." : ""}</p>
-                <p style={{marginLeft:13, fontWeight: "bold", marginTop: 5}}>{buscaFiltroTamanho ? `${buscaFiltroTamanho} questões foram encontradas.` : "" }</p>
+                </Container>            
+                <p style={{marginLeft:13,fontWeight: "bold", color: "red", marginTop: 6, fontFamily: 'Segoe'}}>{anyFilter ? "Selecione algum filtro." : ""}</p>
+                {isLoadingFilter ? <p style={{marginLeft:13, fontWeight: "bold", marginTop: 5, fontFamily: 'Segoe'}}>Buscando...</p> : ""}
+                {perguntas.length === 0 ?  <p style={{marginLeft:13, fontWeight: "bold", marginTop: 5, fontFamily: 'Segoe'}}>Nada encontrado!</p> : "" }
+                <p style={{marginLeft:13, fontWeight: "bold", marginTop: 5, fontFamily: 'Segoe'}}>{buscaFiltroTamanho ? `${buscaFiltroTamanho} questões foram encontradas.` : "" }</p>
             </Container>     
         </Container>
-{/* FILTRO ACABA AQUI */}
-      
-  </Container>
+    </Container>
   )
 }

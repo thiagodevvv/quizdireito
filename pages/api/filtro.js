@@ -1,5 +1,6 @@
 import db from '../../database'
 export default async (req,res) => {
+ 
     function removeDuplicates(originalArray, prop) {
         var newArray = [];
         var lookupObject  = {};
@@ -19,6 +20,7 @@ export default async (req,res) => {
         return Array.from(it);
     }
     const {mat, inst,info, temas, tipoCE, tipoME} = req.body
+
     if(mat.length > 0) {mat.sort((a,b) => a.localeCompare(b))}
     if(temas.length > 0) {temas.sort((a,b) => a.localeCompare(b))}
     if(inst.length > 0) {inst.sort((a,b) => a.localeCompare(b))}
@@ -103,13 +105,16 @@ export default async (req,res) => {
                 retornoPerguntas.push(await connectDB.collection('perguntas').find({instituição : `${inst[i]}`}).sort(sortInfo).toArray())
                }
         }
-        if(info && mat.length === 0 && inst.length === 0 && temas.length === 0) {
+        if(info.length > 0 && mat.length === 0 && inst.length === 0 && temas.length === 0) {
             //// IINFORMATIVOS OK
+            console.log(info.length)
             let inicial = parseInt(info[0])
             let final = parseInt(info[1])
+           
             let arrayInfo = []
 
-            if(info[1] && info[0]) {
+            if(info.length === 2) {
+                console.log('é dois info')
                 while(final >= inicial) {
                     const retorno = await connectDB.collection('perguntas').find({informativo : final}).toArray()
                     if(retorno.length > 0 ) {
@@ -118,8 +123,11 @@ export default async (req,res) => {
                     final = final - 1
                 }
             }
-            if(info[0] && info[1] == undefined) {
+            if(info.length === 1) {
+                console.log('info 1')
                 let infoInicial = parseInt(info[0])
+                console.log(infoInicial)
+
                 const sortInfo = { numeroInfo : 1}
                 const ultimoInfo = await connectDB.collection('informativos').find({}).sort(sortInfo).toArray()
                 const posicaoInfo = ultimoInfo.length - 1 
@@ -320,7 +328,7 @@ export default async (req,res) => {
                             final = final - 1
                         }
                     }
-                    if(info[0] && info[1] == undefined) {
+                    if(info[0] && info[1] == undefined || null || info[1].length === 0) {
                         let infoInicial = parseInt(info[0])
                         const sortInfo = { numeroInfo : 1}
                         const ultimoInfo = await connectDB.collection('informativos').find({}).sort(sortInfo).toArray()
@@ -350,7 +358,7 @@ export default async (req,res) => {
                         final = final - 1
                     }
                 }
-                if(info[0] && info[1] == undefined) {
+                if(info[0] && info[1] == undefined || null || info[1].length === 0) {
                     let infoInicial = parseInt(info[0])
                     const sortInfo = { numeroInfo : 1}
                     const ultimoInfo = await connectDB.collection('informativos').find({}).sort(sortInfo).toArray()
@@ -403,7 +411,7 @@ export default async (req,res) => {
             retornoPerguntas.push(arrayFatiado)    
         }
 
-        if(mat && inst && info && temas.length === 0) {
+        if(mat.length > 0 && inst.length > 0 && info.length > 0 && temas.length === 0) {
             let arrayFatiado = []
             let arrayDataPerguntas = []
             if(mat.length >= inst.length && mat.length >= info.length) {
@@ -423,7 +431,7 @@ export default async (req,res) => {
                                 final = final - 1
                             }
                         }
-                        if(info[0] && info[1] == undefined) {
+                        if(info[0] && info[1] == undefined || null || info[1].length === 0) {
                             let infoInicial = parseInt(info[0])
                             const sortInfo = { numeroInfo : 1}
                             const ultimoInfo = await connectDB.collection('informativos').find({}).sort(sortInfo).toArray()
@@ -457,7 +465,7 @@ export default async (req,res) => {
                                 }
                             }
                         }
-                        if(info[0] && info[1] == undefined) {
+                        if(info[0] && info[1] == undefined || null || info[1].length === 0) {
                             let infoInicial = parseInt(info[0])
                             const sortInfo = { numeroInfo : 1}
                             const ultimoInfo = await connectDB.collection('informativos').find({}).sort(sortInfo).toArray()
@@ -494,7 +502,7 @@ export default async (req,res) => {
                                     }
                                 }
                             }
-                            if(info[0] && info[1] == undefined) {
+                            if(info[0] && info[1] == undefined || null || info[1].length === 0) {
                                 let infoInicial = parseInt(info[0])
                                 const sortInfo = { numeroInfo : 1}
                                 const ultimoInfo = await connectDB.collection('informativos').find({}).sort(sortInfo).toArray()
@@ -532,7 +540,7 @@ export default async (req,res) => {
                                             final = final - 1
                                     }
                                 }
-                                if(info[0] && info[1] == undefined) {
+                                if(info[0] && info[1] == undefined || null || info[1].length === 0) {
                                     let infoInicial = parseInt(info[0])
                                     const sortInfo = { numeroInfo : 1}
                                     const ultimoInfo = await connectDB.collection('informativos').find({}).sort(sortInfo).toArray()
@@ -565,7 +573,7 @@ export default async (req,res) => {
                                         final = final - 1
                                 }
                             }
-                            if(info[0] && info[1] == undefined) {
+                            if(info[0] && info[1] == undefined || null || info[1].length === 0) {
                                 console.log('oi undefined info')
                                 let infoInicial = parseInt(info[0])
                                 const sortInfo = { numeroInfo : 1}
@@ -600,7 +608,7 @@ export default async (req,res) => {
                                         }
                                     }
                                 }
-                                if(info[0] && info[1] == undefined) {
+                                if(info[0] && info[1] == undefined || null || info[1].length === 0) {
                                     let infoInicial = parseInt(info[0])
                                     const sortInfo = { numeroInfo : 1}
                                     const ultimoInfo = await connectDB.collection('informativos').find({}).sort(sortInfo).toArray()
@@ -674,7 +682,7 @@ export default async (req,res) => {
                         final = final - 1
                     }
                 }
-                if(info[0] && info[1] == undefined) {
+                if(info[0] && info[1] == undefined || null || info[1].length === 0) {
                     let infoInicial = parseInt(info[0])
                     const sortInfo = { numeroInfo : 1}
                     const ultimoInfo = await connectDB.collection('informativos').find({}).sort(sortInfo).toArray()
@@ -1044,7 +1052,7 @@ export default async (req,res) => {
                                     final = final - 1
                                 }
                             }
-                            if(info[0] && info[1] == undefined) {
+                            if(info[0] && info[1] == undefined || null || info[1].length === 0) {
                                 let infoInicial = parseInt(info[0])
                                 const sortInfo = { numeroInfo : 1}
                                 const ultimoInfo = await connectDB.collection('informativos').find({}).sort(sortInfo).toArray()
@@ -1074,7 +1082,7 @@ export default async (req,res) => {
                                     final = final - 1
                                 }
                             }
-                            if(info[0] && info[1] == undefined) {
+                            if(info[0] && info[1] == undefined || null || info[1].length === 0) {
                                 let infoInicial = parseInt(info[0])
                                 const sortInfo = { numeroInfo : 1}
                                 const ultimoInfo = await connectDB.collection('informativos').find({}).sort(sortInfo).toArray()
@@ -1105,7 +1113,7 @@ export default async (req,res) => {
                                     final = final - 1
                                 }
                             }
-                            if(info[0] && info[1] == undefined) {
+                            if(info[0] && info[1] == undefined || null || info[1].length === 0) {
                                 let infoInicial = parseInt(info[0])
                                 const sortInfo = { numeroInfo : 1}
                                 const ultimoInfo = await connectDB.collection('informativos').find({}).sort(sortInfo).toArray()
@@ -1189,7 +1197,7 @@ export default async (req,res) => {
                                         final = final - 1
                                     }
                                 }
-                                if(info[0] && info[1] == undefined) {
+                                if(info[0] && info[1] == undefined || null || info[1].length === 0) {
                                     let infoInicial = parseInt(info[0])
                                     const sortInfo = { numeroInfo : 1}
                                     const ultimoInfo = await connectDB.collection('informativos').find({}).sort(sortInfo).toArray()
@@ -1220,7 +1228,7 @@ export default async (req,res) => {
                                         final = final - 1
                                     }
                                 }
-                                if(info[0] && info[1] == undefined) {
+                                if(info[0] && info[1] == undefined || null || info[1].length === 0) {
                                     let infoInicial = parseInt(info[0])
                                     const sortInfo = { numeroInfo : 1}
                                     const ultimoInfo = await connectDB.collection('informativos').find({}).sort(sortInfo).toArray()
@@ -1255,7 +1263,7 @@ export default async (req,res) => {
                                         final = final - 1
                                     }
                                 }
-                                if(info[0] && info[1] == undefined) {
+                                if(info[0] && info[1] == undefined || null || info[1].length === 0) {
                                     let infoInicial = parseInt(info[0])
                                     const sortInfo = { numeroInfo : 1}
                                     const ultimoInfo = await connectDB.collection('informativos').find({}).sort(sortInfo).toArray()
@@ -1290,7 +1298,7 @@ export default async (req,res) => {
                                         final = final - 1
                                     }
                                 }
-                                if(info[0] && info[1] == undefined) {
+                                if(info[0] && info[1] == undefined || null || info[1].length === 0) {
                                     let infoInicial = parseInt(info[0])
                                     const sortInfo = { numeroInfo : 1}
                                     const ultimoInfo = await connectDB.collection('informativos').find({}).sort(sortInfo).toArray()
@@ -1322,7 +1330,7 @@ export default async (req,res) => {
                                         final = final - 1
                                     }
                                 }
-                                if(info[0] && info[1] == undefined) {
+                                if(info[0] && info[1] == undefined || null || info[1].length === 0) {
                                     let infoInicial = parseInt(info[0])
                                     const sortInfo = { numeroInfo : 1}
                                     const ultimoInfo = await connectDB.collection('informativos').find({}).sort(sortInfo).toArray()

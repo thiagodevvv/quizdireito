@@ -4,7 +4,6 @@ import {MongoClient} from 'mongodb'
 
 
 export default async () => {
-    const client = await MongoClient.connect(DB_URL, {useNewUrlParser: true,useUnifiedTopology: true})
+    const client = await MongoClient.connect(DB_URL, {useNewUrlParser: true,useUnifiedTopology: true, keepAlive: true})
     return client
-    
 }

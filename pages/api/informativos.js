@@ -5,6 +5,6 @@ export default async (req,res) => {
     const connectDB = client.db('dbPerguntas')
         const data = await connectDB.collection('informativos').find({}).sort(sortInfo).toArray((err, result) => {
             return res.json(result)
+            
         })
-         
 }

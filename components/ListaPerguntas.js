@@ -325,27 +325,27 @@ export default function ListaPerguntas ({perguntas}) {
                     <Container key={i}>
                         <Container className="questao"> <p className="questaoTitle">Questão {zero()}</p></Container>
                             <Row className="ContainerDescPergunta">
-                                <p align="justify" style={{fontFamily: 'Segoe   ', fontSize: 15}}>
-                                    <b>Id:</b> {item.idQuestion} <b>Instituição:</b> {item.instituição} <b>Informativo:</b> {item.informativo} 
-                                    <b> Matéria:</b> {item.materia.map((element,i) => {
+                                <p align="justify" style={{fontFamily: 'Segoe   ', fontSize: 15, color: "#808080", marginLeft: 1}}>
+                                    <b>Id:</b> {item.idQuestion}&nbsp; <b> Instituição:</b> {item.instituição}&nbsp;&nbsp; <b> Informativo:</b> {item.informativo} 
+                                    &nbsp;&nbsp;<b> Matéria:</b> {item.materia.map((element,i) => {
                                         if(i === 0) {
                                             if(item.materia.length === 1) {
                                                 return `${element}`
                                             }
                                          return `${element},`
                                         }else {
-                                            return `${element}`
+                                            return ` ${element}`
                                         }
                                         
                                     })}
-                                    <b> Tema: </b> {item.tema.map((element,i) => {
+                                    &nbsp;&nbsp;<b> Tema: </b> {item.tema.map((element,i) => {
                                         if(i === 0) {
                                             if(item.tema.length === 1) {
                                                 return `${element}`
                                             }
                                          return `${element},`
                                         }else {
-                                            return `${element}`
+                                            return ` ${element}`
                                         }
                                         
                                     })}
@@ -390,10 +390,10 @@ export default function ListaPerguntas ({perguntas}) {
                             </ul>
                         </Container>
                         {CondicaoResp(i)}
-                        <Container style={{display: "flex", flexDirection: "column", marginLeft: 5}} >
+                        <Container style={{display: "flex", flexDirection: "column", marginLeft: 5, marginTop: -20}} >
                             <Button className="btnResponder"  
                             onClick={() => verificarQuestao(item.resp, resposta, i)} type="submit">
-                                <p style={{color: "white", fontFamily: "Segoe", fontWeight: "bold", marginTop:1, fontSize: 15}}>RESPONDER</p>
+                                <p style={{color: "white", fontFamily: "Segoe", fontWeight: "bold", marginTop:1, fontSize: 15, opacity: 0.9}}>RESPONDER</p>
                             </Button>
                             <Button onClick={() => {
                                 
@@ -511,9 +511,9 @@ export default function ListaPerguntas ({perguntas}) {
                             }} style={{backgroundColor: `${colorButtonJust(i)}`}} className="btnVisuJust" > 
                             <p style={{color: "#bd3330", fontFamily: "Segoe", fontWeight: "bold", marginTop:5, fontSize: 14}}>VISUALIZAR JUSTIFICATIVA</p>
                             </Button>
-                            {CondicaoJust(i)}
                           
                             </Container>
+                            {CondicaoJust(i)}
                             <div className="separadorQuestão"></div>     
                     </Container>
                 )
