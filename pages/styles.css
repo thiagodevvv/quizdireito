@@ -9,7 +9,15 @@
     font-size: 25px;
     margin-left: 5px;
     color: white;
-    margin-top:  35px;
+    /* margin-top:  35px; */
+}
+
+.content-tema-shower {
+    display: flex;
+    flex-direction: row;
+    margin-left: 0px;
+    padding: 0px;
+    margin-top: 10px;
 }
 
 @font-face {
@@ -21,29 +29,24 @@
 @media screen and (max-width: 767px) {
     #title {
        font-size: 20px;
-       margin-top: 40px;
+  
      }
-     /* .img-direito {
-         width: 50px;
-         height: 50px;
-         margin-top: 10px;
-     } */
      .img-instagram {
          width: 50px;
          height: 50px;
-         margin-top: 15px;
+         
      }
    }
 
 
 @media screen and (max-width: 600px) {
    #title {
-      font-size: 22px;
+      font-size: 20px;
     }
     .img-direito {
         width: 60px;
         height: 60px;
-        margin-top: 20px;
+        
     }
     .img-instagram {
         width: 50px;
@@ -63,26 +66,34 @@
 
 @media screen and (max-width: 508px) {
     #title {
-       font-size: 19px;
+       font-size: 17px;
      }
 }
 
 @media screen and (max-width: 467px) {
     #title {
-       font-size: 17px;
+       font-size:  15px;
      }
 }
 
 @media screen and (max-width: 460px) {
     #title {
-       font-size: 17px;
+       font-size: 15px;
+     }
+     .content-tema-shower {
+         display: flex;
+         flex-direction: column;
+     }
+}
+@media screen and (max-width: 435px) {
+    #title {
+       font-size: 12px;
      }
 }
 
-
 @media screen and (max-width: 432px) {
     #title {
-       font-size: 14px;
+       font-size: 12px;
      }
 }
 
@@ -90,47 +101,80 @@
     .img-direito {
         width: 45px;
         height: 45px;
-        margin-top: 25px;
+      
     }
     .img-instagram {
         width: 40px;
         height: 40px;
     }
-}
-
-@media screen and (max-width: 415px) {
-  
     #title {
         font-size: 15px;
     }
+}
+
+@media screen and (max-width: 417px) {
+  
+    #title {
+        font-size: 13px;
+    }
 } 
+
+@media screen and (max-width: 386px) {
+    
+    #title {
+        font-size: 12px;
+    }
+}
 
 @media screen and (max-width: 380px) {
     .img-direito {
         width: 45px;
         height: 45px;
-        margin-top: 20px;
+     
     }
     .img-instagram {
         width: 40px;
         height: 40px;
-        margin-bottom: 5px;
+    
     }
     #title {
-        font-size: 13px;
+        font-size: 12px;
+    }
+}
+@media screen and (max-width: 370px) {
+    
+    #title {
+        font-size: 11px;
     }
 }
 
-@media screen and (max-width: 345px) {
+@media screen and (max-width: 356px) {
     .img-direito {
-        width: 45px;
-        height: 45px;
-        margin-top: 20px;
+        width: 35px;
+        height: 35px;
+     
     }
     .img-instagram {
         width: 30px;
         height: 30px;
-        margin-top: 20px;
+    
+    }
+    /* #title {
+        font-size: 12px;
+    } */
+}
+
+    
+@media screen and (max-width: 345px) {
+    .img-direito {
+        width: 45px;
+        height: 45px;
+      
+    }
+    .img-instagram {
+        width: 30px;
+        height: 30px;
+     
     }
     #title {
         font-size: 12px;
@@ -146,7 +190,7 @@
     .img-instagram {
         width: 35px;
         height: 35px;
-        margin-bottom: 5px;
+       
     }
 }
 
@@ -154,42 +198,37 @@
     .img-direito {
         width: 35px;
         height: 35px;
-        margin-top: 25px;
+    
     }
     .img-instagram {
         width: 29px;
         height: 29px;
-        margin-top: 20px;
+      
     }
     #title {
-        font-size: 13px;
-        font-weight: 500;
+        font-size: 9px;
+        font-weight: BOLD;
     }
 }
 
-
-
-
-
-
 .header {
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     background: transparent linear-gradient(276deg, #0F4C81 0%, #224978 0%, #274876 1%, #2C4774 10%, #2F4772 15%, #334770 21%, #514362 38%, #BD3330 100%) 0% 0% no-repeat padding-box;
     border: 1px solid #707070;
     width: 100%;
     height:auto;
+    margin: 0px;
 }
 
 .content-filters {
     display: flex;
     flex-direction: column;
     width: 100%;
-    /* justify-content: left; */
+    margin-bottom: -15px;
+
 }
-.content-filtername {
-    background-color: seagreen;
-}
+
 .content-buttons-filters {
     display: flex;
     flex-direction: row;
@@ -197,34 +236,23 @@
 }
 
 
-@media screen and (max-width: 768px) {
-    /* .content-filters {
-        margin-left: 40px;
-    } */
-    /* .content-buttons-filters {
-        margin-left: -20px;
-    } */
-}
-
-
 .content-info {
     width: 100%;
-    border-bottom: 1px solid #DCDCDC;
+    /* border-bottom: 1px solid #DCDCDC; */
     margin-left: 0px;
     margin-bottom: 5px;
-
 }
 
 
 .input-infos {
     width: 230px;
-    margin-top: 10px;
+    margin-top: 5px;
     margin-right: 10px;
     margin-bottom: 10px;
 }
 .input-info-inicial {
     width: 230px;
-    margin-top: 10px;
+    margin-top: 5px;
     margin-right: 10px;
     margin-bottom: 10px;
 }
@@ -237,6 +265,27 @@
          width: 100%;
      }
    }
+
+.btnFilterPDF {
+    background-color: #2b4874;
+    width: 204px;
+    margin-top: 10px;
+    margin-right: 10px;
+    border-radius: 4px;
+    height: 40px;
+    border: #2b4874;
+    opacity: 1;
+    margin-bottom: 10px;
+}
+
+.btnFilterPDF:hover {
+    background-color: #2b4874;
+    opacity: 0.9;
+}
+
+.btnFilterPDF:focus {
+    background-color: #2b4874;
+}
 
 
 .btnFilter {
@@ -251,6 +300,7 @@
     margin-bottom: 10px;
 }
 
+
 .btnFilter:hover {
     background-color: #2b4874;
     opacity: 0.9;
@@ -260,6 +310,9 @@
 .btnFilter:focus {
     background-color: #2b4874;
 }
+
+
+
 
 .btnLimpar {
     width: 204px;
@@ -277,19 +330,54 @@
     opacity: 0.9;
 }
 
+.btnLimpar:focus {
+    background-color: #bd3330;
+}
+
+
 .btnGerarPDF {
     width: 419px;
-    margin-top: 10px;
-    margin-left: 10px;
+    margin-top: 0px;
+    margin-left: 0px;
     height: 40px;
     
+}
+
+.btnLimparPDF {
+    width: 204px;
+    margin-top: 10px;
+    background-color: #bd3330;
+    height: 40px;
+    border: #bd3330;
+    opacity: 1;
+    margin-bottom: 10px;   
+}
+.btnLimparPDF:hover {
+    background-color: #bd3330;
+    opacity: 0.9;
+}
+
+
+@media screen and (max-width: 285px) {
+    .btnFilter {
+        width: 100%;
+    }
+    .btnLimpar {
+        width: 100%;
+    }
 }
 
 
 @media screen and (max-width:767px) {
     .btnGerarPDF {
         width: 100%;
-      
+    }
+    .btnFilterPDF {
+        width: 100%;
+        margin-bottom: 0px;
+    }
+    .btnLimparPDF {
+        width: 100%;
     }
 }
 
@@ -312,6 +400,7 @@
     font-size: 20px; 
     margin-top: 0px;
     margin-right: 10px;
+    margin-bottom: 0px;
 }
 .mult-escolha {
     font-family: 'Segoe';
@@ -326,8 +415,9 @@
 }
 
 @media screen and (max-width:600px) {
+
     .filtername {
-        margin-left: 10px;
+        margin-bottom: 25px;
     }
   
 }
@@ -388,19 +478,19 @@
     margin-left: 0px;
 }
 .ContainerAlternativa {
-    width: 35px;
-    height: 35px;
+    width: 36px;
+    height: 36px;
     border: 2px solid #cb605d;
     border-radius: 50%;
-    text-align: center;
+    padding: 0px;
+    /* margin: 0px; */
     margin-right: 5px;
     margin-top: 10px;
-    padding: 0px;
     opacity: 0.8;
     background-color: white;
 }
 .ContainerAlternativa:focus {
-    background-color: #cb605d;
+    /* background-color: #cb605d; */
     outline: none;
 }
 
@@ -459,6 +549,7 @@
     margin-bottom: 10px;
     word-break: break-word;
     border-radius: 2px;
+    margin-left: 0px;
 }
 
 .textJust {
@@ -509,8 +600,7 @@
     font-size: 25px;
     font-weight: bold;
     color: black;
-    border-bottom: 1px solid black;
-    
+    border-bottom: 1px solid black; 
 }
 
 .btnpages:focus {
@@ -518,8 +608,8 @@
 }
 
 .totalPaginas {
-    font-family: 'Roboto' sans-serif;
-    font-size: 12px;
+    font-family: 'Segoe' sans-serif;
+    font-size: 15px;
     color: #808080;
     margin-right: 0px;
 }
@@ -578,13 +668,14 @@
     border: 1px solid #808080;
     background-color: #FFFAFA;
     width: 710px;
-    margin-top: 5px;
+    margin-top: 0px;
     display: flex;
     flex-wrap: wrap;
     padding: 10px;
     border-radius: 5px;
     margin-left: 0px;
     margin-right: 10px;
+    margin-bottom: 5px;
 }
 
 /* @media screen and (max-width:992px) {
@@ -601,34 +692,24 @@
     }
 }
 
-.content-selects-filters {
-    display: flex;
-    flex-direction: row;
-}
-
-
-
 @media screen and (max-width:768px) {
 
     .input-infos {
         width: 100%;
+        margin-right: 0px;
     }
     .input-info-inicial {
         width: 100%;
+        margin-right: 0px;
     }
-    /* .ContainerFiltros{
-        width: 100%;
-        margin-left: -5px;
-    } */
-    .content-selects-filters {
-        display: flex;
-        flex-direction: column;
-        padding: 0px;
+    .ContainerFiltros{
+        margin-right: 0px;
     }
+    
     .content-info {
         display: flex;
         flex-direction: column;
-        /* padding: 0px; */
+        margin-left: 0px;
     }
 
 }
@@ -688,7 +769,7 @@ ul {
 
 .content-materias-addpergunta {
     background-color: pink;
-    margin-left: 15px;
+    margin-right: 10px;
     border-radius: 10px;
     padding: 1px;
     display: flex;
@@ -772,8 +853,9 @@ ul {
 .ou-add-pergunta {
     margin-left: 3px;
     margin-right: 3px;
-    margin-top: 40px;
     font-family: 'Segoe';
+    font-size: 15;
+    font-weight: bold;
 }
 .input-add-materia {
     width: 100%;
@@ -800,3 +882,70 @@ ul {
     margin-left: 5px;
 }
 
+
+.btnLogin {
+    margin-top: 5px;
+    background-color: #2F4C6E;
+    width: 204px;
+    height: 40px;
+
+}
+
+.btnLogin:hover {
+    background-color: #2F4C6E;
+    opacity: 0.9;
+    border: none;
+}
+
+
+@media screen and (max-width:337px) {
+    .btnLogin {
+        width: 100%;
+    }
+}
+
+.content-mat {
+    display: flex;
+    flex-direction: column;
+    width: 48%;
+    justify-content: center;
+    
+}
+
+
+@media screen and (max-width:991px) {
+    .form-mat-tema {
+        display: flex;
+        flex-direction: column;
+    }
+    .content-mat {
+        width: 100%;
+    }
+}
+
+.content-alternativas {
+    display: flex;
+    flex-direction: row;
+}
+.content-questao-atualizada {
+    display: flex;
+    flex: 1;
+    /* justify-content: center;
+    align-items: center; */
+    margin: 0px;
+    background-color: rgb(235,228,192);
+    width: 202px;
+    height: 71px;
+    border-radius: 10px;
+}
+
+@media screen and (max-width: 780px) {
+    .content-alternativas {
+        flex-direction: column;
+    }
+    .content-questao-atualizada {
+        margin-left: -15px;
+        height: auto;
+        /* padding: 10px; */
+    }
+   }

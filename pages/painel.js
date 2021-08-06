@@ -23,13 +23,13 @@ export default function Painel () {
 
       <body style={{backgroundColor: "#2F4C6E", margin: 0, padding: 0}}>
         <Container style={{display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column"}}>
-          <div style={{display: "flex", alignContent: "right"}}>
+          <Container style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
             <Button onClick={() => logout()} style={{height: 35, width: 80,marginTop: 10}} variant="danger">SAIR</Button>
-          </div>
-            <div style={{display: "flex", flexDirection: "row"}}>
+          </Container>
+            <Container style={{display: "flex", flexDirection: "row", alignItems: "center", justifyContent: "center", marginTop: 15}}>
               <img  width="80" height="80" src="/direito.svg"/>  
               <h1 id="title">QUESTÕES DE INFORMATIVO</h1> 
-            </div>
+            </Container>
             <Container className="header-painel">
                 <div onClick={() => {
                   setIsVisibleGerenciarQuest(false)
@@ -45,11 +45,13 @@ export default function Painel () {
 
                 <div onClick={() => {
                   setIsVisibleGerenciarQuest(false)
+                  setIsVisibleAddPergunta(true)
                   setIsVisibleCE(true)
                   setShowGerenciar(false)
                   setShow(1)                
                   setShowCE(true)
                   setShowPDF(false)
+                  setIsVisiblePDF(true)
                   }} style={{backgroundColor: `${showCE ? "white": ""}`}}  className="opts-header-painel"><p className="opts-painel">CERTO/ERRADO </p></div>
 
                 <div  onClick={() => {

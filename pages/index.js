@@ -37,8 +37,10 @@ export default function Home() {
     const [tipoCE, setTipoCE] = useState(null)
     const [tipoME, setTipoME] = useState(null)
     const [anyFilter, setAnyFilter] = useState(false)
+    const [zerarLista, setZerarLista] = useState(false)
 
     async function FiltroPerguntas (mat,inst,info, temas, tipoCE, tipoME, infoInit, infoEnd) {
+      setZerarLista(true)
       if(anyFilter) { setAnyFilter(false)}
       let arr = []
       if(infoInit) { arr.push(infoInit)}
@@ -46,7 +48,7 @@ export default function Home() {
         setPerguntas([])
         setBuscaFiltroTamanho(null)
         setIsLoadingFilter(true)
-        const data = await axios.post('/api/filtro', {
+        const data = await axios.post('https://quizdireito.vercel.app/api/filtro', {
             "mat": mat,
             "inst": inst,
             "info": arr,
@@ -89,7 +91,7 @@ export default function Home() {
 
     useEffect(() => {
       const getInfo = async () => {
-      const resultado = await axios.get('/api/informativos')
+      const resultado = await axios.get('https://quizdireito.vercel.app/api/informativos')
       resultado.data.map((item) => {
           const opts = {
               label: `${item.numeroInfo}`,
@@ -99,7 +101,7 @@ export default function Home() {
       })
     }
     const getMaterias = async () => {
-      const resultado = await axios.get('/api/materias')
+      const resultado = await axios.get('https://quizdireito.vercel.app/api/materias')
       resultado.data.map((item) => {
         const opts = {
           label: `${item.materia}`,
@@ -113,7 +115,7 @@ export default function Home() {
     }
 
     const getTemas = async () => {
-      const resultado = await axios.get('/api/temas')
+      const resultado = await axios.get('https://quizdireito.vercel.app/api/temas')
       resultado.data.map((item) => {
         const opts = {
           label: `${item.tema}`,
@@ -130,9 +132,9 @@ export default function Home() {
 
     useEffect(() => {
         const chamando = async () => {
-        const resultado = await axios.get('/api/busca')
+        const resultado = await axios.get('https://quizdireito.vercel.app/api/busca')
         setPerguntas(resultado.data)
-
+        setBuscaFiltroTamanho(resultado.data.length)
       }
       chamando()
     }, [])
@@ -190,7 +192,7 @@ export default function Home() {
     
 
   return (
-    <Container style={{padding: 0, margin: 0, display: "flex", flexDirection: "column", width: "100%"}} fluid="true">
+    <Container style={{padding: 0,margin: 0,display: "flex", flexDirection: "column", width: "100%"}} fluid>
       <Head>
         <title>Quiz</title>
         <link rel="icon" href="/favicon.ico" />
@@ -204,11 +206,11 @@ export default function Home() {
       </Head>
       <Container className="header" fluid>
         <Container style={{display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "center"}}>
-          <div style={{display: "flex", flexDirection: "row", flex:5}}>
+          <div style={{display: "flex", flexDirection: "row", flex:14, alignItems: "center"}}>
             <img className="img-direito" width="90" height="90"  src='/direito.svg' />
             <h1 id="title">QUESTÕES DE INFORMATIVO</h1> 
           </div>
-          <div style={{marginTop: 10, flex: 1}}>
+          <div style={{flex: 1, alignItems: "center"}}>
             <a target="_blank" href="https://www.instagram.com/_questaodeinformativo_/">
               <img className="img-instagram" width="60" height="60" src="/instagram.svg"/>
             </a>
@@ -217,11 +219,11 @@ export default function Home() {
       </Container>
       {/* FILTRO COMEÇA AQUI */}
       <Container className="content-filters">
-                <Container>
+                <Container style={{marginBottom: -10}}>
                  {/* CONTAINER INFO INICIAL E FINAL ///////////// C.E E M.E */}
                   <Container className="content-info">
-                   <div style={{marginLeft: -15, padding:0, width: "100%"}}><p className="filtername">FILTRO </p></div>
-                          <Form.Row style={{ padding: 0, marginLeft:-15}} >
+                   <div style={{marginLeft: -15, padding:0, width: "100%", marginTop: 10}}><p className="filtername">FILTRO </p></div>
+                          <Form.Row style={{ padding: 0, marginLeft:-15, marginRight: -10}} >
                             <Select value={infoInit} placeholder={infoInit ? `Informativo inicial: ${infoInit}` : "Informativo inicial"} onChange={(value) => {
                                 setVerific(1)
                                 setInfoFinalDisable(false)
@@ -267,7 +269,7 @@ export default function Home() {
             {/* FIMMMMMMMMMMMMMMMMMMMMM INFO INICIAL FINAL C.E M.E */}
                   <Container className="content-info" >
                     {/* <Form.Group > */}
-                        <Form.Row style={{marginLeft:-15, padding: 0}} >
+                        <Form.Row style={{marginLeft:-15, padding: 0, marginRight: -10}} >
                           <Select value={inst.filter(({ value }) => value === myForm.mySelectKey)} placeholder="Instituição" onChange={(value) => {
                             setVerific(1)
                             if(inst.indexOf(value.value) === -1) {
@@ -304,7 +306,7 @@ export default function Home() {
 
                   </Container>
                   <Container className="content-info">
-                    <Form.Row style={{marginLeft:-15, padding: 0}}  >
+                    <Form.Row style={{marginLeft:-15, padding: 0, marginRight: -10}}  >
                     <Container style={{height: verificandoCaixaFiltro()}} className="ContainerFiltros">
 
                       {arrayFilter.map((item,i) => {
@@ -358,7 +360,9 @@ export default function Home() {
                         )
                       })}
                   </Container>
-                  <Container style={{marginLeft: -15}}>
+                  </Form.Row>
+                  </Container>
+                  <Container style={{marginLeft: 0,padding:0, width: "100%"}}>
                     <Button className="btnFilter"  onClick={(event) => {
                       
                       event.preventDefault()
@@ -375,19 +379,16 @@ export default function Home() {
                       </p>
                     </Button>
                   </Container>
-                  </Form.Row>
-                  
                   </Container>
-                  <Container style={{marginLeft: -25}}>
-                    <p style={{marginLeft:13,fontWeight: "bold", color: "red", marginTop: 6, fontFamily: 'Segoe'}}>{anyFilter ? "Selecione algum filtro." : ""}</p>
-                    {isLoadingFilter ? <p style={{marginLeft:13, fontWeight: "bold", marginTop: 5, fontFamily: 'Segoe'}}>Buscando...</p> : ""}
-                    {perguntas.length === 0 && !isLoadingFilter?  <p style={{marginLeft:13, fontWeight: "bold", marginTop: 5, fontFamily: 'Segoe'}}>Nada encontrado!</p> : "" }
-                    <p style={{marginLeft:13, fontWeight: "bold", marginTop: 5, fontFamily: 'Segoe'}}>{buscaFiltroTamanho ? `Nº de questões encontradas: ${buscaFiltroTamanho}` : "" }</p>
-                  </Container>           
-            </Container>     
+                  <Container style={{marginLeft: -13, marginTop: -10, marginBottom: 0}}>
+                    <p style={{marginLeft:13,fontWeight: "bold", color: "red", marginTop: 15, fontFamily: 'Segoe', fontSize: 15, marginBottom: 4}}>{anyFilter ? "Selecione algum filtro." : ""}</p>
+                    {isLoadingFilter ? <p style={{marginLeft:13, color: "#707070", marginTop: 5, fontFamily: 'Segoe', fontSize: 15}}>Buscando...</p> : ""}
+                    {perguntas.length === 0 && !isLoadingFilter?  <p style={{marginLeft:13, color: "#707070", marginTop: 5, fontFamily: 'Segoe'}}>Nada encontrado!</p> : "" }
+                    <p style={{marginLeft:13, color: "#707070", marginTop: 0, fontFamily: 'Segoe', fontSize: 15}}>{buscaFiltroTamanho ? `Nº de questões encontradas: ${buscaFiltroTamanho}` : "" }</p>
+                  </Container>             
         </Container>
 {/* FILTRO ACABA AQUI */}
-          <ListaPerguntas perguntas={perguntas} />
+          <ListaPerguntas zerar={zerarLista} perguntas={perguntas} />
   </Container>
   )
 }

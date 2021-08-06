@@ -18,8 +18,8 @@ export default function Home() {
     const [mat, setMat] = useState([])
     const [inst, setInst] = useState([])
     const [info, setInfo] = useState([])
-    const [infoInit, setInfoInit] = useState(0)
-    const [infoEnd, setInfoEnd] = useState(0)
+    const [infoInit, setInfoInit] = useState("")
+    const [infoEnd, setInfoEnd] = useState("")
     const [tema, setTema] = useState([])
     const [buscaFiltroTamanho, setBuscaFiltroTamanho] = useState(null)
     const [informativos, setInformativos] = useState([])
@@ -41,24 +41,24 @@ export default function Home() {
     
 
     async function FiltroPerguntas (mat,inst,info, temas, tipoCE, tipoME, infoInit, infoEnd) {
-      
       let arr = []
-      arr.push(infoInit)
-      arr.push(infoEnd)
+      if(anyFilter) { setAnyFilter(false)}
+      if(infoInit) { arr.push(infoInit)}
+      if(infoEnd) { arr.push(infoEnd)} 
+     
         setPerguntas([])
         setBuscaFiltroTamanho(null)
         setIsLoadingFilter(true)
         const data = await axios.post('https://quizdireito.vercel.app/api/filtro', {
             "mat": mat,
             "inst": inst,
-            "info": `${infoInit === 0 && infoEnd === 0 ? "" : arr}`,
+            "info": arr,
             "temas": temas,
             "tipoCE": tipoCE,
             "tipoME": tipoME
         })
         console.log(data)
         if(data.data.length === 0) {
-          alert('Nenhuma pergunta encontrado com esse tipo de filtro')
           setBuscaFiltroTamanho(0)
         }else {
      
@@ -154,8 +154,10 @@ export default function Home() {
       setMat([])
       setInst([])
       setInfo([])
+      setInfoInit("")
+      setInfoEnd("")
       resetForm()
-      window.location.reload()
+      // window.location.reload()
     }
 
 
@@ -194,14 +196,14 @@ export default function Home() {
           
             if(contador === 1) {
                 arrColunm.map((element, index) => {
-                    arrResp.push(`${index < 9 ? "0"+ `${index + 1}` : `${index + 1}` }` + ")" + " - " + element.resp.toUpperCase())
+                    arrResp.push(`${index < 9 ? "0"+ `${index + 1}` : `${index + 1}` }`  + " - " + element.resp.toUpperCase())
                 })
                 
             }
             if(contador > 1) {
                 arrColunm.map((element, index) => {
                    
-                    arrResp.push(`${index+1 + somador}` + ")" + " - " + element.resp.toUpperCase())
+                    arrResp.push(`${index+1 + somador}`  + " - " + element.resp.toUpperCase())
                 })
             } 
             contador = contador + 1
@@ -237,7 +239,7 @@ export default function Home() {
                 <Container>
                  {/* CONTAINER INFO INICIAL E FINAL ///////////// C.E E M.E */}
                   <Container className="content-info">
-                   <div style={{marginLeft: -20, padding:0, width: "100%"}}><p className="filtername">FILTRO </p></div>
+                   <div style={{marginLeft: -15, padding:0, width: "100%"}}><p className="filtername">FILTRO </p></div>
                           <Form.Row style={{ padding: 0, marginLeft:-15}} >
                             <Select value={infoInit} placeholder={infoInit ? `Informativo inicial: ${infoInit}` : "Informativo inicial"} onChange={(value) => {
                                 setVerific(1)
@@ -376,8 +378,8 @@ export default function Home() {
                         )
                       })}
                   </Container>
-                  <Container style={{marginLeft: -15}}>
-                    <Button className="btnFilter"  onClick={(event) => {
+                  <Container style={{marginLeft: 0, padding:0}}>
+                    <Button className="btnFilterPDF" onClick={(event) => {
                       event.preventDefault()
                       if(mat.length > 0 ||  inst.length > 0  || infoInit.length > 0  ||  infoEnd.length > 0  || tema.length > 0 || tipoCE !== null || tipoME !== null)
                       {
@@ -387,182 +389,172 @@ export default function Home() {
                         setAnyFilter(true)
                       }
                     }}> <p style={{fontSize: 15,fontWeight: "bold", textAlign: 'center', opacity: 0.9, fontFamily: 'Segoe', marginTop: 1}}>BUSCAR</p></Button>
-                    <Button className="btnLimpar"  onClick={() => cleanFilters()}> <p style={{fontSize: 15,fontWeight: "bold", opacity: 0.9, fontFamily: 'Segoe', marginTop: 1}}>
+                    <Button className="btnLimparPDF"  onClick={() => cleanFilters()}> <p style={{fontSize: 15,fontWeight: "bold", opacity: 0.9, fontFamily: 'Segoe', marginTop: 1}}>
                       LIMPAR
                       </p>
                     </Button>
+                    <Container style={{marginLeft: 0, padding:0, width: "100%"}}>
+                    <Button className="btnGerarPDF"  variant="success" onClick={() => {
+                        const docDefinition = {
+                            pageSize: 'A4',
+                            header: [{columns: [
+                              {text: 'www.questaodeinformativo.com.br', alignment: 'left', margin: [39,10,0,0]}, 
+                              {text: `Nº de questões: ${buscaFiltroTamanho}`, alignment: 'right', margin: [0,10,50,0]},
+                              ]}],
+                            content:[
+                                {text:'_______________________________________________________________________________________________', 
+                                style: 'barraHeader',margin: [0,-20,0,5]},
+                                {columns: [
+                                    {image: 'direito',width: 100, heigth: 120, margin: [0,5,0,0]},
+                                    {text:'QUESTÕES DE INFORMATIVO', style: 'titlePDF',margin:[0,20,0,0]}
+                                ]},
+                                {text:'_______________________________________________________________________________________________', style: 'barraHeader',margin: [0,-5,0,10]},
+                                perguntas.map((element, i) =>  {
+                                    if(element.a) {
+                                        return [
+                                            {text: `${element.materia[0]}`, alignment: "center", style:'materiaTitle', margin: [0,-5,0,5]},
+                                            {text: `${i+1}.`},
+                                            {text: `${element.pergunta}`, alignment: 'justify', margin:[20,-14,5,10]},
+                                            {text: '(A)', margin: [20,0,5,0]}, 
+                                            {text: `${element.a}`,alignment: 'justify', margin:[40,-14,5,10] },
+                                            {text: '(B)', margin: [20,0,5,0]}, 
+                                            {text: `${element.b}`,alignment: 'justify', margin:[40,-14,5,10] },
+                                            {text: '(C)', margin: [20,0,5,0]}, 
+                                            {text: `${element.c}`,alignment: 'justify', margin:[40,-14,5,10] },
+                                            {text: '(D)', margin: [20,0,5,0]}, 
+                                            {text: `${element.d}`,alignment: 'justify', margin:[40,-14,5,10] },
+                                            {text:  `${element.e ? "(E)" : ""}`,margin: [20,0,5,0]}, 
+                                            {text: `${element.e ? element.e : ""}`,alignment: 'justify', margin:[40,-14,5,5] },
+                                            {text:'______________________________________________________________________________________________', style: 'barraPergunta',margin: [0,0,0,10]}
+
+                                        ]
+                                    }else {
+                                        return [
+                                        {text: `${element.materia[0]}`, alignment: "center", style:'materiaTitle', margin: [0,-5,0,5]},
+                                        {text: `${i+1}.`},
+                                        { text: `${element.pergunta}`, alignment: 'justify', margin:[20,-14,5,10]},
+                                        {text:  "(  )", margin: [20,0,5,0]},
+                                        {text: 'Certo', margin:[40,-14,5,10] },
+                                        {text:  "(  )", margin: [20,0,5,0]},
+                                        {text: 'Errado', margin:[40,-14,5,10]},
+                                        {text:'______________________________________________________________________________________________', style: 'barraPergunta', margin: [0,0,0,10]}]
+                                    }
+                                }),
+                                //gabarito
+
+                                [  
+                                  {text:'_______________________________________________________________________________________________', style: 'barraHeader', pageBreak: 'before',margin: [1,-10,1,5]},
+                                  {text: 'Gabarito', style: 'titleGabarito'},
+                                  gabarito(perguntas)
+                                ],
+                                /////////  justificativa + gabarito 
+                                
+                                {text:'_______________________________________________________________________________________________', style: 'barraHeader', pageBreak: 'before',margin: [1,-10,1,15]},
+                                perguntas.map((element, i) =>  {
+                                    if(element.a) {
+                                        return [
+                                          {text: `${element.materia[0]}`, alignment: "center", style:'materiaTitle', margin: [0,-5,0,5]},
+                                          {text: `${i+1}.`},
+                                          {text: `${element.pergunta}`, alignment: 'justify', margin:[20,-14,5,10]},
+                                          {text: '(A)', margin: [20,0,5,0]}, 
+                                          {text: `${element.a}`,alignment: 'justify', margin:[40,-14,5,10] },
+                                          {text: '(B)', margin: [20,0,5,0]}, 
+                                          {text: `${element.b}`,alignment: 'justify', margin:[40,-14,5,10] },
+                                          {text: '(C)', margin: [20,0,5,0]}, 
+                                          {text: `${element.c}`,alignment: 'justify', margin:[40,-14,5,10] },
+                                          {text: '(D)', margin: [20,0,5,0]}, 
+                                          {text: `${element.d}`,alignment: 'justify', margin:[40,-14,5,10] },
+                                          {text:  `${element.e ? "(E)" : ""}`,margin: [20,0,5,0]}, 
+                                          {text: `${element.e ? element.e : ""}`,alignment: 'justify', margin:[40,-14,5,5] },
+                                            {table: {
+                                              widths:[480],
+                                              body: [[` Gabarito: ${element.resp.toUpperCase()}`]]
+                                            }, margin:[20,10,0,0]},
+                                            {table: {
+                                              widths:[480],
+                                              body: [[{text: `${element.justificativa}`,alignment: 'justify', margin: [5,5,5,5]}]]
+                                            }, margin: [20,0,0,5]},
+                                            {text:'______________________________________________________________________________________________', style: 'barraPergunta',margin: [0,0,0,15]}
+
+                                        ]
+                                    }else {
+                                        return [
+                                          {text: `${element.materia[0]}`, alignment: "center", style:'materiaTitle', margin: [0,-5,0,5]},
+                                          {text: `${i+1}.`},
+                                          { text: `${element.pergunta}`, alignment: 'justify', margin:[20,-14,5,10]},
+                                          {text:  "(  )", margin: [20,0,5,0]},
+                                          {text: 'Certo', margin:[40,-14,5,10] },
+                                          {text:  "(  )", margin: [20,0,5,0]},
+                                          {text: 'Errado', margin:[40,-14,5,10]},
+                                          {table: {
+                                          widths:[480],
+                                          body: [[` Gabarito: ${element.resp.toUpperCase()}`]]
+                                          }, margin:[20,10,0,0]},
+                                          {table: {
+                                          widths:[480],
+                                          body: [[{text: `${element.justificativa}`, alignment: 'justify', margin: [5,5,5,5]}]]
+                                          }, margin:[20,0,0,5]},
+                                          {text:'______________________________________________________________________________________________', style: 'barraPergunta', margin: [0,0,0,15]},
+                                      ]
+                                    }
+                                }),
+                        
+                                    ],
+                            footer: {
+                                columns: [
+                                    {image:'snow', width: 15, heigth: 15, margin:[40,10,5,0]}, {
+                                    text: '@questoesdeinformativo', style: 'nomeinsta', margin:[45,12,0,0]}
+                                ]},
+                            images: {
+                                snow: 'https://image.flaticon.com/icons/png/512/1384/1384031.png',
+                                direito: 'https://i.imgur.com/x49W1o4.png'
+                            },
+                            styles: {
+                                barraHeader: {
+                                    bold: true
+                                },
+                                titlePDF: {
+                                    fontSize: 30,
+                                    bold: true
+                                },
+                                materiaTitle: {
+                                  bold: true,
+                                  fontSize: 12
+                                },
+                                barraPergunta: {
+                                    color: "#A9A9A9"
+                                },
+                                nomeinsta: {
+                                    fontSize: 10,
+                                    bold: true,
+                                    color: "#A9A9A9"
+                                },
+                                titleGabarito: {
+                                    fontSize: 20,
+                                    margin: [0,0,0,10]
+                                },
+                                tableStyle: {
+                                  margin: [3,0,0,0]
+                                }
+                            }
+                        }
+                        pdfMake.createPdf(docDefinition).open()
+                    }}> 
+                        <p style={{fontSize: 15,fontWeight: "bold", fontFamily: 'Segoe'}}>
+                            GERAR PDF
+                        </p>
+                    </Button>
+                </Container>  
                   </Container>
                   </Form.Row>
                   </Container>
-                  <Container style={{marginLeft: -25}}>
-                <Button className="btnGerarPDF"  variant="success" onClick={() => {
-                    const docDefinition = {
-                        // header: [
-                        //     {columns: [
-                        //     {text: 'www.questaodeinformativo.com.br', alignment: 'left', margin: [45,10,0,0]}, 
-                        //     {text: `Nº de questões: ${buscaFiltroTamanho}`, alignment: 'right', margin: [0,10,50,0]},
-                        //     ]},
-                        //     {text:'______________________________________________________________________________________________', 
-                        //     style: 'barraHeader',margin: [45,0,10,0]}],
-                        pageSize: 'A4',
-                        content:[{columns: [
-                            {text: 'www.questaodeinformativo.com.br', alignment: 'left', margin: [15,10,0,0]}, 
-                            {text: `Nº de questões: ${buscaFiltroTamanho}`, alignment: 'right', margin: [0,10,50,0]},
-                            ]},
-                            {text:'_______________________________________________________________________________________________', 
-                            style: 'barraHeader',margin: [1,0,1,5]},
-                            {columns: [
-                                {image: 'direito',width: 100, heigth: 120, margin: [0,15,0,0]},
-                                {text:'QUESTÕES DE INFORMATIVO', style: 'titlePDF',margin:[0,30,0,0]}
-                            ]},
-                            {text:'_______________________________________________________________________________________________', style: 'barraHeader',margin: [1,0,1,15]},
-                            perguntas.map((element, i) =>  {
-                                if(element.a) {
-                                    return [
-                                        { text: `${i+1}) ${element.pergunta}`, alignment: 'justify', margin:[0,0,0,20]}, 
-                                        {text: `A) ${element.a}`,alignment: 'justify', margin:[0,0,0,10] },
-                                        {text: `B) ${element.b}`,alignment: 'justify', margin:[0,0,0,10] },
-                                        {text: `C) ${element.c}`,alignment: 'justify', margin:[0,0,0,10] },
-                                        {text: `D) ${element.d}`,alignment: 'justify', margin:[0,0,0,10] },
-                                        {text: `${element.e ? "E)" + element.e : ""}`,alignment: 'justify', margin:[0,0,0,5] },
-                                        {text:'______________________________________________________________________________________________', style: 'barraPergunta',margin: [0,0,0,25]}
-
-                                    ]
-                                }else {
-                                    return [
-                                    { text: `${i+1}) ${element.pergunta}`, alignment: 'justify', margin:[0,0,0,10]}, 
-                                    {text: 'A) Certo', margin:[0,0,0,20] }, {text: 'B) Errado', margin:[0,0,0,5]},
-                                    {text:'______________________________________________________________________________________________', style: 'barraPergunta', margin: [0,0,0,25]}]
-                                }
-                            }),
-                            //gabarito
-
-                            [{columns: [
-                                {text: 'www.questaodeinformativo.com.br', alignment: 'left', margin: [15,10,0,0], pageBreak: 'before'}, 
-                                {text: `Nº de questões: ${buscaFiltroTamanho}`, alignment: 'right', margin: [0,10,50,0], pageBreak: 'before'},
-                                ]},
-                                {text:'_______________________________________________________________________________________________', 
-                                style: 'barraHeader',margin: [1,0,1,5]},
-                                {columns: [
-                                    {image: 'direito',width: 100, heigth: 120, margin: [0,15,0,0]},
-                                    {text:'QUESTÕES DE INFORMATIVO', style: 'titlePDF',margin:[0,30,0,0]}
-                                ]},
-                                {text:'_______________________________________________________________________________________________', style: 'barraHeader',margin: [1,0,1,15]},
-                                {text: 'Gabarito', style: 'titleGabarito'},
-                                // perguntas.map((element, i) => {
-                                    
-                                //     if(i < 9) {
-                                //         return [
-                                //             {text: `0${i+1} -  ${element.resp}`}
-                                //         ]
-                                //     }
-                                //     if(i >= 9 ) {
-                                //         return [
-                                //             {text: `${i+1} - ${element.resp}`}
-                                //         ]
-                                //     }
-                                // })
-                                gabarito(perguntas)
-                            ],
-                            /////////  justificativa + gabarito 
-                            {text:'_______________________________________________________________________________________________', 
-                            style: 'barraHeader',margin: [1,0,1,5], pageBreak: 'before'},
-                            {columns: [
-                                {image: 'direito',width: 100, heigth: 120, margin: [0,15,0,0]},
-                                {text:'QUESTÕES DE INFORMATIVO', style: 'titlePDF',margin:[0,30,0,0]}
-                            ]},
-                            {text:'_______________________________________________________________________________________________', style: 'barraHeader',margin: [1,0,1,15]},
-                            perguntas.map((element, i) =>  {
-                                if(element.a) {
-                                    return [
-                                        { text: `${i+1}) ${element.pergunta}`, alignment: 'justify', margin:[0,0,0,20]}, 
-                                        {text: `A) ${element.a}`,alignment: 'justify', margin:[0,0,0,10] },
-                                        {text: `B) ${element.b}`,alignment: 'justify', margin:[0,0,0,10] },
-                                        {text: `C) ${element.c}`,alignment: 'justify', margin:[0,0,0,10] },
-                                        {text: `D) ${element.d}`,alignment: 'justify', margin:[0,0,0,10] },
-                                        {text: `${element.e ? "E)" + element.e : ""}`,alignment: 'justify', margin:[0,0,0,5] },
-                                        {table: {
-                                          body: [[` Gabarito: ${element.resp.toUpperCase()}`]]
-                                        }, margin:[0,10,0,10]},
-                                        {table: {
-                                          body: [['Justificativa'],[{text: `${element.justificativa}`,alignment: 'justify', margin: [5,5,5,5]}]]
-                                        }},
-                                        {text:'______________________________________________________________________________________________', style: 'barraPergunta',margin: [0,0,0,25]}
-
-                                    ]
-                                }else {
-                                    return [
-                                    { text: `${i+1}) ${element.pergunta}`, alignment: 'justify', margin:[0,0,0,10]}, 
-                                    {text: 'A) Certo', margin:[0,0,0,20] }, {text: 'B) Errado', margin:[0,0,0,5]},
-                                    {table: {
-                                      body: [[` Gabarito: ${element.resp.toUpperCase()}`]]
-                                    }, margin:[0,10,0,10]},
-                                    {table: {
-                                      body: [['Justificativa'],[{text: `${element.justificativa}`, alignment: 'justify', margin: [5,5,5,5]}]]
-                                    }},
-                                    {text:'______________________________________________________________________________________________', style: 'barraPergunta', margin: [0,0,0,25]},
-                                  ]
-                                }
-                            }),
-                            
-
-
-
-
-
-
-                            ///footer
-                            // {
-                            //     columns: [
-                            //         {image:'snow', width: 10, heigth: 10, margin:[10,0,0,0], link: 'https://www.instagram.com/_questaodeinformativo_/'}, {
-                            //          text: '@nomeInstagram', style: 'nomeinsta', margin:[15,5,0,0], link: 'https://www.instagram.com/_questaodeinformativo_/'}
-                            //     ]}
-                                ],
-                        footer: {
-                            columns: [
-                                {image:'snow', width: 15, heigth: 15, margin:[5,23,5,0]}, {
-                                 text: '@nomeInstagram', style: 'nomeinsta', margin:[10,25,0,0]}
-                            ]},
-                        images: {
-                            snow: 'https://image.flaticon.com/icons/png/512/1384/1384031.png',
-                            direito: 'https://i.imgur.com/x49W1o4.png'
-                        },
-                        styles: {
-                             barraHeader: {
-                                 bold: true
-                            },
-                            titlePDF: {
-                                fontSize: 30,
-                                bold: true
-                            },
-                            barraPergunta: {
-                                color: "#A9A9A9"
-                            },
-                            nomeinsta: {
-                                fontSize: 10,
-                                bold: true,
-                                color: "#A9A9A9"
-                            },
-                            titleGabarito: {
-                                fontSize: 20,
-                                margin: [0,0,0,10]
-                            },
-                            tableStyle: {
-                              margin: [10,25,0,0]
-                            }
-                        }
-                    }
-                    pdfMake.createPdf(docDefinition).open()
-                }}> 
-                    <p style={{fontSize: 15,fontWeight: "bold", fontFamily: 'Segoe'}}>
-                        GERAR PDF
-                     </p>
-                </Button>
-                </Container>            
-                <p style={{marginLeft:13,fontWeight: "bold", color: "red", marginTop: 6, fontFamily: 'Segoe'}}>{anyFilter ? "Selecione algum filtro." : ""}</p>
-                {isLoadingFilter ? <p style={{marginLeft:13, fontWeight: "bold", marginTop: 5, fontFamily: 'Segoe'}}>Buscando...</p> : ""}
-                {perguntas.length === 0 ?  <p style={{marginLeft:13, fontWeight: "bold", marginTop: 5, fontFamily: 'Segoe'}}>Nada encontrado!</p> : "" }
-                <p style={{marginLeft:13, fontWeight: "bold", marginTop: 5, fontFamily: 'Segoe'}}>{buscaFiltroTamanho ? `${buscaFiltroTamanho} questões foram encontradas.` : "" }</p>
+                  <Container  style={{marginLeft: -25, marginTop: -10, marginBottom: 0}}>
+                    <p style={{marginLeft:13,fontWeight: "bold", color: "red", marginTop: 20, fontFamily: 'Segoe'}}>{anyFilter ? "Selecione algum filtro." : ""}</p>
+                    {isLoadingFilter ? <p style={{marginLeft:13, fontWeight: "bold", marginTop: 5, fontFamily: 'Segoe'}}>Buscando...</p> : ""}
+                    {perguntas.length === 0 && !isLoadingFilter ?  <p style={{marginLeft:13, fontWeight: "bold", marginTop: 5, fontFamily: 'Segoe'}}>Nada encontrado!</p> : "" }
+                    <p style={{marginLeft:13, fontWeight: "bold", marginTop: 5, fontFamily: 'Segoe'}}>{buscaFiltroTamanho ? `${buscaFiltroTamanho} questões foram encontradas.` : "" }</p>
+                  </Container>          
+                
             </Container>     
         </Container>
     </Container>
