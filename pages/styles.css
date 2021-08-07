@@ -478,11 +478,12 @@
     margin-left: 0px;
 }
 .ContainerAlternativa {
+    padding: 0px;
     width: 36px;
     height: 36px;
     border: 2px solid #cb605d;
     border-radius: 50%;
-    padding: 0px;
+    /* padding: 0px; */
     /* margin: 0px; */
     margin-right: 5px;
     margin-top: 10px;
@@ -566,7 +567,7 @@
     justify-content: left;
     border-radius: 5px;
     background-color:transparent;
-    margin-top: 15px;
+    margin-top: 0px;
     width: 100%;
     margin-left: 0px;
     

@@ -581,7 +581,7 @@ export default function ListaPerguntas ({zerar,perguntas}) {
                                                 setColorSelectedE10("") 
                                             }
                                             handleResp("a")
-                                            }}> <p style={{fontFamily: 'Segoe', textAlign: "center", marginLeft:1, marginTop: 5}}>A</p>
+                                            }}> <p style={{fontFamily: 'Segoe', textAlign: "center", margin:0}}>A</p>
                                         </button></div>
                                         <p align="justify" onClick={() => {
                                             handleResp("a")
@@ -747,7 +747,7 @@ export default function ListaPerguntas ({zerar,perguntas}) {
                                                 }
                                                 handleResp('certo')
                                             }}
-                                            className="certo-errado" style={{marginTop: 15, marginLeft: 5}}>Certo</p>
+                                            className="certo-errado" style={{marginTop: 15, marginLeft: 0, fontFamily: 'Segoe', fontSize: 15}}>Certo</p>
                                         </Container>
                                         <Container style={{display: "flex", flexDirection: "row"}}>
                                             <button style={{backgroundColor: colorCEME(i, 'errado')}}onClick={() => {
@@ -835,7 +835,7 @@ export default function ListaPerguntas ({zerar,perguntas}) {
                                                     setColorCerto10("")
                                                 }
                                                 handleResp('errado')
-                                            }} className="certo-errado" style={{marginTop: 15, marginLeft: 5}}>Errado</p>
+                                            }} className="certo-errado" style={{marginTop: 15, marginLeft: 0, fontFamily: 'Segoe', fontSize: 15}}>Errado</p>
                                         </Container>
                                     </Container>
                                 )
@@ -919,7 +919,7 @@ export default function ListaPerguntas ({zerar,perguntas}) {
                                             setColorSelectedE10("")
                                         }
                                         handleResp("b")
-                                    }}><p style={{fontFamily: 'Segoe', textAlign: "center", marginLeft:2, marginTop: 5 }}>B</p></button></div>
+                                    }}><p style={{fontFamily: 'Segoe', textAlign: "center", margin:0}}>B</p></button></div>
                                 <p onClick={() => {
                                     handleResp("b")
                                     if(i === 0) { 
@@ -1076,7 +1076,7 @@ export default function ListaPerguntas ({zerar,perguntas}) {
                                         setColorSelectedE10("") 
                                     }
                                     handleResp("d")
-                                }}><p style={{fontFamily: 'Segoe', textAlign: "center", marginLeft:1, marginTop: 5 }}>D</p></button></div>
+                                }}><p style={{fontFamily: 'Segoe', textAlign: "center",margin:0}}>D</p></button></div>
                             <p onClick={() => {
                                 handleResp("d")
                                 if(i === 0) {
@@ -1231,7 +1231,7 @@ export default function ListaPerguntas ({zerar,perguntas}) {
                                         setColorSelectedE10("") 
                                     }        
                                     handleResp("c")
-                                }}><p style={{fontFamily: 'Segoe', textAlign: "center", marginLeft:1, marginTop: 5 }}>C</p></button></div>
+                                }}><p style={{fontFamily: 'Segoe', textAlign: "center",margin:0}}>C</p></button></div>
                             <p onClick={() => {
                                 handleResp("c")
                                 if(i === 0) {
@@ -1386,7 +1386,7 @@ export default function ListaPerguntas ({zerar,perguntas}) {
                                         setColorSelected10("") 
                                     }
                                     handleResp("e")
-                                }}><p style={{fontFamily: 'Segoe', textAlign: "center", marginLeft:1, marginTop: 5 }}>E</p></button></div>
+                                }}><p style={{fontFamily: 'Segoe', textAlign: "center",margin:0}}>E</p></button></div>
                            <p onClick={() => {
                                 handleResp("e")
                                 if(i === 0) {
@@ -1466,7 +1466,7 @@ export default function ListaPerguntas ({zerar,perguntas}) {
                             }
                         }
                     return (
-                    <Container key={i}>
+                    <Container style={{marginTop: 0}} key={i}>
                         <Container className="questao"> <p className="questaoTitle">Questão {zero()}</p></Container>
                             <Row className="ContainerDescPergunta">
                                 <p align="justify" style={{fontFamily: 'Segoe', fontSize: 15, color: "#808080", marginLeft: 1}}>
@@ -1633,7 +1633,7 @@ export default function ListaPerguntas ({zerar,perguntas}) {
                                 }
                                 
                             }} style={{backgroundColor: `${colorButtonJust(i)}`}} className="btnVisuJust" > 
-                            <p style={{color: "#bd3330", fontFamily: "Segoe", fontWeight: "bold", marginTop:5, fontSize: 14}}>VISUALIZAR JUSTIFICATIVA</p>
+                            <p style={{color: "#bd3330", fontFamily: "Segoe", fontWeight: "bold", marginTop:0, fontSize: 14}}>VISUALIZAR JUSTIFICATIVA</p>
                             </Button>
                             </Container>
                             {CondicaoJust(i)}
@@ -1917,7 +1917,7 @@ export default function ListaPerguntas ({zerar,perguntas}) {
     }
 
     return (
-        <Container >
+        <Container style={{marginTop: 10}}>
             {list.update()}
             <Container className="paginacao">
                 <Row >
@@ -1932,7 +1932,7 @@ export default function ListaPerguntas ({zerar,perguntas}) {
                 </div       >
                 </Row>
             </Container>
-            <Container style={{marginLeft: 14}} > <p className="totalPaginas">Total de paginas: {totalPage}</p></Container>
+            <Container style={{marginLeft: 0}}> <p className="totalPaginas">Total de paginas: {totalPage}</p></Container>
         </Container>
     )
 }

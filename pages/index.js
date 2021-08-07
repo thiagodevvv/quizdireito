@@ -238,7 +238,7 @@ export default function Home() {
                                 setVerific(1)
                                 setInfoEnd(value.value)
                             }} styles={{dropdownIndicator: dropdownIndicatorStyles}} theme={customTheme} className="input-infos" options={infoFinalArray} />
-                          <div style={{display: "flex", flexDirection: "row", marginLeft: 10, marginTop: 5}}>
+                          <div style={{display: "flex", flexDirection: "row", marginLeft: 0, marginTop: 0}}>
                             <div className="content-checkboxs" onClick={() => {
                               isCheckedCe ? setIsCheckedCe(false) : setIsCheckedCe(true)
                               if(tipoCE == null)  {
@@ -380,10 +380,10 @@ export default function Home() {
                     </Button>
                   </Container>
                   </Container>
-                  <Container style={{marginLeft: -13, marginTop: -10, marginBottom: 0}}>
-                    <p style={{marginLeft:13,fontWeight: "bold", color: "red", marginTop: 15, fontFamily: 'Segoe', fontSize: 15, marginBottom: 4}}>{anyFilter ? "Selecione algum filtro." : ""}</p>
-                    {isLoadingFilter ? <p style={{marginLeft:13, color: "#707070", marginTop: 5, fontFamily: 'Segoe', fontSize: 15}}>Buscando...</p> : ""}
-                    {perguntas.length === 0 && !isLoadingFilter?  <p style={{marginLeft:13, color: "#707070", marginTop: 5, fontFamily: 'Segoe'}}>Nada encontrado!</p> : "" }
+                  <Container style={{marginLeft: -13, marginTop: 6, marginBottom: 0}}>
+                    <p style={{marginLeft:13,fontWeight: "bold", color: "red", marginTop: 0, fontFamily: 'Segoe', fontSize: 15, marginBottom: 5}}>{anyFilter ? "Selecione algum filtro." : ""}</p>
+                    {isLoadingFilter ? <p style={{marginLeft:13, color: "#707070", marginTop: 0, fontFamily: 'Segoe', fontSize: 15}}>Buscando...</p> : ""}
+                    {perguntas.length === 0 && !isLoadingFilter?  <p style={{marginLeft:13, color: "#707070", marginTop: 0, fontFamily: 'Segoe'}}>Nada encontrado!</p> : "" }
                     <p style={{marginLeft:13, color: "#707070", marginTop: 0, fontFamily: 'Segoe', fontSize: 15}}>{buscaFiltroTamanho ? `Nº de questões encontradas: ${buscaFiltroTamanho}` : "" }</p>
                   </Container>             
         </Container>
