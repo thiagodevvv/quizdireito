@@ -1691,6 +1691,7 @@ export default async (req,res) => {
 
         //////// Fazer um devolução para cada caso de FILTRO C.E / M .E    ///////////
         if(tipoCE === 1 && tipoME == null || undefined) {
+            
             if(retornoPerguntas.length < 1) {
                 const {data} = await axios.get('https://quizdireito.vercel.app/api/busca')
                  retornoPerguntas.push(data)

@@ -1,12 +1,7 @@
-import {Container, Row,  Button, Form, Modal} from 'react-bootstrap'
+import {Container, Row,  Button} from 'react-bootstrap'
 import { useState, useEffect } from 'react'
 
-
-export default function ListaPerguntas ({zerar,perguntas}) {
-    if(zerar) {
-        zerarSelecionados()
-
-    }
+export default function ListaPerguntas ({zerarLista,perguntas}) {
     const [perPage, setPerpage] = useState(10)
     const [page, setPage] = useState(1)
     const totalResults = perguntas.length
@@ -438,7 +433,12 @@ export default function ListaPerguntas ({zerar,perguntas}) {
         setColorBtnJust9("white")
         setColorBtnJust10("white")
     }
-   
+    
+    useEffect(() => {
+        if(zerarLista) {
+            setPage(1)
+        }
+    },[zerarLista])
     useEffect(() => {
         if(page > 1) {
             setPreviousButton("flex")
@@ -457,11 +457,13 @@ export default function ListaPerguntas ({zerar,perguntas}) {
             setNextButton("none")
         }
     },[page])
+
     useEffect(() => {
         if(totalPage > 1) {
             setNextButton("flex")
         }
     },[totalResults])
+    
     const handleResp = (respUser) => {
 
         setResposta(respUser)
@@ -479,7 +481,7 @@ export default function ListaPerguntas ({zerar,perguntas}) {
         if(i === 8) {return colorBtnJust9}
         if(i === 9) {return colorBtnJust10}
     }
-   
+    
     const list = {
 
         update () {
@@ -1915,14 +1917,14 @@ export default function ListaPerguntas ({zerar,perguntas}) {
         }
         
     }
-
+    
     return (
         <Container style={{marginTop: 10}}>
             {list.update()}
             <Container className="paginacao">
                 <Row >
                 <div style={{width: 50, height: 50}}>
-                    <Button onClick={() => controls.previous()}  style={{   backgroundColor: "transparent", border: "none", display: `${previousButton}`}}><img width="25" height="25" src="/previous.png" /></Button>
+                    <Button onClick={() => controls.previous()}  style={{backgroundColor: "transparent", border: "none", display: `${previousButton}`}}><img width="25" height="25" src="/previous.png" /></Button>
                 </div>
                 <div >
                     <p className="paginaAtual">{page}</p>

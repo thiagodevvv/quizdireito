@@ -56,6 +56,7 @@ export default function Home() {
             "tipoCE": tipoCE,
             "tipoME": tipoME
         })
+        setZerarLista(false)
         if(data.data.length === 0) {
           setIsLoadingFilter(false)
           setBuscaFiltroTamanho(0)
@@ -75,7 +76,6 @@ export default function Home() {
                 })
                 // console.log(busca)
                 if(busca == undefined) {
-                 
                   setPerguntas((prevState) => [...prevState, pg])
                 }else {
 
@@ -83,8 +83,6 @@ export default function Home() {
                  
             })
         })
-        
-     
     }
 
  
@@ -206,11 +204,11 @@ export default function Home() {
       </Head>
       <Container className="header" fluid>
         <Container style={{display: "flex", flexDirection: "row", justifyContent: "flex-start", alignItems: "center"}}>
-          <div style={{display: "flex", flexDirection: "row", flex:14, alignItems: "center"}}>
+          <div className="direito-img-header" >
             <img className="img-direito" width="90" height="90"  src='/direito.svg' />
             <h1 id="title">QUESTÕES DE INFORMATIVO</h1> 
           </div>
-          <div style={{flex: 1, alignItems: "center"}}>
+          <div className="insta-flex-header" >
             <a target="_blank" href="https://www.instagram.com/_questaodeinformativo_/">
               <img className="img-instagram" width="60" height="60" src="/instagram.svg"/>
             </a>
@@ -388,7 +386,7 @@ export default function Home() {
                   </Container>             
         </Container>
 {/* FILTRO ACABA AQUI */}
-          <ListaPerguntas zerar={zerarLista} perguntas={perguntas} />
+          <ListaPerguntas zerarLista={zerarLista} perguntas={perguntas} />
   </Container>
   )
 }
