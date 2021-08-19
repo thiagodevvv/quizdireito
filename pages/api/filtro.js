@@ -202,22 +202,35 @@ export default async (req,res) => {
 
         if(temas.length > 0 && inst.length === 0 && info.length === 0 && mat.length === 0) {
             /////// OK!!!!!.
-
             let materiasUniqueStf 
             let materiasUniqueStj 
             for(let i = 0; i < temas.length; i++) {
                 dataPerguntas.push(await connectDB.collection('perguntas').find({tema : `${temas[i]}`}).sort(sortInfo).toArray())
             }
-            dataPerguntas[0].map((element) => {
-                if(element.instituição === "STF") {
-                    arrayStfGlobal.push(element)
-                }
-                if(element.instituição === "STJ") {
-                    arrayStjGlobal.push(element)
-                }
+
+            dataPerguntas.map((element) => {
+                element.map((pergunta) => {
+                    if(pergunta.instituição === "STF") {
+                        arrayStfGlobal.push(pergunta)
+                    }
+                    if(pergunta.instituição === "STJ") {
+                        arrayStjGlobal.push(pergunta)
+                    }
+                })
             })
-            materiasUniqueStf = remove_duplicates_es6(arrayStfGlobal)
-            materiasUniqueStj = remove_duplicates_es6(arrayStjGlobal)
+            console.log(arrayStfGlobal)
+            console.log('/////////////////////////')
+            console.log(arrayStjGlobal)
+            // dataPerguntas[0].map((element) => {
+            //     if(element.instituição === "STF") {
+            //         arrayStfGlobal.push(element)
+            //     }
+            //     if(element.instituição === "STJ") {
+            //         arrayStjGlobal.push(element)
+            //     }
+            // })
+            materiasUniqueStf = removeDuplicates(arrayStfGlobal, "idQuestion")
+            materiasUniqueStj = removeDuplicates(arrayStjGlobal, "idQuestion")
             materiasUniqueStf.sort((a,b) => b.informativo - a.informativo)
             materiasUniqueStj.sort((a,b) => b.informativo - a.informativo)
 
@@ -312,16 +325,18 @@ export default async (req,res) => {
         }
 
         if(mat.length > 0 && info.length > 0 && inst.length === 0 && temas.length === 0) {
+            ////// OK REDESIGN FILTRO!
             let informativos = []
             let arrayIds = []
-            const {data} = await axios.get('https://quizdireito.vercel.app/api/informativos')
-            data.map((element) => informativos.push(element.numeroInfo))
+            const {data:dataInformativos} = await axios.post('https://quizdireito.vercel.app/api/informativos')
+            const {data:dataBusca} = await axios.post('https://quizdireito.vercel.app/api/busca')   
+            dataInformativos.map((element) => informativos.push(element.numeroInfo))
             let inicial = parseInt(info[0])
             let final = parseInt(info[1])
             const indexInfoInicial = informativos.indexOf(inicial)
             const indexInfoFinal = informativos.indexOf(final)
             
-            const newArrayInformativos = informativos.slice(indexInfoInicial, info[1] ? indexInfoFinal + 1: informativos.length)
+            const newArrayInformativos = informativos.slice(indexInfoInicial, info[1] ? indexInfoFinal + 1 : informativos.length)
             
             /// OK!! REFERENCIA CORTE POR MATÉRIAS!
             let arrayFatiado = []
@@ -331,20 +346,26 @@ export default async (req,res) => {
                         let contador = 0
                         console.log('inicial e final')
                         while(contador <= newArrayInformativos.length) {
-                            const retorno = await connectDB.collection('perguntas').find({materia: mat[i], informativo : newArrayInformativos[contador]}).toArray()
-                            if(retorno.length > 0) {
-                                dataPerguntas.push(retorno[0]) 
-                            }
+                            dataBusca.map((element) => {
+                                element.materia.map((mt) => {
+                                    if(mt === mat[i] && element.informativo === parseInt(newArrayInformativos[contador])){
+                                    dataPerguntas.push(element)
+                                    }
+                                })
+                            })
                             contador = contador + 1
                         }
                     }
                     if(info.length === 1) {
                         let contador = 0
                         while(contador <= newArrayInformativos.length) {
-                            const retorno = await connectDB.collection('perguntas').find({materia: mat[i], informativo :newArrayInformativos[contador]}).toArray()
-                            if(retorno.length > 0) {
-                                dataPerguntas.push(retorno[0])
-                            }
+                            dataBusca.map((element) => {
+                                element.materia.map((mt) => {
+                                    if(mt === mat[i] && element.informativo === parseInt(newArrayInformativos[contador])){
+                                    dataPerguntas.push(element)
+                                    }
+                                })
+                            })
                             contador = contador + 1
                         }
                     }   
@@ -353,24 +374,28 @@ export default async (req,res) => {
 
             if(info.length > mat.length) {
                 if(info.length === 2) {
-                    let contador = 0
-                    console.log('inicial e final')
-                    
+                    let contador = 0 
                     while(contador <= newArrayInformativos.length) {
-                        const retorno = await connectDB.collection('perguntas').find({materia: mat[0], informativo : newArrayInformativos[contador]}).toArray()
-                        if(retorno.length > 0) {
-                            dataPerguntas.push(retorno[0]) 
-                        }
+                        dataBusca.map((element) => {
+                            element.materia.map((mt) => {
+                                if(mt === mat[i] && element.informativo === parseInt(newArrayInformativos[contador])){
+                                dataPerguntas.push(element)
+                                }
+                            })
+                        })
                         contador = contador + 1
                     }
                 }
                 if(info.length === 1) {
                     let contador = 0
                     while(contador <= newArrayInformativos.length) {
-                        const retorno = await connectDB.collection('perguntas').find({materia: mat[0], informativo :newArrayInformativos[contador]}).toArray()
-                        if(retorno.length > 0) {
-                            dataPerguntas.push(retorno[0])
-                        }
+                        dataBusca.map((element) => {
+                            element.materia.map((mt) => {
+                                if(mt === mat[i] && element.informativo === parseInt(newArrayInformativos[contador])){
+                                dataPerguntas.push(element)
+                                }
+                            })
+                        })
                         contador = contador + 1
                     }
                 }   
@@ -416,16 +441,19 @@ export default async (req,res) => {
                 arraycut.sort((a,b) => b.informativo - a.informativo)
                 arraycut.map((element) => arrayFatiado.push(element))
             })
+            
             retornoPerguntas.push(arrayFatiado)    
         }
 
         if(mat.length > 0 && inst.length > 0 && info.length > 0 && temas.length === 0) {
+            ///// OK REDESIGN FILTRO!
             let arrayFatiado = []
             let arrayDataPerguntas = []
             let informativos = []
             let arrayIds = []
-            const {data} = await axios.get('https://quizdireito.vercel.app/api/informativos')
-            data.map((element) => informativos.push(element.numeroInfo))
+            const {data:dataInformativos} = await axios.get('https://quizdireito.vercel.app/api/informativos')
+            const {data:dataBusca} = await axios.get('https://quizdireito.vercel.app/api/busca')  
+            dataInformativos.map((element) => informativos.push(element.numeroInfo))
             let inicial = parseInt(info[0])
             let final = parseInt(info[1])
             
@@ -440,20 +468,26 @@ export default async (req,res) => {
                         if(info.length === 2) {
                             let contador = 0
                             while(contador <= newArrayInformativos.length) {
-                                const retorno = await connectDB.collection('perguntas').find({materia: mat[i], informativo : newArrayInformativos[contador], instituição:inst[0]}).toArray()
-                                if(retorno.length > 0) {
-                                    retorno.map((element) => arrayDataPerguntas.push(element))   
-                                } 
+                                dataBusca.map((element) => {
+                                    element.materia.map((mt) => {
+                                        if(mt === mat[i] && element.informativo === parseInt(newArrayInformativos[contador]) && element.instituição === inst[0]){
+                                            arrayDataPerguntas.push(element)
+                                        }
+                                    })
+                                })
                                 contador = contador + 1
                             }
                         }
                         if(info.length === 1) {
                             let contador = 0
                             while(contador <= newArrayInformativos.length) {
-                                const retorno = await connectDB.collection('perguntas').find({materia: mat[i], informativo :newArrayInformativos[contador], instituição:inst[0]}).toArray()
-                                if(retorno.length > 0){
-                                    retorno.map((element) => arrayDataPerguntas.push(element))
-                                }
+                                dataBusca.map((element) => {
+                                    element.materia.map((mt) => {
+                                        if(mt === mat[i] && element.informativo === parseInt(newArrayInformativos[contador]) && element.instituição === inst[0]){
+                                            arrayDataPerguntas.push(element)
+                                        }
+                                    })
+                                })
                                 contador = contador + 1
                             }
                         }
@@ -465,25 +499,70 @@ export default async (req,res) => {
                     for(let i = 0; i < mat.length; i++) {
                         if(info.length === 2) {
                             let contador = 0
-                            while(contador <= newArrayInformativos.length) {
-                                for(let k = 0; k < inst.length; k++) {
-                                    const retorno = await connectDB.collection('perguntas').find({materia: mat[i], informativo : newArrayInformativos[contador], instituição:inst[k]}).toArray()
-                                    if(retorno.length > 0 ){
-                                        retorno.map((element) => arrayDataPerguntas.push(element)) 
-                                    }
-                                    
+                            if(inst.length === 2) {
+                                while(contador <= newArrayInformativos.length) {
+                                    dataBusca.map((element) => {
+                                        element.materia.map((mt) => {
+                                            if(mt === mat[i] && element.informativo === parseInt(newArrayInformativos[contador]) && element.instituição === 'STF'){
+                                            
+                                                arrayDataPerguntas.push(element)
+                                            }
+                                        })
+                                    })
+                                    dataBusca.map((element) => {
+                                        element.materia.map((mt) => {
+                                            if(mt === mat[i] && element.informativo === parseInt(newArrayInformativos[contador]) && element.instituição === 'STJ'){
+                                                arrayDataPerguntas.push(element)
+                                            }
+                                        })
+                                    })
+                                    contador = contador + 1
+                                }
+                            }
+                            if(inst.length === 1) {
+                                while(contador <= newArrayInformativos.length) {
+                                    dataBusca.map((element) => {
+                                        element.materia.map((mt) => {
+                                            if(mt === mat[i] && element.informativo === parseInt(newArrayInformativos[contador]) && element.instituição === inst[0]){
+                                                arrayDataPerguntas.push(element)
+                                            }
+                                        })
+                                    })
                                     contador = contador + 1
                                 }
                             }
                         }
                         if(info.length === 1) {
                             let contador = 0
-                            while(contador <= newArrayInformativos.length) {
-                                for(let k = 0; k < inst.length; k++) {
-                                    const retorno = await connectDB.collection('perguntas').find({materia: mat[i], informativo :newArrayInformativos[contador], instituição:inst[k]}).toArray()
-                                    if(retorno.length > 0 ) {
-                                        retorno.map((element) => arrayDataPerguntas.push(element))
-                                    }
+                            if(inst.length === 2) {
+                                while(contador <= newArrayInformativos.length) {
+                                    dataBusca.map((element) => {
+                                        element.materia.map((mt) => {
+                                            if(mt === mat[i] && element.informativo === parseInt(newArrayInformativos[contador]) && element.instituição === 'STF'){
+                                                arrayDataPerguntas.push(element)
+                                            }
+                                        })
+                                    })
+                                    dataBusca.map((element) => {
+                                        element.materia.map((mt) => {
+                                            if(mt === mat[i] && element.informativo === parseInt(newArrayInformativos[contador]) && element.instituição === 'STJ'){
+                                                arrayDataPerguntas.push(element)
+                                            }
+                                        })
+                                    })
+                                    contador = contador + 1
+                                }
+                            
+                            }
+                            if(inst.length === 1) {
+                                while(contador <= newArrayInformativos.length) {
+                                    dataBusca.map((element) => {
+                                        element.materia.map((mt) => {
+                                            if(mt === mat[i] && element.informativo === parseInt(newArrayInformativos[contador]) && element.instituição === inst[0]){
+                                                arrayDataPerguntas.push(element)
+                                            }
+                                        })
+                                    })
                                     contador = contador + 1
                                 }
                             }
@@ -497,26 +576,28 @@ export default async (req,res) => {
                         for(let j = 0; j < inst.length; j++) {
                             if(info.length === 2) {
                                 let contador = 0
-                                while(contador <= newArrayInformativos.length) {
-                                    for(let j = 0; j < inst.length; j++) {
-                                        const retorno = await connectDB.collection('perguntas').find({materia: mat[i], informativo : newArrayInformativos[contador], instituição:inst[j]}).toArray()
-                                        if(retorno.length > 0) {
-                                            retorno.map((element) => arrayDataPerguntas.push(element))
-                                        } 
+                                    while(contador <= newArrayInformativos.length) {
+                                        dataBusca.map((element) => {
+                                            element.materia.map((mt) => {
+                                                if(mt === mat[i] && element.informativo === parseInt(newArrayInformativos[contador]) && element.instituição === inst[j]){
+                                                    arrayDataPerguntas.push(element)
+                                                }
+                                            })
+                                        })
                                         contador = contador + 1
                                     }
-                                }
                             }
                             if(info.length === 1) {
                                 let contador = 0
                                 while(contador <= newArrayInformativos.length) {
-                                    for(let j = 0; j < inst.length; j++) {
-                                        const retorno = await connectDB.collection('perguntas').find({materia: mat[i], informativo :newArrayInformativos[contador], instituição:inst[j]}).toArray()
-                                        if(retorno.length > 0) {
-                                            retorno.map((element) => arrayDataPerguntas.push(element))
-                                        }
-                                        contador = contador + 1
-                                    }
+                                    dataBusca.map((element) => {
+                                        element.materia.map((mt) => {
+                                            if(mt === mat[i] && element.informativo === parseInt(newArrayInformativos[contador]) && element.instituição === inst[j]){
+                                                arrayDataPerguntas.push(element)
+                                            }
+                                        })
+                                    })
+                                    contador = contador + 1
                                 }
                             }
                         }   
@@ -533,21 +614,27 @@ export default async (req,res) => {
                                     let contador = 0
                                     console.log('inicial e final')
                                     while(contador <= newArrayInformativos.length) {
-                                        const retorno = await connectDB.collection('perguntas').find({materia: mat[j], informativo : newArrayInformativos[contador], instituição:inst[k]}).toArray()
-                                        if(retorno.length > 0) {
-                                            retorno.map((element) => arrayDataPerguntas.push(element))
-                                        }
-                                            contador = contador + 1
+                                        dataBusca.map((element) => {
+                                            element.materia.map((mt) => {
+                                                if(mt === mat[j] && element.informativo === parseInt(newArrayInformativos[contador]) && element.instituição === inst[k]){
+                                                    arrayDataPerguntas.push(element)
+                                                }
+                                            })
+                                        })
+                                        contador = contador + 1
                                     }
                                 }
                                 if(info.length === 1) {
                                     let contador = 0
                                     while(contador <= newArrayInformativos.length) {
-                                        const retorno = await connectDB.collection('perguntas').find({materia: mat[j], informativo :newArrayInformativos[contador], instituição:inst[k]}).toArray()
-                                        if(retorno.length > 0) {
-                                            retorno.map((element) => arrayDataPerguntas.push(element) )
-                                        }
-                                            contador = contador + 1
+                                        dataBusca.map((element) => {
+                                            element.materia.map((mt) => {
+                                                if(mt === mat[j] && element.informativo === parseInt(newArrayInformativos[contador]) && element.instituição === inst[k]){
+                                                    arrayDataPerguntas.push(element)
+                                                }
+                                            })
+                                        })
+                                        contador = contador + 1
                                     }
                                 }
                             }
@@ -561,22 +648,28 @@ export default async (req,res) => {
                             if(info.length === 2) {
                                 let contador = 0
                                 while(contador <= newArrayInformativos.length) {
-                                    const retorno = await connectDB.collection('perguntas').find({materia: mat[j], informativo : newArrayInformativos[contador], instituição:inst[i]}).toArray()
-                                    if(retorno.length > 0 ) {
-                                        retorno.map((element) => arrayDataPerguntas.push(element) )
-                                    }
-                                        contador = contador +1
+                                    dataBusca.map((element) => {
+                                        element.materia.map((mt) => {
+                                            if(mt === mat[j] && element.informativo === parseInt(newArrayInformativos[contador]) && element.instituição === inst[i]){
+                                                arrayDataPerguntas.push(element)
+                                            }
+                                        })
+                                    })
+                                    contador = contador +1
                                 }
                             }
                             if(info.length === 1) {
                                 console.log('oi undefined info')
                                 let contador = 0
                                 while(contador <= newArrayInformativos.length) {
-                                    const retorno = await connectDB.collection('perguntas').find({materia: mat[j], informativo :newArrayInformativos[contador], instituição:inst[i]}).toArray()
-                                    if(retorno.length > 0 ) {
-                                        retorno.map((element) => arrayDataPerguntas.push(element))
-                                    }
-                                        contador = contador + 1
+                                    dataBusca.map((element) => {
+                                        element.materia.map((mt) => {
+                                            if(mt === mat[j] && element.informativo === parseInt(newArrayInformativos[contador]) && element.instituição === inst[i]){
+                                                arrayDataPerguntas.push(element)
+                                            }
+                                        })
+                                    })                                    
+                                    contador = contador + 1
                                 }
                             }
                         }
@@ -588,32 +681,33 @@ export default async (req,res) => {
                                 if(info.length === 2) {
                                     let contador = 0
                                     while(contador <= newArrayInformativos.length) {
-                                        for(let j = 0; j < inst.length; j++) {
-                                            const retorno = await connectDB.collection('perguntas').find({materia: mat[k], informativo : newArrayInformativos[contador], instituição:inst[i]}).toArray()
-                                            if(retorno.length > 0 ) {
-                                                retorno.map((element) => arrayDataPerguntas.push(element) )
-                                            }
+                                            dataBusca.map((element) => {
+                                                element.materia.map((mt) => {
+                                                    if(mt === mat[k] && element.informativo === parseInt(newArrayInformativos[contador]) && element.instituição === inst[i]){
+                                                        arrayDataPerguntas.push(element)
+                                                    }
+                                                })
+                                            })
                                             contador = contador + 1
-                                        }
                                     }
                                 }
                                 if(info.length === 1) {
                                     let contador = 0
                                     while(contador <= newArrayInformativos.length) {
-                                        for(let j = 0; j < inst.length; j++) {
-                                            const retorno = await connectDB.collection('perguntas').find({materia: mat[k], informativo :newArrayInformativos[contador], instituição:inst[i]}).toArray()
-                                            if(retorno.length > 0) {
-                                                retorno.map((element) => arrayDataPerguntas.push(element))
-                                            }
+                                            dataBusca.map((element) => {
+                                                element.materia.map((mt) => {
+                                                    if(mt === mat[k] && element.informativo === parseInt(newArrayInformativos[contador]) && element.instituição === inst[i]){
+                                                        arrayDataPerguntas.push(element)
+                                                    }
+                                                })
+                                            })
                                             contador = contador + 1
-                                        }
                                     }
                                 }
                             }
                     }
                 }
             }
-
             const uniqueArr = removeDuplicates(arrayDataPerguntas, "idQuestion")
             uniqueArr.map((element) => {
                 if(element.instituição === "STF") {
@@ -658,10 +752,11 @@ export default async (req,res) => {
           
         }
         if(inst.length > 0 && info.length > 0 && mat.length === 0 && temas.length === 0) {
-            /////// OK
+            /////// OK REDESIGN FILTRO
             let informativos = []
-            const {data} = await axios.get('https://quizdireito.vercel.app/api/informativos')
-            data.map((element) => informativos.push(element.numeroInfo))
+            const {data:dataInformativos} = await axios.get('https://quizdireito.vercel.app/api/informativos')
+            const {data:dataBusca} = await axios.get('https://quizdireito.vercel.app/api/busca')  
+            dataInformativos.map((element) => informativos.push(element.numeroInfo))
             let inicial = parseInt(info[0])
             let final = parseInt(info[1])
             
@@ -672,20 +767,22 @@ export default async (req,res) => {
                 if(info.length === 2) {
                     let contador = 0
                     while(contador <= newArrayInformativos.length) {
-                        const retorno = await connectDB.collection('perguntas').find({informativo : newArrayInformativos[contador], instituição:inst[i]}).toArray()
-                        if(retorno.length > 0) {
-                            retorno.map((element) => dataPerguntas.push(element))   
-                        } 
+                        dataBusca.map((element) => {
+                            if(element.informativo === parseInt(newArrayInformativos[contador]) && element.instituição === inst[i]){
+                                dataPerguntas.push(element)
+                            }
+                        })
                         contador = contador + 1
                     }
                 }
                 if(info.length === 1) {
                     let contador = 0
                     while(contador <= newArrayInformativos.length) {
-                        const retorno = await connectDB.collection('perguntas').find({informativo :newArrayInformativos[contador], instituição:inst[i]}).toArray()
-                        if(retorno.length > 0){
-                            retorno.map((element) => dataPerguntas.push(element))
-                        }   
+                        dataBusca.map((element) => {
+                            if(element.informativo === parseInt(newArrayInformativos[contador]) && element.instituição === inst[i]){
+                                dataPerguntas.push(element)
+                            }
+                        })
                         contador = contador + 1
                     }
                 }
@@ -933,8 +1030,9 @@ export default async (req,res) => {
             let arrayIdStj = []
             let informativos = []
 
-            const {data} = await axios.get('https://quizdireito.vercel.app/api/informativos')
-            data.map((element) => informativos.push(element.numeroInfo))
+            const {data:dataInformativos} = await axios.get('https://quizdireito.vercel.app/api/informativos')
+            const {data:dataBusca} = await axios.get('https://quizdireito.vercel.app/api/busca')  
+            dataInformativos.map((element) => informativos.push(element.numeroInfo))
             let inicial = parseInt(info[0])
             let final = parseInt(info[1])
             
@@ -946,30 +1044,26 @@ export default async (req,res) => {
                 if(info.length === 1) {
                     let contador = 0
                     while(contador <= newArrayInformativos.length) {
-                        const retorno =  await connectDB.collection('perguntas').find({tema: temas[i], informativo :newArrayInformativos[contador]}).toArray()
-                        if(retorno.length > 0) {
-                            if(retorno.length > 1) {
-                                retorno.map((element) => arrayTemas.push(element))
-                            }
-                            if(retorno.length === 1) {
-                                arrayTemas.push(retorno[0])
-                            }
-                        }
+                        dataBusca.map((element) => {
+                            element.tema.map((tm) => {
+                                if(tm === temas[i] && element.informativo === parseInt(newArrayInformativos[contador])){
+                                    arrayTemas.push(element)
+                                }
+                            })
+                        })
                         contador = contador + 1
                     }
                 }
                 if(info.length === 2 ) {
                     let contador = 0
                     while(contador <= newArrayInformativos.length) {
-                        const retorno = await connectDB.collection('perguntas').find({tema: temas[i],informativo : newArrayInformativos[contador]}).toArray()
-                        if(retorno.length > 0 ) {
-                            if(retorno.length > 1) {
-                                retorno.map((element) => arrayTemas.push(element))
-                            }
-                            if(retorno.length === 1) {
-                                arrayTemas.push(retorno[0])
-                            }
-                        }
+                        dataBusca.map((element) => {
+                            element.tema.map((tm) => {
+                                if(tm === temas[i] && element.informativo === parseInt(newArrayInformativos[contador])){
+                                    arrayTemas.push(element)
+                                }
+                            })
+                        })
                         contador = contador + 1
                         }
                 }
@@ -1041,8 +1135,9 @@ export default async (req,res) => {
         if(temas.length > 0 && mat.length > 0 && info.length > 0 && inst.length === 0) {
             /// OK
             let informativos = []
-            const {data} = await axios.get('https://quizdireito.vercel.app/api/informativos')
-            data.map((element) => informativos.push(element.numeroInfo))
+            const {data:dataInformativos} = await axios.get('https://quizdireito.vercel.app/api/informativos')
+            const {data:dataBusca} = await axios.get('https://quizdireito.vercel.app/api/busca')  
+            dataInformativos.map((element) => informativos.push(element.numeroInfo))
             let inicial = parseInt(info[0])
             let final = parseInt(info[1])
             
@@ -1056,27 +1151,37 @@ export default async (req,res) => {
             let arrayCut = []
             let arrayComplete = []
             if(temas.length >= mat.length && temas.length >= info.length) {
-              
                 if(mat.length >= info.length) {
                     console.log('if')
                     for(let i = 0; i < temas.length; i++) {
                         for(let j = 0; j < mat.length; j++) {
-                            let inicial = parseInt(info[0])
-                            let final = parseInt(info[1])
-                
                             if(info.length === 2) {
                                 let contador = 0
                                 while(contador <= newArrayInformativos.length) {
-                                    const retorno = await connectDB.collection('perguntas').find({materia: mat[j], tema: temas[i],informativo : newArrayInformativos[contador]}).toArray()
-                                    if(retorno.length > 0) {retorno.map((element) => arrayGeral.push(element))}
+                                    dataBusca.map((element) => {
+                                        element.materia.map((mt) => {
+                                            element.tema.map((tm) => {
+                                                if(mt === mat[j] && element.informativo === parseInt(newArrayInformativos[contador]) && tm === temas[i]){
+                                                    arrayGeral.push(element)
+                                                }
+                                            })
+                                        })
+                                    })
                                     contador = contador + 1
                                 }
                             }
                             if(info.length === 1) {
                                 let contador = 0
                                 while(contador <= newArrayInformativos.length) {
-                                    const retorno = await connectDB.collection('perguntas').find({materia: mat[j], tema: temas[i], informativo :newArrayInformativos[contador]}).toArray()
-                                    if(retorno.length > 0 ) {retorno.map((element) => arrayGeral.push(element))}
+                                    dataBusca.map((element) => {
+                                        element.materia.map((mt) => {
+                                            element.tema.map((tm) => {
+                                                if(mt === mat[j] && element.informativo === parseInt(newArrayInformativos[contador]) && tm === temas[i]){
+                                                    arrayGeral.push(element)
+                                                }
+                                            })
+                                        })
+                                    })
                                     contador = contador + 1
                                 }
                             }
@@ -1090,16 +1195,31 @@ export default async (req,res) => {
                             if(info.length === 2) {
                                 let contador = 0
                                 while(contador <= newArrayInformativos.length) {
-                                    const retorno = await connectDB.collection('perguntas').find({materia: mat[j], tema: temas[i],informativo : newArrayInformativos[contador]}).toArray()
-                                    if(retorno.length > 0) {retorno.map((element) => arrayGeral.push(element))}
+                                    dataBusca.map((element) => {
+                                        element.materia.map((mt) => {
+                                            element.tema.map((tm) => {
+                                                if(mt === mat[j] && element.informativo === parseInt(newArrayInformativos[contador]) && tm === temas[i]){
+                                                    arrayGeral.push(element)
+                                                }
+                                            })
+                                        })
+                                    })
                                     contador = contador + 1
                                 }
                             }
                             if(info.length === 1) {
+                                console.log('JESUSSSS')
                                 let contador = 0
                                 while(contador <= newArrayInformativos.length) {
-                                    const retorno = await connectDB.collection('perguntas').find({materia: mat[j], tema: temas[i], informativo :newArrayInformativos[contador]}).toArray()
-                                    if(retorno.length > 0) {retorno.map((element) => arrayGeral.push(element))}
+                                    dataBusca.map((element) => {
+                                        element.materia.map((mt) => {
+                                            element.tema.map((tm) => {
+                                                if(mt === mat[j] && element.informativo === parseInt(newArrayInformativos[contador]) && tm === temas[i]){
+                                                    arrayGeral.push(element)
+                                                }
+                                            })
+                                        })
+                                    })
                                     contador = contador + 1
                                 }
                             }
@@ -1115,16 +1235,30 @@ export default async (req,res) => {
                             if(info.length === 2) {
                                 let contador = 0
                                 while(contador <= newArrayInformativos.length) {
-                                    const retorno = await connectDB.collection('perguntas').find({materia: mat[i], tema: temas[j],informativo: newArrayInformativos[contador]}).toArray()
-                                    if(retorno.length > 0) {retorno.map((element) => arrayGeral.push(element))}
+                                    dataBusca.map((element) => {
+                                        element.materia.map((mt) => {
+                                            element.tema.map((tm) => {
+                                                if(mt === mat[i] && element.informativo === parseInt(newArrayInformativos[contador]) && tm === temas[j]){
+                                                    arrayGeral.push(element)
+                                                }
+                                            })
+                                        })
+                                    })
                                     contador = contador + 1
                                 }
                             }
                             if(info.length === 1) {
                                 let contador = 0
                                 while(contador <= newArrayInformativos.length) {
-                                    const retorno = await connectDB.collection('perguntas').find({materia: mat[i], tema: temas[j], informativo :newArrayInformativos[contador]}).toArray()
-                                    if(retorno.length > 0) {retorno.map((element) => arrayGeral.push(element))}
+                                    dataBusca.map((element) => {
+                                        element.materia.map((mt) => {
+                                            element.tema.map((tm) => {
+                                                if(mt === mat[i] && element.informativo === parseInt(newArrayInformativos[contador]) && tm === temas[j]){
+                                                    arrayGeral.push(element)
+                                                }
+                                            })
+                                        })
+                                    })
                                     contador = contador + 1
                                 }
                             }
@@ -1177,8 +1311,9 @@ export default async (req,res) => {
 
         if(temas.length > 0 && mat.length > 0 && info.length > 0 && inst.length > 0) {  
             let informativos = []
-            const {data} = await axios.get('https://quizdireito.vercel.app/api/informativos')
-            data.map((element) => informativos.push(element.numeroInfo))
+            const {data:dataInformativos} = await axios.get('https://quizdireito.vercel.app/api/informativos')
+            const {data:dataBusca} = await axios.get('https://quizdireito.vercel.app/api/busca')  
+            dataInformativos.map((element) => informativos.push(element.numeroInfo))
             let inicial = parseInt(info[0])
             let final = parseInt(info[1])
             
@@ -1201,16 +1336,30 @@ export default async (req,res) => {
                                 if(info.length === 2) {
                                     let contador = 0
                                     while(contador <= newArrayInformativos.length) {
-                                        const retorno = await connectDB.collection('perguntas').find({materia: mat[i], tema: temas[j],informativo: newArrayInformativos[contador], instituição: inst[k]}).toArray()
-                                        if(retorno.length > 0) {retorno.map((element) => arrayGeral.push(element))}
+                                        dataBusca.map((element) => {
+                                            element.materia.map((mt) => {
+                                                element.tema.map((tm) => {
+                                                    if(mt === mat[i] && element.informativo === parseInt(newArrayInformativos[contador]) && tm === temas[j] && element.instituição === inst[k]){
+                                                        arrayGeral.push(element)
+                                                    }
+                                                })
+                                            })
+                                        })
                                         contador = contador + 1
                                     }
                                 }
                                 if(info.length === 1) {
                                     let contador = 0
                                     while(contador <= newArrayInformativos.length) {
-                                        const retorno = await connectDB.collection('perguntas').find({materia: mat[i], tema: temas[j], informativo:newArrayInformativos[contador], instituição: inst[k]}).toArray()
-                                        if(retorno.length > 0) {retorno.map((element) => arrayGeral.push(element))}                            
+                                        dataBusca.map((element) => {
+                                            element.materia.map((mt) => {
+                                                element.tema.map((tm) => {
+                                                    if(mt === mat[i] && element.informativo === parseInt(newArrayInformativos[contador]) && tm === temas[j] && element.instituição === inst[k]){
+                                                        arrayGeral.push(element)
+                                                    }
+                                                })
+                                            })
+                                        })
                                         contador = contador + 1
                                     }
                                 }
@@ -1226,16 +1375,30 @@ export default async (req,res) => {
                                     console.log('2 infos setados')
                                     let contador = 0
                                     while(contador <= newArrayInformativos.length) {
-                                        const retorno = await connectDB.collection('perguntas').find({materia: mat[i], tema: temas[k],informativo : newArrayInformativos[contador], instituição: inst[j]}).toArray()
-                                        if(retorno.length > 0) {retorno.map((element) => arrayGeral.push(elment))}
+                                        dataBusca.map((element) => {
+                                            element.materia.map((mt) => {
+                                                element.tema.map((tm) => {
+                                                    if(mt === mat[i] && element.informativo === parseInt(newArrayInformativos[contador]) && tm === temas[k] && element.instituição === inst[j]){
+                                                        arrayGeral.push(element)
+                                                    }
+                                                })
+                                            })
+                                        })
                                         contador = contador + 1
                                     }
                                 }
                                 if(info.length === 1) {
                                     let contador = 0
                                     while(contador <= newArrayInformativos.length) {
-                                        const retorno = await connectDB.collection('perguntas').find({materia: mat[i], tema: temas[k], informativo :newArrayInformativos[contador], instituição: inst[j]}).toArray()
-                                        if(retorno.length > 0) {retorno.map((element) => arrayGeral.push(element))}                              
+                                        dataBusca.map((element) => {
+                                            element.materia.map((mt) => {
+                                                element.tema.map((tm) => {
+                                                    if(mt === mat[i] && element.informativo === parseInt(newArrayInformativos[contador]) && tm === temas[k] && element.instituição === inst[j]){
+                                                        arrayGeral.push(element)
+                                                    }
+                                                })
+                                            })
+                                        })
                                         contador = contador + 1
                                     }
                                 }
@@ -1255,16 +1418,30 @@ export default async (req,res) => {
                                     let contador = 0
                                     console.log('2 infos setados')
                                     while(contador <= newArrayInformativos.length) {
-                                        const retorno = await connectDB.collection('perguntas').find({materia: mat[j], tema: temas[i],informativo: newArrayInformativos[contador], instituição: inst[k]}).toArray()
-                                        if(retorno.length > 0) {retorno.map((element) => arrayGeral.push(element))}
+                                        dataBusca.map((element) => {
+                                            element.materia.map((mt) => {
+                                                element.tema.map((tm) => {
+                                                    if(mt === mat[j] && element.informativo === parseInt(newArrayInformativos[contador]) && tm === temas[i] && element.instituição === inst[k]){
+                                                        arrayGeral.push(element)
+                                                    }
+                                                })
+                                            })
+                                        })
                                         contador = contador + 1
                                     }
                                 }
                                 if(info.length === 1) {
                                     let contador = 0
                                     while(contador <= newArrayInformativos.length) {
-                                        const retorno = await connectDB.collection('perguntas').find({materia: mat[j], tema: temas[i], informativo:newArrayInformativos[contador], instituição: inst[k]}).toArray()
-                                        if(retorno.length > 0) {retorno.map((element) => arrayGeral.push(element))}                              
+                                        dataBusca.map((element) => {
+                                            element.materia.map((mt) => {
+                                                element.tema.map((tm) => {
+                                                    if(mt === mat[j] && element.informativo === parseInt(newArrayInformativos[contador]) && tm === temas[i] && element.instituição === inst[k]){
+                                                        arrayGeral.push(element)
+                                                    }
+                                                })
+                                            })
+                                        })                 
                                         contador = contador + 1
                                     }
                                 }
@@ -1280,22 +1457,34 @@ export default async (req,res) => {
                    for(let i = 0; i < inst.length; i++) {
                        for(let j = 0; j < temas.length; j++) {
                            for(let k = 0; k < mat.length; k++) {
-                                let inicial = parseInt(info[0])
-                                let final = parseInt(info[1])
-                    
                                 if(info.length === 2) {
                                     let contador = 0
                                     console.log('2 infos setados')
                                     while(contador <= newArrayInformativos.length) {
-                                        const retorno = await connectDB.collection('perguntas').find({materia: mat[k], tema: temas[j],informativo :newArrayInformativos[contador], instituição: inst[i]}).toArray()
-                                        if(retorno.length > 0) {retorno.map((element) => arrayGeral.push(element))}
+                                        dataBusca.map((element) => {
+                                            element.materia.map((mt) => {
+                                                element.tema.map((tm) => {
+                                                    if(mt === mat[k] && element.informativo === parseInt(newArrayInformativos[contador]) && tm === temas[j] && element.instituição === inst[i]){
+                                                        arrayGeral.push(element)
+                                                    }
+                                                })
+                                            })
+                                        })
                                         contador = contador + 1
                                     }
                                 }
                                 if(info.length === 1) {
+                                    let contador = 0
                                     while(contador <= newArrayInformativos.length) {
-                                        const retorno = await connectDB.collection('perguntas').find({materia: mat[k], tema: temas[j], informativo:newArrayInformativos[contador], instituição: inst[i]}).toArray()
-                                        if(retorno.length > 0) {retorno.map((element) => arrayGeral.push(element))}                              
+                                        dataBusca.map((element) => {
+                                            element.materia.map((mt) => {
+                                                element.tema.map((tm) => {
+                                                    if(mt === mat[k] && element.informativo === parseInt(newArrayInformativos[contador]) && tm === temas[j] && element.instituição === inst[i]){
+                                                        arrayGeral.push(element)
+                                                    }
+                                                })
+                                            })
+                                        })                     
                                         contador = contador + 1
                                     }
                                 }                      
@@ -1370,10 +1559,11 @@ export default async (req,res) => {
         }
         
         if(temas.length > 0 && inst.length > 0 && info.length > 0 && mat.length === 0) {
-            // NÃO MEXI POR AQUE NÃO ESCOLHEU TEMA.
+            
             let informativos = []
-            const {data} = await axios.get('https://quizdireito.vercel.app/api/informativos')
-            data.map((element) => informativos.push(element.numeroInfo))
+            const {data:dataInformativos} = await axios.get('https://quizdireito.vercel.app/api/informativos')
+            const {data:dataBusca} = await axios.get('https://quizdireito.vercel.app/api/busca')  
+            dataInformativos.map((element) => informativos.push(element.numeroInfo))
             let inicial = parseInt(info[0])
             let final = parseInt(info[1])
             
@@ -1390,15 +1580,19 @@ export default async (req,res) => {
 
                 if(ttInst === 1) {
                     console.log('instituicao é uma só')
-                if(info.length === 1) {
+                if(info.length === 1 || 2) {
                     console.log('só tem o informativo inicial')
-                    let contador = 0
+                    
                     for(let i = 0; i < temas.length; i++) {
+                        let contador = 0
                         while(contador <= newArrayInformativos.length) {
-                            const retorno = await connectDB.collection('perguntas').find({tema: temas[i], instituição:inst[0], informativo :newArrayInformativos[contador]}).toArray()
-                            if(retorno.length > 0) {
-                                arrayComplete.push(retorno[0])
-                            }
+                            dataBusca.map((element) => {
+                                element.tema.map((tm) => {
+                                    if(element.informativo === parseInt(newArrayInformativos[contador]) && tm === temas[i] && element.instituição === inst[0]){
+                                        arrayComplete.push(element)
+                                    }
+                                })
+                            })
                             contador = contador + 1
                         }   
                       }
@@ -1406,56 +1600,29 @@ export default async (req,res) => {
                     uniqueArray.sort((a,b) => b.informativo - a.informativo)
                     retornoPerguntas.push(uniqueArray)
                 }
-                if(info.length === 2) {
-                    let contador = 0
-                    console.log('é dois informativossss')
-                    for(let i = 0; i < temas.length; i++) {
-                        while(contador <= newArrayInformativos.length) {
-                            const retorno = await connectDB.collection('perguntas').find({tema: temas[i], instituição: inst[0], informativo : newArrayInformativos[contador]}).toArray()
-                            if(retorno.length > 0) {
-                                arrayComplete.push(retorno[0])
-                            }
-                            contador = contador + 1
-                        }   
-                    }
-                    const uniqueArray = removeDuplicates(arrayComplete, "idQuestion")
-                    uniqueArray.sort((a,b) => b.informativo - a.informativo)
-                    retornoPerguntas.push(uniqueArray)
-
-                }
                 }
 
                 if(ttInst === 2) {
                     console.log('é dois instituito')
-                    if(info.length === 1) {
+                    if(info.length === 1 || 2) {
                         console.log('só tem o informativo inicial')
-                        let contador = 0
-                        const sortInfo = { numeroInfo : 1}
-                        const ultimoInfo = await connectDB.collection('informativos').find({}).sort(sortInfo).toArray()
-                        const posicaoInfo = ultimoInfo.length - 1 
-                        const infoFinal = ultimoInfo[posicaoInfo].numeroInfo
                         for(let i = 0; i < temas.length; i++) {
+                            let contador = 0
                             while(contador <= newArrayInformativos.length) {
-                                const retorno = await connectDB.collection('perguntas').find({tema: temas[i], instituição:inst[0], informativo :newArrayInformativos[contador]}).toArray()
-                                // console.log(retorno)
-                                const retorno2 = await connectDB.collection('perguntas').find({tema: temas[i], instituição:inst[1], informativo :newArrayInformativos[contador]}).toArray()
-                                // console.log(retorno2)
-                                if(retorno.length > 0) {
-                                    if(retorno.length > 1) {
-                                        retorno.map((element) => arrayComplete.push(element))
-                                    }
-                                    if(retorno.length === 1) {
-                                        arrayComplete.push(retorno[0])
-                                    }
-                                }
-                                if(retorno2.length > 0) {
-                                    if(retorno2.length > 1) {
-                                        retorno2.map((element) => arrayComplete.push(element))
-                                    }
-                                    if(retorno2.length === 1) {
-                                        arrayComplete.push(retorno2[0])
-                                    }
-                                }
+                                dataBusca.map((element) => {
+                                    element.tema.map((tm) => {
+                                        if(element.informativo === parseInt(newArrayInformativos[contador]) && tm === temas[i] && element.instituição === inst[0]){
+                                            arrayComplete.push(element)
+                                        }
+                                    })
+                                })
+                                dataBusca.map((element) => {
+                                    element.tema.map((tm) => {
+                                        if(element.informativo === parseInt(newArrayInformativos[contador]) && tm === temas[i] && element.instituição === inst[1]){
+                                            arrayComplete.push(element)
+                                        }
+                                    })
+                                })
                                 contador = contador + 1
                             }   
                           }
@@ -1474,52 +1641,29 @@ export default async (req,res) => {
                       
                         retornoPerguntas.push(arrayCompleteOrdered)
                     }
-                    if(info.length === 2) {
-                        console.log('é dois informativossss')
-                        let contador = 0
-                        for(let i = 0; i < temas.length; i++) {
-                            while(contador <= newArrayInformativos.length) {
-                                const retorno = await connectDB.collection('perguntas').find({tema: temas[i], instituição: inst[0], informativo : newArrayInformativos[contador]}).toArray()
-                                if(retorno.length > 0) {
-                                    arrayComplete.push(retorno[0])
-                                }
-                                contador = contador + 1
-                            }   
-                        }
-                        const uniqueArray = removeDuplicates(arrayComplete, "idQuestion")
-                        uniqueArray.sort((a,b) => b.informativo - a.informativo)
-                        retornoPerguntas.push(uniqueArray)
-    
-                    }
                 }
             }
             if(inst.length > temas.length) {
                inst.sort()
-               if(info.length === 1) {
+               if(info.length === 1 || 2) {
                 console.log('só tem o informativo inicial')
-                let contador = 0
                 for(let i = 0; i < temas.length; i++) {
+                    let contador = 0
                     while(contador <= newArrayInformativos.length) {
-                        const retorno = await connectDB.collection('perguntas').find({tema: temas[i], instituição:inst[0], informativo :newArrayInformativos[contador]}).toArray()
-                        // console.log(retorno)
-                        const retorno2 = await connectDB.collection('perguntas').find({tema: temas[i], instituição:inst[1], informativo :newArrayInformativos[contador]}).toArray()
-                        // console.log(retorno2)
-                        if(retorno.length > 0) {
-                            if(retorno.length > 1) {
-                                retorno.map((element) => arrayComplete.push(element))
-                            }
-                            if(retorno.length === 1) {
-                                arrayComplete.push(retorno[0])
-                            }
-                        }
-                        if(retorno2.length > 0) {
-                            if(retorno2.length > 1) {
-                                retorno2.map((element) => arrayComplete.push(element))
-                            }
-                            if(retorno2.length === 1) {
-                                arrayComplete.push(retorno2[0])
-                            }
-                        }
+                        dataBusca.map((element) => {
+                            element.tema.map((tm) => {
+                                if(element.informativo === parseInt(newArrayInformativos[contador]) && tm === temas[i] && element.instituição === inst[0]){
+                                    arrayComplete.push(element)
+                                }
+                            })
+                        })
+                        dataBusca.map((element) => {
+                            element.tema.map((tm) => {
+                                if(element.informativo === parseInt(newArrayInformativos[contador]) && tm === temas[i] && element.instituição === inst[1]){
+                                    arrayComplete.push(element)
+                                }
+                            })
+                        })
                         contador = contador + 1
                     }   
                   }
@@ -1538,23 +1682,23 @@ export default async (req,res) => {
               
                 retornoPerguntas.push(arrayCompleteOrdered)
             }
-            if(info.length === 2) {
-                console.log('é dois informativossss')
-                let contador = 0
-                for(let i = 0; i < temas.length; i++) {
-                    while(contador <= newArrayInformativos.length) {
-                        const retorno = await connectDB.collection('perguntas').find({tema: temas[i], instituição: inst[0], informativo : newArrayInformativos[contador]}).toArray()
-                        if(retorno.length > 0) {
-                            arrayComplete.push(retorno[0])
-                        }
-                        contador = contador + 1
-                    }   
-                }
-                const uniqueArray = removeDuplicates(arrayComplete, "idQuestion")
-                uniqueArray.sort((a,b) => b.informativo - a.informativo)
-                retornoPerguntas.push(uniqueArray)
+            // if(info.length === 2) {
+            //     console.log('é dois informativossss')
+            //     let contador = 0
+            //     for(let i = 0; i < temas.length; i++) {
+            //         while(contador <= newArrayInformativos.length) {
+            //             const retorno = await connectDB.collection('perguntas').find({tema: temas[i], instituição: inst[0], informativo : newArrayInformativos[contador]}).toArray()
+            //             if(retorno.length > 0) {
+            //                 arrayComplete.push(retorno[0])
+            //             }
+            //             contador = contador + 1
+            //         }   
+            //     }
+            //     const uniqueArray = removeDuplicates(arrayComplete, "idQuestion")
+            //     uniqueArray.sort((a,b) => b.informativo - a.informativo)
+            //     retornoPerguntas.push(uniqueArray)
 
-            }
+            // }
             }
 
         }
@@ -1658,6 +1802,7 @@ export default async (req,res) => {
                         if(element === mat) {
                             if(arrayIds.indexOf(element2.idQuestion) === -1){
                                 arrayCutStf.push(element2)
+                                arrayIds.push(element2.idQuestion)
                             }
                         }
                     })
@@ -1674,6 +1819,7 @@ export default async (req,res) => {
                         if(element === mat) {
                             if(arrayIds.indexOf(element2.idQuestion) === -1){
                                 arrayCutStj.push(element2)
+                                arrayIds.push(element2.idQuestion)
                             }
                         }
                     })
@@ -1722,6 +1868,7 @@ export default async (req,res) => {
 
         if(tipoCE == null || undefined && tipoME == null || undefined) {
             if(retornoPerguntas.length < 1) {
+                console.log('SERA???????????????????????')
                 const {data} = await axios.get('https://quizdireito.vercel.app/api/busca')
                  retornoPerguntas.push(data)
             }

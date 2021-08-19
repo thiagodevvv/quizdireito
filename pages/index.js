@@ -48,7 +48,7 @@ export default function Home() {
         setPerguntas([])
         setBuscaFiltroTamanho(null)
         setIsLoadingFilter(true)
-        const data = await axios.post('https://quizdireito.vercel.app/api/filtro', {
+        const data = await axios.post('/api/filtro', {
             "mat": mat,
             "inst": inst,
             "info": arr,
@@ -89,7 +89,7 @@ export default function Home() {
 
     useEffect(() => {
       const getInfo = async () => {
-      const resultado = await axios.get('https://quizdireito.vercel.app/api/informativos')
+      const resultado = await axios.get('/api/informativos')
       resultado.data.map((item) => {
           const opts = {
               label: `${item.numeroInfo}`,
@@ -99,7 +99,7 @@ export default function Home() {
       })
     }
     const getMaterias = async () => {
-      const resultado = await axios.get('https://quizdireito.vercel.app/api/materias')
+      const resultado = await axios.get('/api/materias')
       resultado.data.map((item) => {
         const opts = {
           label: `${item.materia}`,
@@ -113,7 +113,7 @@ export default function Home() {
     }
 
     const getTemas = async () => {
-      const resultado = await axios.get('https://quizdireito.vercel.app/api/temas')
+      const resultado = await axios.get('/api/temas')
       resultado.data.map((item) => {
         const opts = {
           label: `${item.tema}`,
@@ -130,7 +130,7 @@ export default function Home() {
 
     useEffect(() => {
         const chamando = async () => {
-        const resultado = await axios.get('https://quizdireito.vercel.app/api/busca')
+        const resultado = await axios.get('/api/busca')
         setPerguntas(resultado.data)
         setBuscaFiltroTamanho(resultado.data.length)
       }
@@ -230,6 +230,7 @@ export default function Home() {
                                 const posicao = informativos.findIndex(element => element.value === value.value)
                                 const infoCut = informativos.slice(posicao + 1)
                                 infoCut.map((element) => setInfoFinalArray((prevState) => [...prevState, element]))
+                                setInfoEnd("")
                             }} styles={{dropdownIndicator: dropdownIndicatorStyles}} theme={customTheme} className="input-info-inicial" options={informativos} />
 
                             <Select  isDisabled={infoFinalDisable} value={infoEnd} placeholder={infoEnd ? `Informativo final: ${infoEnd}` : "Informativo final"}  onChange={(value) => {
