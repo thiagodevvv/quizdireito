@@ -1518,7 +1518,10 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                         </Container>
                         <Container style={{display: "flex", flexDirection: "column", marginLeft: 0, marginTop: -20}} >
                             <Button className="btnResponder"  
-                            onClick={() => verificarQuestao(item.resp, resposta, i)} type="submit">
+                            onClick={() => {
+                                verificarQuestao(item.resp, resposta, i)
+                                setResposta("")
+                            }} type="submit">
                                 <p style={{color: "white", fontFamily: "Segoe", fontWeight: "bold", marginTop:1, fontSize: 15, opacity: 0.9}}>RESPONDER</p>
                             </Button>
                             <Button onClick={() => {
