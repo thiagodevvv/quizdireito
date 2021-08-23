@@ -1693,112 +1693,117 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
     }
 
     const verificarQuestao = (resp, respForm, i) => {
-        if(resp == respForm) {
-            if(i === 0) {
-                setResultadoResp1("Parabéns! Você acertou.")
-                setRetornoResp1("")
-                setColor1("green")
-            }
-            if(i === 1) {
-                setResultadoResp2("Parabéns! Você acertou.")
-                setRetornoResp2("")
-                setColor2("green")
-            }
-            if(i === 2) {
-                setResultadoResp3("Parabéns! Você acertou.")
-                setRetornoResp3("")
-                setColor3("green")
-            }
-            if(i === 3) {
-                setResultadoResp4("Parabéns! Você acertou.")
-                setRetornoResp4("")
-                setColor4("green")
-            }
-            if(i === 4) {
-                setResultadoResp5("Parabéns! Você acertou.")
-                setRetornoResp5("")
-                setColor5("green")
-            }
-            if(i === 5) {
-                setResultadoResp6("Parabéns! Você acertou.")
-                setRetornoResp6("")
-                setColor6("green")
-            }
-            if(i === 6) {
-                setResultadoResp7("Parabéns! Você acertou.")
-                setRetornoResp7("")
-                setColor7("green")
-            }
-            if(i === 7) {
-                setResultadoResp8("Parabéns! Você acertou.")
-                setRetornoResp8("")
-                setColor8("green") 
-            }
-            if(i === 8) {
-                setResultadoResp9("Parabéns! Você acertou.")
-                setRetornoResp9("")
-                setColor9("green")
-            }
-            if(i === 9) {
-                setResultadoResp10("Parabéns! Você acertou.")
-                setRetornoResp10("")
-                setColor10("green")
-            }
-
-            
+        if(respForm.length === 0) {
+            alert('Favor selecionar uma assertiva')
         }else {
-            
-            if(i === 0) {
-                setResultadoResp1(`Você errou!`)
-                setRetornoResp1(` ${resp.toUpperCase()}`)
-                setColorx1("red")
-            }
-            if(i === 1) {
-                setResultadoResp2(`Você errou!`)
-                setRetornoResp2(` ${resp.toUpperCase()}`)
-                setColorx2("red")
-            }
-            if(i === 2) {
-                setResultadoResp3(`Você errou!`)
-                setRetornoResp3(`${resp.toUpperCase()}`)
-                setColorx3("red")
-            }
-            if(i === 3) {
-                setResultadoResp4(`Você errou!`)
-                setRetornoResp4(`${resp.toUpperCase()}`)
-                setColorx4("red")
-            }
-            if(i === 4) {
-                setResultadoResp5(`Você errou!`)
-                setRetornoResp5(` ${resp.toUpperCase()}`)
-                setColorx5("red")
-            }
-            if(i === 5) {
-                setResultadoResp6(`Você errou!`)
-                setRetornoResp6(`${resp.toUpperCase()}`)
-                setColorx6("red")
-            }
-            if(i === 6) {
-                setResultadoResp7(`Você errou!`)
-                setRetornoResp7(` ${resp.toUpperCase()}`)
-                setColorx7("red")
-            }
-            if(i === 7) {
-                setResultadoResp8(`Você errou!`)
-                setRetornoResp8(`${resp.toUpperCase()}`)
-                setColorx8("red")
-            }
-            if(i === 8) {
-                setResultadoResp9(`Você errou!`)
-                setRetornoResp9(`${resp.toUpperCase()}`)
-                setColorx9("red")
-            }
-            if(i === 9) {
-                setResultadoResp10(`Você errou!`)
-                setRetornoResp10(`${resp.toUpperCase()}`)
-                setColorx10("red")
+            if(resp == respForm) {
+                if(i === 0) {
+                    setResultadoResp1("Parabéns! Você acertou.")
+                    setRetornoResp1("")
+                    setColor1("green")
+                }
+                if(i === 1) {
+                    setResultadoResp2("Parabéns! Você acertou.")
+                    setRetornoResp2("")
+                    setColor2("green")
+                }
+                if(i === 2) {
+                    setResultadoResp3("Parabéns! Você acertou.")
+                    setRetornoResp3("")
+                    setColor3("green")
+                }
+                if(i === 3) {
+                    setResultadoResp4("Parabéns! Você acertou.")
+                    setRetornoResp4("")
+                    setColor4("green")
+                }
+                if(i === 4) {
+                    setResultadoResp5("Parabéns! Você acertou.")
+                    setRetornoResp5("")
+                    setColor5("green")
+                }
+                if(i === 5) {
+                    setResultadoResp6("Parabéns! Você acertou.")
+                    setRetornoResp6("")
+                    setColor6("green")
+                }
+                if(i === 6) {
+                    setResultadoResp7("Parabéns! Você acertou.")
+                    setRetornoResp7("")
+                    setColor7("green")
+                }
+                if(i === 7) {
+                    setResultadoResp8("Parabéns! Você acertou.")
+                    setRetornoResp8("")
+                    setColor8("green") 
+                }
+                if(i === 8) {
+                    setResultadoResp9("Parabéns! Você acertou.")
+                    setRetornoResp9("")
+                    setColor9("green")
+                }
+                if(i === 9) {
+                    setResultadoResp10("Parabéns! Você acertou.")
+                    setRetornoResp10("")
+                    setColor10("green")
+                }
+    
+                
+            }else {
+                
+                if(i === 0) {
+                    setResultadoResp1(`Você errou!`)
+                    setRetornoResp1(` ${resp.toUpperCase()}`)
+                    setColorx1("red")
+                }
+                if(i === 1) {
+                    setResultadoResp2(`Você errou!`)
+                    setRetornoResp2(` ${resp.toUpperCase()}`)
+                    setColorx2("red")
+                }
+                if(i === 2) {
+                    setResultadoResp3(`Você errou!`)
+                    setRetornoResp3(`${resp.toUpperCase()}`)
+                    setColorx3("red")
+                }
+                if(i === 3) {
+                    setResultadoResp4(`Você errou!`)
+                    setRetornoResp4(`${resp.toUpperCase()}`)
+                    setColorx4("red")
+                }
+                if(i === 4) {
+                    setResultadoResp5(`Você errou!`)
+                    setRetornoResp5(` ${resp.toUpperCase()}`)
+                    setColorx5("red")
+                }
+                if(i === 5) {
+                    setResultadoResp6(`Você errou!`)
+                    setRetornoResp6(`${resp.toUpperCase()}`)
+                    setColorx6("red")
+                }
+                if(i === 6) {
+                    setResultadoResp7(`Você errou!`)
+                    setRetornoResp7(` ${resp.toUpperCase()}`)
+                    setColorx7("red")
+                }
+                if(i === 7) {
+                    setResultadoResp8(`Você errou!`)
+                    setRetornoResp8(`${resp.toUpperCase()}`)
+                    setColorx8("red")
+                }
+                if(i === 8) {
+                    setResultadoResp9(`Você errou!`)
+                    setRetornoResp9(`${resp.toUpperCase()}`)
+                    setColorx9("red")
+                }
+                if(i === 9) {
+                    setResultadoResp10(`Você errou!`)
+                    setRetornoResp10(`${resp.toUpperCase()}`)
+                    setColorx10("red")
+                }
             }
         }
+        
     }
     const CondicaoResp = (i) => {
         if(i === 0) {
