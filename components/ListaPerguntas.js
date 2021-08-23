@@ -9,6 +9,15 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
     const [previousButton, setPreviousButton] = useState("none")
     const [nextButton, setNextButton] = useState("flex")
     const [resposta, setResposta] = useState("")
+    const [resposta2, setResposta2] = useState("")
+    const [resposta3, setResposta3] = useState("")
+    const [resposta4, setResposta4] = useState("")
+    const [resposta5, setResposta5] = useState("")
+    const [resposta6, setResposta6] = useState("")
+    const [resposta7, setResposta7] = useState("")
+    const [resposta8, setResposta8] = useState("")
+    const [resposta9, setResposta9] = useState("")
+    const [resposta10, setResposta10] = useState("")
     const [resultadoResp1, setResultadoResp1] = useState("")
     const [resultadoResp2, setResultadoResp2] = useState("")
     const [resultadoResp3, setResultadoResp3] = useState("")
@@ -464,9 +473,17 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
         }
     },[totalResults])
     
-    const handleResp = (respUser) => {
-
-        setResposta(respUser)
+    const handleResp = (respUser,i) => {
+        if(i === 0) {setResposta(respUser)}
+        if(i === 1) {setResposta2(respUser)}
+        if(i === 2) {setResposta3(respUser)}
+        if(i === 3) {setResposta4(respUser)}
+        if(i === 4) {setResposta5(respUser)}
+        if(i === 5) {setResposta6(respUser)}
+        if(i === 6) {setResposta7(respUser)}
+        if(i === 7) {setResposta8(respUser)}
+        if(i === 8) {setResposta9(respUser)}
+        if(i === 9) {setResposta10(respUser)}
     }
 
     const colorButtonJust = (i) => {
@@ -582,11 +599,11 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                                 setColorSelectedD10("")
                                                 setColorSelectedE10("") 
                                             }
-                                            handleResp("a")
+                                            handleResp("a", i)
                                             }}> <p style={{fontFamily: 'Segoe', textAlign: "center", margin:0}}>A</p>
                                         </button></div>
                                         <p align="justify" onClick={() => {
-                                            handleResp("a")
+                                            handleResp("a",i)
                                             if(i === 0) {
                                                 setColorSelected("#DF9D9C") 
                                                 setColorSelectedB("")
@@ -704,7 +721,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                                     setColorCerto10("#DF9D9C")
                                                     setColorErrado10("")
                                                 }
-                                                handleResp('certo')
+                                                handleResp('certo',i)
                                             }} className="ContainerAlternativa"></button> 
                                             <p onClick={() => {
                                                 if(i === 0) {
@@ -747,7 +764,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                                     setColorCerto10("#DF9D9C")
                                                     setColorErrado10("")
                                                 }
-                                                handleResp('certo')
+                                                handleResp('certo',i)
                                             }}
                                             className="certo-errado" style={{marginTop: 15, marginLeft: 0, fontFamily: 'Segoe', fontSize: 15}}>Certo</p>
                                         </Container>
@@ -793,7 +810,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                                     setColorErrado10("#DF9D9C")
                                                     setColorCerto10("")
                                                 }
-                                                handleResp('errado')
+                                                handleResp('errado',i)
                                             }} className="ContainerAlternativa"></button>
                                             <p onClick={() => {
                                                 if(i === 0) {
@@ -836,7 +853,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                                     setColorErrado10("#DF9D9C")
                                                     setColorCerto10("")
                                                 }
-                                                handleResp('errado')
+                                                handleResp('errado',i)
                                             }} className="certo-errado" style={{marginTop: 15, marginLeft: 0, fontFamily: 'Segoe', fontSize: 15}}>Errado</p>
                                         </Container>
                                     </Container>
@@ -920,10 +937,10 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                             setColorSelectedD10("")
                                             setColorSelectedE10("")
                                         }
-                                        handleResp("b")
+                                        handleResp("b",i)
                                     }}><p style={{fontFamily: 'Segoe', textAlign: "center", margin:0}}>B</p></button></div>
                                 <p onClick={() => {
-                                    handleResp("b")
+                                    handleResp("b",i)
                                     if(i === 0) { 
                                         setColorSelectedB("#DF9D9C")
                                         setColorSelected("")
@@ -1077,10 +1094,10 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                         setColorSelected10("")
                                         setColorSelectedE10("") 
                                     }
-                                    handleResp("d")
+                                    handleResp("d",i)
                                 }}><p style={{fontFamily: 'Segoe', textAlign: "center",margin:0}}>D</p></button></div>
                             <p onClick={() => {
-                                handleResp("d")
+                                handleResp("d",i)
                                 if(i === 0) {
                                     setColorSelectedD("#DF9D9C") 
                                     setColorSelectedB("")
@@ -1232,10 +1249,10 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                         setColorSelectedD10("")
                                         setColorSelectedE10("") 
                                     }        
-                                    handleResp("c")
+                                    handleResp("c",i)
                                 }}><p style={{fontFamily: 'Segoe', textAlign: "center",margin:0}}>C</p></button></div>
                             <p onClick={() => {
-                                handleResp("c")
+                                handleResp("c",i)
                                 if(i === 0) {
                                     setColorSelectedC("#DF9D9C") 
                                     setColorSelectedB("")
@@ -1387,10 +1404,10 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                         setColorSelectedD10("")
                                         setColorSelected10("") 
                                     }
-                                    handleResp("e")
+                                    handleResp("e",i)
                                 }}><p style={{fontFamily: 'Segoe', textAlign: "center",margin:0}}>E</p></button></div>
                            <p onClick={() => {
-                                handleResp("e")
+                                handleResp("e",i)
                                 if(i === 0) {
                                     setColorSelectedE("#DF9D9C") 
                                     setColorSelectedB("")
@@ -1519,13 +1536,16 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                         <Container style={{display: "flex", flexDirection: "column", marginLeft: 0, marginTop: -20}} >
                             <Button className="btnResponder"  
                             onClick={() => {
-                                if(resposta.length > 0) {
-                                    verificarQuestao(item.resp, resposta, i)
-                                    setResposta("")
-                                }else {
-                                    alert("Selecionar alguma assertiva")
-                                }
-                            
+                                if(i === 0) {verificarQuestao(item.resp, resposta, i)}
+                                if(i === 1) {verificarQuestao(item.resp, resposta2, i)}
+                                if(i === 2) {verificarQuestao(item.resp, resposta3, i)}
+                                if(i === 3) {verificarQuestao(item.resp, resposta4, i)}
+                                if(i === 4) {verificarQuestao(item.resp, resposta5, i)}
+                                if(i === 5) {verificarQuestao(item.resp, resposta6, i)}
+                                if(i === 6) {verificarQuestao(item.resp, resposta7, i)}
+                                if(i === 7) {verificarQuestao(item.resp, resposta8, i)}
+                                if(i === 8) {verificarQuestao(item.resp, resposta9, i)}
+                                if(i === 9) {verificarQuestao(item.resp, resposta10, i)}
                             }} type="submit">
                                 <p style={{color: "white", fontFamily: "Segoe", fontWeight: "bold", marginTop:1, fontSize: 15, opacity: 0.9}}>RESPONDER</p>
                             </Button>
