@@ -1704,6 +1704,7 @@ export default async (req,res) => {
         }
 
         if(temas.length > 0 && mat.length > 0 && inst.length > 0 && info.length === 0) {
+            const {data:dataBusca} = await axios.get('https://quizdireito.vercel.app/api/busca')
             let arrayGeral = []
             let newarrayzz = []
             let arrayStf = []
@@ -1718,10 +1719,19 @@ export default async (req,res) => {
                     for(let i = 0; i < mat.length;i++) {
                         for(let j = 0; j < temas.length; j++) {
                             for(let k = 0; k < inst.length; k++) {
-                                const retorno = await connectDB.collection('perguntas').find({materia : mat[i], tema: temas[j], instituição:inst[k]}).sort(sortInfo).toArray()
-                                if(retorno.length > 0) {
-                                    retorno.map((element) => newarrayzz.push(element))
-                                }
+                                dataBusca.map((element) => {
+                                    element.materia.map((mt) => {
+                                        element.tema.map((tm) => {
+                                            if(mt === mat[i] && tm === temas[j] && element.instituição === inst[k]) {
+                                                newarrayzz.push(element)
+                                            }
+                                        })
+                                    })
+                                })
+                                // const retorno = await connectDB.collection('perguntas').find({materia : mat[i], tema: temas[j], instituição:inst[k]}).sort(sortInfo).toArray()
+                                // if(retorno.length > 0) {
+                                //     retorno.map((element) => newarrayzz.push(element))
+                                // }
                             }
                         }
                     }
@@ -1730,10 +1740,19 @@ export default async (req,res) => {
                     for(let i = 0; i < mat.length;i++) {
                         for(let j = 0; j < inst.length; j++) {
                             for(let k = 0; k < temas.length; k++) {
-                                const retorno = await connectDB.collection('perguntas').find({materia : mat[i], tema: temas[k], instituição:inst[j]}).sort(sortInfo).toArray()
-                                if(retorno.length > 0) {
-                                    retorno.map((element) => newarrayzz.push(element) )
-                                }
+                                dataBusca.map((element) => {
+                                    element.materia.map((mt) => {
+                                        element.tema.map((tm) => {
+                                            if(mt === mat[i] && tm === temas[k] && element.instituição === inst[j]) {
+                                                newarrayzz.push(element)
+                                            }
+                                        })
+                                    })
+                                })
+                                // const retorno = await connectDB.collection('perguntas').find({materia : mat[i], tema: temas[k], instituição:inst[j]}).sort(sortInfo).toArray()
+                                // if(retorno.length > 0) {
+                                //     retorno.map((element) => newarrayzz.push(element) )
+                                // }
                             }
                         }
                     }
@@ -1748,12 +1767,21 @@ export default async (req,res) => {
                     for(let i = 0; i < temas.length; i++) {
                         for(let j = 0; j < mat.length; j++) {
                             for(let k = 0; k < inst.length; k++) {
-                                const retorno = await connectDB.collection('perguntas').find({materia : mat[j], tema: temas[i], instituição:inst[k]}).sort(sortInfo).toArray()
-                                if(retorno.length > 0) {
-                                    for(let p = 0; p < retorno.length; p++) {
-                                        arraydupli.push(retorno[p])
-                                    }
-                                }
+                                dataBusca.map((element) => {
+                                    element.materia.map((mt) => {
+                                        element.tema.map((tm) => {
+                                            if(mt === mat[j] && tm === temas[i] && element.instituição === inst[k]) {
+                                                newarrayzz.push(element)
+                                            }
+                                        })
+                                    })
+                                })
+                                // const retorno = await connectDB.collection('perguntas').find({materia : mat[j], tema: temas[i], instituição:inst[k]}).sort(sortInfo).toArray()
+                                // if(retorno.length > 0) {
+                                //     for(let p = 0; p < retorno.length; p++) {
+                                //         arraydupli.push(retorno[p])
+                                //     }
+                                // }
                             }
                         }
                     }
@@ -1762,12 +1790,21 @@ export default async (req,res) => {
                     for(let i = 0; i < temas.length; i++) {
                         for(let j = 0; j < inst.length; j++) {
                             for(let k = 0; k < mat.length; k++) {
-                                const retorno = await connectDB.collection('perguntas').find({materia : mat[k], tema: temas[i], instituição:inst[j]}).sort(sortInfo).toArray()
-                                if(retorno.length > 0) {
-                                    for(let p = 0; p < retorno.length; p++) {
-                                        arraydupli.push(retorno[p])
-                                    }
-                                }
+                                dataBusca.map((element) => {
+                                    element.materia.map((mt) => {
+                                        element.tema.map((tm) => {
+                                            if(mt === mat[k] && tm === temas[i] && element.instituição === inst[j]) {
+                                                newarrayzz.push(element)
+                                            }
+                                        })
+                                    })
+                                })
+                                // const retorno = await connectDB.collection('perguntas').find({materia : mat[k], tema: temas[i], instituição:inst[j]}).sort(sortInfo).toArray()
+                                // if(retorno.length > 0) {
+                                //     for(let p = 0; p < retorno.length; p++) {
+                                //         arraydupli.push(retorno[p])
+                                //     }
+                                // }
                             }
                         }
                     }

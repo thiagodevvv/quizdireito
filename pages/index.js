@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import {Container, Form, Button} from 'react-bootstrap'
 import axios from 'axios'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import ListaPerguntas from '../components/ListaPerguntas'
 import Select from 'react-select'
 import CheckBox from '../components/CheckBox'   
@@ -10,6 +10,7 @@ import CheckBox from '../components/CheckBox'
 
 export default function Home() {
   const optsInst = [{label: "STF", value:"STF"}, {label: "STJ", value:"STJ"}]
+  const selectRef = useRef(null)
   const [perguntas, setPerguntas] = useState([])
 
   //FILTRO
@@ -353,7 +354,7 @@ export default function Home() {
                           
 
                           }}>
-                            <p style={{margin:10, fontSize: 11, color:"#cb605d"}}> {item}</p>
+                            <p style={{margin:10, fontSize: 11, color:"#cb605d"}}>{item}</p>
                             <p className="xis">x</p>
                           </div>
                         )

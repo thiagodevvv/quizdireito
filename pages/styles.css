@@ -751,16 +751,19 @@
 
 }
 
-.caixaFiltro:hover {
-    cursor: pointer;
-    background: #DCDCDC;
-    border: 2px solid #C0C0C0;
-}
+@media (hover: hover) {
+    .caixaFiltro:hover {
+        cursor: pointer;
+        background-color: #DCDCDC;
+        border: 2px solid #C0C0C0;
+    }
+  }
+
 
 .xis {
     margin-left: 5px;
     border-radius: 50px;
-    background-color: #DCDCDC;
+    /* background-color: #DCDCDC; */
     font-size: 11px;
     font-weight: bold;
     height: 20px;
