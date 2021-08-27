@@ -1,5 +1,4 @@
 const DB_URL = process.env.DB_URL
-
 import {MongoClient} from 'mongodb'
 
 

@@ -1,4 +1,4 @@
-import db from '../../database'
+import db from '../../src/database'
 
 export default async (req,res) => {
     const client = await db()

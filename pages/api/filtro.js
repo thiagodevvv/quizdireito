@@ -1,4 +1,4 @@
-import db from '../../database'
+import db from '../../src/database'
 import axios from 'axios'
 export default async (req,res) => {
     

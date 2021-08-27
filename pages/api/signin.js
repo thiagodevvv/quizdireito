@@ -1,6 +1,6 @@
 require('dotenv/config')
 
-import db from '../../database'
+import db from '../../src/database'
 import jwt from 'jsonwebtoken'
 
 const authSecret = process.env.authSecret

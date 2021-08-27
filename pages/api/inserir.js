@@ -1,4 +1,4 @@
-import db from '../../database'
+import db from '../../src/database'
 
 export default async (req, res) => {
     let idQuestion = 0

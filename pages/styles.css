@@ -753,15 +753,6 @@
 }
 
 
-/* @media (hover: hover) {
-    .caixaFiltro:hover {
-        cursor: pointer;
-        background-color: #DCDCDC;
-        border: 2px solid #C0C0C0;
-    }
-  } */
-
-
 
 @media screen and (max-width: 1000px) {
     .caixaFiltro:hover {

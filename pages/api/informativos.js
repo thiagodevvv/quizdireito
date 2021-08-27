@@ -1,4 +1,4 @@
-import db from '../../database'
+import db from '../../src/database'
 export default async (req,res) => {
     const sortInfo = { numeroInfo : 1}
     const client = await db()
