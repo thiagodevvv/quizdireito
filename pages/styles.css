@@ -26,6 +26,7 @@
     src: url(../public/fonts/SEGOEUI.TTF);
 }
 
+
 @media screen and (max-width: 767px) {
     #title {
        font-size: 20px;
@@ -692,12 +693,6 @@
     margin-bottom: 5px;
 }
 
-/* @media screen and (max-width:992px) {
-    .ContainerFiltros {
-        width: 470px;
-      
-    }
-} */
 @media screen and (max-width:519px) {
     .ContainerFiltros {
         display: flex;
@@ -751,13 +746,29 @@
 
 }
 
-@media (hover: hover) {
+.caixaFiltro:hover {
+        cursor: pointer;
+        background-color: #DCDCDC;
+        border: 2px solid #C0C0C0;
+}
+
+
+/* @media (hover: hover) {
     .caixaFiltro:hover {
         cursor: pointer;
         background-color: #DCDCDC;
         border: 2px solid #C0C0C0;
     }
-  }
+  } */
+
+
+
+@media screen and (max-width: 1000px) {
+    .caixaFiltro:hover {
+        background-color: transparent;
+        border: 1px solid #C0C0C0;
+    }
+}     
 
 
 .xis {
