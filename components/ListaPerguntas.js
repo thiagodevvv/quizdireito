@@ -678,8 +678,8 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                 )
                             }else {
                                 return (
-                                    <Container style={{display: "flex", flexDirection: "column", marginLeft: -15,}}>
-                                        <Container style={{display: "flex", flexDirection: "row"}}>   
+                                    <Container style={{display: "flex", flexDirection: "column", marginLeft: -15}}>
+                                        <Container style={{display: "flex", flexDirection: "row", alignItems: 'center'}}>   
                                             <button style={{backgroundColor: colorCEME(i, 'certo')}} onClick={() => {
                                                 if(i === 0) {
                                                     setColorCerto("#DF9D9C")
@@ -768,7 +768,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                             }}
                                             className="certo-errado" style={{marginTop: 15, marginLeft: 0, fontFamily: 'Segoe', fontSize: 15}}>Certo</p>
                                         </Container>
-                                        <Container style={{display: "flex", flexDirection: "row"}}>
+                                        <Container style={{display: "flex", flexDirection: "row", alignItems: 'center'}}>
                                             <button style={{backgroundColor: colorCEME(i, 'errado')}}onClick={() => {
                                                 if(i === 0) {
                                                     setColorErrado("#DF9D9C")
