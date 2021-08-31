@@ -473,7 +473,7 @@
     font-family: 'Segoe';
     font-size: 15px;
     color:#4F4F4F;
-    margin-top: 15px;
+    margin-top: 10px;
 }
 
 .alternativa:hover {
@@ -500,7 +500,7 @@
     /* padding: 0px; */
     /* margin: 0px; */
     margin-right: 5px;
-    margin-top: 10px;
+    margin-top: 0px;
     opacity: 0.8;
     background-color: white;
 }
@@ -514,7 +514,7 @@
     margin-bottom: 5px;
     background-color: #BD3330;
     border: none;
-    width: 204px;
+    width: 235px;
     margin-left: -15px;
     height: 40px;
 }
@@ -539,7 +539,7 @@
     margin-top: 1px;
     margin-bottom: 10px;
     border: 1px solid #afc2d3;
-    width: 204px;
+    width: 235px;
     height: 40px;
     margin-left: -15px;
     
@@ -572,6 +572,17 @@
     font-size: 15px;
     color: #808080; 
 }
+
+@media screen and (max-width: 386px) {
+    
+    .btnVisuJust{
+        width: 100%;
+    }
+    .btnResponder {
+        width: 100%;
+    }
+}
+
 
 
 .questao {

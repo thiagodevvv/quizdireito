@@ -526,7 +526,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                         function letraA () {
                             if(item.a) {
                                 return (
-                                    <Container style={{display: "flex", flexDirection: "row"}} >
+                                    <Container style={{display: "flex", flexDirection: "row", alignItems: 'center'}} >
                                     <div><button style={{backgroundColor: colorAlters(i, "a")}} className="ContainerAlternativa" 
                                          onClick={() => {
                                             if(i === 0) {
@@ -602,7 +602,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                             handleResp("a", i)
                                             }}> <p style={{fontFamily: 'Segoe', textAlign: "center", margin:0}}>A</p>
                                         </button></div>
-                                        <p align="justify" onClick={() => {
+                                        <div style={{marginLeft:5, marginTop: 10}}><p align="justify" onClick={() => {
                                             handleResp("a",i)
                                             if(i === 0) {
                                                 setColorSelected("#DF9D9C") 
@@ -674,7 +674,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                                 setColorSelectedD10("")
                                                 setColorSelectedE10("") 
                                             }
-                                        }} className="alternativa">{item.a}</p></Container>
+                                        }} className="alternativa">{item.a}</p></div></Container>
                                 )
                             }else {
                                 return (
@@ -863,8 +863,8 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                         function letraB () {
                             if(item.b) {
                                 return (
-                                    <Container style={{display: "flex", flexDirection: "row"}} >
-                                    <div><button style={{backgroundColor: colorAlters(i, "b")}} className="ContainerAlternativa" 
+                                    <Container style={{display: "flex", flexDirection: "row", alignItems: 'center'}} >
+                                    <div ><button style={{backgroundColor: colorAlters(i, "b")}} className="ContainerAlternativa" 
                                     onClick={() => {
                                         if(i === 0) { 
                                             setColorSelectedB("#DF9D9C")
@@ -939,7 +939,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                         }
                                         handleResp("b",i)
                                     }}><p style={{fontFamily: 'Segoe', textAlign: "center", margin:0}}>B</p></button></div>
-                                <p onClick={() => {
+                                <div style={{marginLeft:5, marginTop: 10}} ><p onClick={() => {
                                     handleResp("b",i)
                                     if(i === 0) { 
                                         setColorSelectedB("#DF9D9C")
@@ -1012,7 +1012,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                         setColorSelectedD10("")
                                         setColorSelectedE10("")
                                     }
-                                }} align="justify" className="alternativa">{item.b}</p></Container>
+                                }} align="justify" className="alternativa">{item.b}</p></div></Container>
                                 )
                             }
                             else {
@@ -1022,7 +1022,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                         function letraD () {
                             if(item.d) {
                                 return (
-                                    <Container style={{display: "flex", flexDirection: "row"}} >
+                                    <Container style={{display: "flex", flexDirection: "row", alignItems: 'center'}} >
                                         <div><button style={{backgroundColor: colorAlters(i, "d")}} className="ContainerAlternativa" onClick={() => {
                                     if(i === 0) {
                                         setColorSelectedD("#DF9D9C") 
@@ -1096,7 +1096,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                     }
                                     handleResp("d",i)
                                 }}><p style={{fontFamily: 'Segoe', textAlign: "center",margin:0}}>D</p></button></div>
-                            <p onClick={() => {
+                            <div style={{marginLeft:5, marginTop: 10}}><p onClick={() => {
                                 handleResp("d",i)
                                 if(i === 0) {
                                     setColorSelectedD("#DF9D9C") 
@@ -1168,7 +1168,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                     setColorSelected10("")
                                     setColorSelectedE10("") 
                                 }
-                            }} align="justify" className="alternativa">{item.d}</p> </Container>
+                            }} align="justify" className="alternativa">{item.d}</p></div></Container>
                                 )
                             }else {
                                 return ""
@@ -1177,7 +1177,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                         function letraC () {
                             if(item.c) {
                                 return (
-                                    <Container style={{display: "flex", flexDirection: "row"}} >
+                                    <Container style={{display: "flex", flexDirection: "row", alignItems: 'center'}} >
                                         <div><button style={{backgroundColor: colorAlters(i,"c")}} className="ContainerAlternativa" onClick={() => {
                                     if(i === 0) {
                                         setColorSelectedC("#DF9D9C") 
@@ -1251,7 +1251,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                     }        
                                     handleResp("c",i)
                                 }}><p style={{fontFamily: 'Segoe', textAlign: "center",margin:0}}>C</p></button></div>
-                            <p onClick={() => {
+                            <div style={{marginLeft:5, marginTop: 10}}><p onClick={() => {
                                 handleResp("c",i)
                                 if(i === 0) {
                                     setColorSelectedC("#DF9D9C") 
@@ -1323,7 +1323,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                     setColorSelectedD10("")
                                     setColorSelectedE10("") 
                                 }        
-                            }} align="justify" className="alternativa">{item.c}</p> </Container>
+                            }} align="justify" className="alternativa">{item.c}</p></div> </Container>
                                 )
                             }else {
                                 return ""
@@ -1332,7 +1332,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                         function letraE () {
                             if(item.e) {
                                 return (
-                                    <Container style={{display: "flex", flexDirection: "row"}} >
+                                    <Container style={{display: "flex", flexDirection: "row",alignItems: 'center'}} >
                                         <div><button style={{backgroundColor: colorAlters(i, "e")}} className="ContainerAlternativa" onClick={() => {
                                     if(i === 0) {
                                         setColorSelectedE("#DF9D9C") 
@@ -1406,7 +1406,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                     }
                                     handleResp("e",i)
                                 }}><p style={{fontFamily: 'Segoe', textAlign: "center",margin:0}}>E</p></button></div>
-                           <p onClick={() => {
+                           <div style={{marginLeft:5, marginTop: 10}}><p onClick={() => {
                                 handleResp("e",i)
                                 if(i === 0) {
                                     setColorSelectedE("#DF9D9C") 
@@ -1478,7 +1478,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                     setColorSelectedD10("")
                                     setColorSelected10("") 
                                 }
-                            }} align="justify" className="alternativa">{item.e}</p> </Container>
+                            }} align="justify" className="alternativa">{item.e}</p></div> </Container>
                             )
                             }else {
                                 return ""
@@ -1533,7 +1533,8 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                         <Container style={{marginLeft: -26, marginBottom: 5}}>
                         {CondicaoResp(i)}
                         </Container>
-                        <Container style={{display: "flex", flexDirection: "column", marginLeft: 0, marginTop: -20}} >
+                        <Container style={{display: "flex", flexDirection: "column", marginLeft: 15, marginTop: -20, 
+                            padding:0}} >
                             <Button className="btnResponder"  
                             onClick={() => {
                                 if(i === 0) {verificarQuestao(item.resp, resposta, i)}
