@@ -526,8 +526,9 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                         function letraA () {
                             if(item.a) {
                                 return (
-                                    <Container style={{display: "flex", flexDirection: "row", alignItems: 'center'}} >
-                                    <div><button style={{backgroundColor: colorAlters(i, "a")}} className="ContainerAlternativa" 
+                                    <Container style={{display: "flex", flexDirection: "row", alignItems: 'center', 
+                                    padding:0, margin:0}} >
+                                    <div ><button style={{backgroundColor: colorAlters(i, "a")}} className="ContainerAlternativa" 
                                          onClick={() => {
                                             if(i === 0) {
                                                 setColorSelected("#DF9D9C") 
@@ -602,7 +603,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                             handleResp("a", i)
                                             }}> <p style={{fontFamily: 'Segoe', textAlign: "center", margin:0}}>A</p>
                                         </button></div>
-                                        <div style={{marginLeft:5, marginTop: 10}}><p align="justify" onClick={() => {
+                                        <div style={{marginLeft:0, marginTop: 0}}><p align="justify" onClick={() => {
                                             handleResp("a",i)
                                             if(i === 0) {
                                                 setColorSelected("#DF9D9C") 
@@ -678,8 +679,9 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                 )
                             }else {
                                 return (
-                                    <Container style={{display: "flex", flexDirection: "column", marginLeft: -15}}>
-                                        <Container style={{display: "flex", flexDirection: "row", alignItems: 'center'}}>   
+                                    <Container style={{display: "flex", flexDirection: "column", padding:0, margin:0}}>
+                                        <Container style={{display: "flex", flexDirection: "row", alignItems: 'center',
+                                    padding:0, margin:0}}>   
                                             <button style={{backgroundColor: colorCEME(i, 'certo')}} onClick={() => {
                                                 if(i === 0) {
                                                     setColorCerto("#DF9D9C")
@@ -766,9 +768,9 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                                 }
                                                 handleResp('certo',i)
                                             }}
-                                            className="certo-errado" style={{marginTop: 15, marginLeft: 0, fontFamily: 'Segoe', fontSize: 15}}>Certo</p>
+                                            className="certo-errado" style={{marginTop: 10, marginLeft: 10, fontFamily: 'Segoe', fontSize: 15}}>Certo</p>
                                         </Container>
-                                        <Container style={{display: "flex", flexDirection: "row", alignItems: 'center'}}>
+                                        <Container style={{display: "flex", flexDirection: "row", alignItems: 'center',padding:0, margin:0}}>
                                             <button style={{backgroundColor: colorCEME(i, 'errado')}}onClick={() => {
                                                 if(i === 0) {
                                                     setColorErrado("#DF9D9C")
@@ -854,7 +856,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                                     setColorCerto10("")
                                                 }
                                                 handleResp('errado',i)
-                                            }} className="certo-errado" style={{marginTop: 15, marginLeft: 0, fontFamily: 'Segoe', fontSize: 15}}>Errado</p>
+                                            }} className="certo-errado" style={{marginTop: 10, marginLeft: 10, fontFamily: 'Segoe', fontSize: 15}}>Errado</p>
                                         </Container>
                                     </Container>
                                 )
@@ -863,7 +865,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                         function letraB () {
                             if(item.b) {
                                 return (
-                                    <Container style={{display: "flex", flexDirection: "row", alignItems: 'center'}} >
+                                    <Container style={{display: "flex", flexDirection: "row", alignItems: 'center', padding:0, margin:0}} >
                                     <div ><button style={{backgroundColor: colorAlters(i, "b")}} className="ContainerAlternativa" 
                                     onClick={() => {
                                         if(i === 0) { 
@@ -939,7 +941,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                         }
                                         handleResp("b",i)
                                     }}><p style={{fontFamily: 'Segoe', textAlign: "center", margin:0}}>B</p></button></div>
-                                <div style={{marginLeft:5, marginTop: 10}} ><p onClick={() => {
+                                <div style={{marginLeft:0, marginTop:0}} ><p onClick={() => {
                                     handleResp("b",i)
                                     if(i === 0) { 
                                         setColorSelectedB("#DF9D9C")
@@ -1022,7 +1024,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                         function letraD () {
                             if(item.d) {
                                 return (
-                                    <Container style={{display: "flex", flexDirection: "row", alignItems: 'center'}} >
+                                    <Container style={{display: "flex", flexDirection: "row", alignItems: 'center',padding:0, margin:0}} >
                                         <div><button style={{backgroundColor: colorAlters(i, "d")}} className="ContainerAlternativa" onClick={() => {
                                     if(i === 0) {
                                         setColorSelectedD("#DF9D9C") 
@@ -1096,7 +1098,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                     }
                                     handleResp("d",i)
                                 }}><p style={{fontFamily: 'Segoe', textAlign: "center",margin:0}}>D</p></button></div>
-                            <div style={{marginLeft:5, marginTop: 10}}><p onClick={() => {
+                            <div style={{marginLeft:0, marginTop: 0}}><p onClick={() => {
                                 handleResp("d",i)
                                 if(i === 0) {
                                     setColorSelectedD("#DF9D9C") 
@@ -1177,7 +1179,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                         function letraC () {
                             if(item.c) {
                                 return (
-                                    <Container style={{display: "flex", flexDirection: "row", alignItems: 'center'}} >
+                                    <Container style={{display: "flex", flexDirection: "row", alignItems: 'center', padding:0, margin:0}} >
                                         <div><button style={{backgroundColor: colorAlters(i,"c")}} className="ContainerAlternativa" onClick={() => {
                                     if(i === 0) {
                                         setColorSelectedC("#DF9D9C") 
@@ -1251,7 +1253,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                     }        
                                     handleResp("c",i)
                                 }}><p style={{fontFamily: 'Segoe', textAlign: "center",margin:0}}>C</p></button></div>
-                            <div style={{marginLeft:5, marginTop: 10}}><p onClick={() => {
+                            <div style={{marginLeft:0, marginTop: 0}}><p onClick={() => {
                                 handleResp("c",i)
                                 if(i === 0) {
                                     setColorSelectedC("#DF9D9C") 
@@ -1332,7 +1334,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                         function letraE () {
                             if(item.e) {
                                 return (
-                                    <Container style={{display: "flex", flexDirection: "row",alignItems: 'center'}} >
+                                    <Container style={{display: "flex", flexDirection: "row",alignItems: 'center', padding:0, margin:0}} >
                                         <div><button style={{backgroundColor: colorAlters(i, "e")}} className="ContainerAlternativa" onClick={() => {
                                     if(i === 0) {
                                         setColorSelectedE("#DF9D9C") 
@@ -1406,7 +1408,7 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                     }
                                     handleResp("e",i)
                                 }}><p style={{fontFamily: 'Segoe', textAlign: "center",margin:0}}>E</p></button></div>
-                           <div style={{marginLeft:5, marginTop: 10}}><p onClick={() => {
+                           <div style={{marginLeft:0, marginTop: 0}}><p onClick={() => {
                                 handleResp("e",i)
                                 if(i === 0) {
                                     setColorSelectedE("#DF9D9C") 
@@ -1521,7 +1523,6 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                 </p>
                             </Row>
                             <p align="justify" className="TitlePergunta">{item.pergunta}</p>
-                        <Container className="content-alternativas" >
                             <Container style={{display: "flex", flexDirection: "column", padding: 0, margin: 0}}>
                             {letraA()}
                             {letraB()}
@@ -1529,7 +1530,6 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                             {letraD()}
                             {letraE()}
                             </Container>
-                        </Container>
                         <Container style={{marginLeft: -26, marginBottom: 5}}>
                         {CondicaoResp(i)}
                         </Container>

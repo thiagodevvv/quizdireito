@@ -473,16 +473,15 @@
     font-family: 'Segoe';
     font-size: 15px;
     color:#4F4F4F;
-    margin-top: 10px;
-    margin-left: 15px;
+    margin-left: 10px;
 }
 
 .alternativa:hover {
     cursor: pointer;
 }
-.certo-errado {
-    margin-top: -10px;
-}
+/* .certo-errado {
+   
+} */
 .certo-errado:hover {
     cursor: pointer;
 }
@@ -502,7 +501,7 @@
     border-radius: 50%;
     /* padding: 0px; */
     /* margin: 0px; */
-    margin-right: 5px;
+    margin-right: 0px;
     margin-top: 0px;
     opacity: 0.8;
     background-color: white;
@@ -962,6 +961,7 @@ ul {
 .content-alternativas {
     display: flex;
     flex-direction: row;
+    background-color: orange;
 }
 .content-questao-atualizada {
     display: flex;
