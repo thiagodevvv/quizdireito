@@ -528,7 +528,8 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                 return (
                                     <Container style={{display: "flex", flexDirection: "row", alignItems: 'center', 
                                     padding:0, margin:0}} >
-                                    <div ><button style={{backgroundColor: colorAlters(i, "a")}} className="ContainerAlternativa" 
+                                    <div className="containerAssertAndText">
+                                        <button style={{backgroundColor: colorAlters(i, "a")}} className="ContainerAlternativa" 
                                          onClick={() => {
                                             if(i === 0) {
                                                 setColorSelected("#DF9D9C") 
@@ -602,8 +603,8 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                             }
                                             handleResp("a", i)
                                             }}> <p style={{fontFamily: 'Segoe', textAlign: "center", margin:0}}>A</p>
-                                        </button></div>
-                                        <div style={{marginLeft:0, marginTop: 0}}><p align="justify" onClick={() => {
+                                        </button>
+                                        <p align="justify" onClick={() => {
                                             handleResp("a",i)
                                             if(i === 0) {
                                                 setColorSelected("#DF9D9C") 
@@ -866,7 +867,8 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                             if(item.b) {
                                 return (
                                     <Container style={{display: "flex", flexDirection: "row", alignItems: 'center', padding:0, margin:0}} >
-                                    <div ><button style={{backgroundColor: colorAlters(i, "b")}} className="ContainerAlternativa" 
+                                    <div className="containerAssertAndText" >
+                                        <button style={{backgroundColor: colorAlters(i, "b")}} className="ContainerAlternativa" 
                                     onClick={() => {
                                         if(i === 0) { 
                                             setColorSelectedB("#DF9D9C")
@@ -940,8 +942,8 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                             setColorSelectedE10("")
                                         }
                                         handleResp("b",i)
-                                    }}><p style={{fontFamily: 'Segoe', textAlign: "center", margin:0}}>B</p></button></div>
-                                <div style={{marginLeft:0, marginTop:0}} ><p onClick={() => {
+                                    }}><p style={{fontFamily: 'Segoe', textAlign: "center", margin:0}}>B</p></button>
+                                    <p onClick={() => {
                                     handleResp("b",i)
                                     if(i === 0) { 
                                         setColorSelectedB("#DF9D9C")
@@ -1025,7 +1027,8 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                             if(item.d) {
                                 return (
                                     <Container style={{display: "flex", flexDirection: "row", alignItems: 'center',padding:0, margin:0}} >
-                                        <div><button style={{backgroundColor: colorAlters(i, "d")}} className="ContainerAlternativa" onClick={() => {
+                                        <div className="containerAssertAndText"> 
+                                        <button style={{backgroundColor: colorAlters(i, "d")}} className="ContainerAlternativa" onClick={() => {
                                     if(i === 0) {
                                         setColorSelectedD("#DF9D9C") 
                                         setColorSelectedB("")
@@ -1097,8 +1100,8 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                         setColorSelectedE10("") 
                                     }
                                     handleResp("d",i)
-                                }}><p style={{fontFamily: 'Segoe', textAlign: "center",margin:0}}>D</p></button></div>
-                            <div style={{marginLeft:0, marginTop: 0}}><p onClick={() => {
+                                }}><p style={{fontFamily: 'Segoe', textAlign: "center",margin:0}}>D</p></button>
+                                <p onClick={() => {
                                 handleResp("d",i)
                                 if(i === 0) {
                                     setColorSelectedD("#DF9D9C") 
@@ -1180,7 +1183,8 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                             if(item.c) {
                                 return (
                                     <Container style={{display: "flex", flexDirection: "row", alignItems: 'center', padding:0, margin:0}} >
-                                        <div><button style={{backgroundColor: colorAlters(i,"c")}} className="ContainerAlternativa" onClick={() => {
+                                        <div className="containerAssertAndText">
+                                        <button style={{backgroundColor: colorAlters(i,"c")}} className="ContainerAlternativa" onClick={() => {
                                     if(i === 0) {
                                         setColorSelectedC("#DF9D9C") 
                                         setColorSelectedB("")
@@ -1252,8 +1256,8 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                         setColorSelectedE10("") 
                                     }        
                                     handleResp("c",i)
-                                }}><p style={{fontFamily: 'Segoe', textAlign: "center",margin:0}}>C</p></button></div>
-                            <div style={{marginLeft:0, marginTop: 0}}><p onClick={() => {
+                                }}><p style={{fontFamily: 'Segoe', textAlign: "center",margin:0}}>C</p></button>
+                                <p onClick={() => {
                                 handleResp("c",i)
                                 if(i === 0) {
                                     setColorSelectedC("#DF9D9C") 
@@ -1335,7 +1339,8 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                             if(item.e) {
                                 return (
                                     <Container style={{display: "flex", flexDirection: "row",alignItems: 'center', padding:0, margin:0}} >
-                                        <div><button style={{backgroundColor: colorAlters(i, "e")}} className="ContainerAlternativa" onClick={() => {
+                                        <div className="containerAssertAndText">
+                                        <button style={{backgroundColor: colorAlters(i, "e")}} className="ContainerAlternativa" onClick={() => {
                                     if(i === 0) {
                                         setColorSelectedE("#DF9D9C") 
                                         setColorSelectedB("")
@@ -1407,8 +1412,8 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
                                         setColorSelected10("") 
                                     }
                                     handleResp("e",i)
-                                }}><p style={{fontFamily: 'Segoe', textAlign: "center",margin:0}}>E</p></button></div>
-                           <div style={{marginLeft:0, marginTop: 0}}><p onClick={() => {
+                                }}><p style={{fontFamily: 'Segoe', textAlign: "center",margin:0}}>E</p></button>
+                                <p onClick={() => {
                                 handleResp("e",i)
                                 if(i === 0) {
                                     setColorSelectedE("#DF9D9C") 

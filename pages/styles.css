@@ -474,6 +474,8 @@
     font-size: 15px;
     color:#4F4F4F;
     margin-left: 10px;
+    flex: 2;
+    margin-top: 11px;
 }
 
 .alternativa:hover {
@@ -499,16 +501,20 @@
     height: 36px;
     border: 2px solid #cb605d;
     border-radius: 50%;
-    /* padding: 0px; */
-    /* margin: 0px; */
-    margin-right: 0px;
-    margin-top: 0px;
+    margin-top: -4px;
     opacity: 0.8;
     background-color: white;
+    display: 1;
 }
 .ContainerAlternativa:focus {
     /* background-color: #cb605d; */
     outline: none;
+}
+
+.containerAssertAndText {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }
 
 .btnResponder {
