@@ -578,7 +578,9 @@
 .textJust {
     font-family: 'Segoe';
     font-size: 15px;
-    color: #808080; 
+    color: #808080;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
 }
 
 @media screen and (max-width: 386px) {
