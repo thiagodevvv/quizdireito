@@ -1906,7 +1906,9 @@ export default function ListaPerguntas ({zerarLista,perguntas}) {
     const CondicaoJust = (i) => {
         if(i === 0) {
             return ( 
-                <Container style={{display: `${isVisibleJust}`}} className="containerJust"><p align="justify" className="textJust">{justi1}</p></Container>
+                <Container style={{display: `${isVisibleJust}`}} className="containerJust">
+                    <p align="justify" className="textJust">{justi1}</p>
+                </Container>
             )
         }
         if(i === 1) {

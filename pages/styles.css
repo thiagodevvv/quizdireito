@@ -476,6 +476,8 @@
     margin-left: 10px;
     flex: 2;
     margin-top: 11px;
+    white-space: pre-wrap;
+    overflow-wrap: break-word;
 }
 
 .alternativa:hover {
